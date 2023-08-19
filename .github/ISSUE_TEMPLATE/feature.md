@@ -1,7 +1,7 @@
 ---
-name: Task
+name: Feature
 about: Development tasks
-title: "[TASK]"
+title: "[Feature]"
 labels: ''
 assignees: ''
 
