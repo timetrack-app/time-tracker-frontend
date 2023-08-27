@@ -1,0 +1,9 @@
+export const dryadBark = '#37352f'; // light theme string color
+export const white = '#ffffff';
+export const errigalWhite = '#f6f6f9'; // light theme background color
+export const coralRed = '#f93e3d';
+export const softPetals = '#e9f6ef';
+export const vegetation = '#48cd90';
+export const stonewallGrey = '#c3c2c1';
+export const aswadBlack = '#141519'; // dark theme background color
+export const washedBlack = '#202528'; // dark theme component background color
