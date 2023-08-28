@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "cookies-next": "^3.0.0",
     "next": "latest",
     "next-cookie": "^2.8.0",
     "react": "^18.2.0",
