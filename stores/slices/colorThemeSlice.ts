@@ -24,7 +24,7 @@ const colorThemeSlice = createSlice({
 });
 
 // selectors
-export const selectColorTheme = (state: RootState) => state.colorTheme;
+export const selectColorTheme = (state: RootState) => state.colorTheme.theme;
 export default colorThemeSlice.reducer;
 
 // actions

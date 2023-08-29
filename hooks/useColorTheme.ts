@@ -2,10 +2,12 @@ import { defaultColorThemeName } from '../config/colorTheme';
 
 import { getColorThemeCookie, setColorThemeCookie } from '../services/cookie/colorTheme';
 
-import { useAppDispatch } from '../stores/hooks';
-import { updateColorTheme } from '../stores/slices/colorThemeSlice';
+import { useAppDispatch, useAppSelector } from '../stores/hooks';
+import { selectColorTheme, updateColorTheme } from '../stores/slices/colorThemeSlice';
 
-import { ColorThemeName, isColorThemeName } from '../types/colorTheme';
+import { darkTheme, lightTheme } from '../styles/colorThemes';
+
+import { ColorThemeName, ColorThemeStyle, isColorThemeName } from '../types/colorTheme';
 
 /**
  * Custom hook for handling color themes
@@ -13,6 +15,7 @@ import { ColorThemeName, isColorThemeName } from '../types/colorTheme';
  */
 const useColorTheme = () => {
   const dispatch = useAppDispatch();
+  const currentColorTheme = useAppSelector(selectColorTheme);
 
   /**
    * Set color theme cookie and state
@@ -40,9 +43,26 @@ const useColorTheme = () => {
     dispatch(updateColorTheme(currentColorThemeCookie));
   };
 
+  /**
+   *
+   *
+   * @return {*}  {ColorThemeStyle}
+   */
+  const getCurrentColorThemeStyle = (): ColorThemeStyle => {
+    switch (currentColorTheme) {
+      case 'light':
+        return lightTheme;
+      case 'dark':
+        return darkTheme;
+      default:
+        return lightTheme;
+    }
+  };
+
   return {
     setColorTheme,
     initColorTheme,
+    getCurrentColorThemeStyle,
   };
 };
 
