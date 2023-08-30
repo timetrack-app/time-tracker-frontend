@@ -4,10 +4,12 @@ import { configureStore } from '@reduxjs/toolkit';
 
 // reducers
 import colorThemeReducer from './slices/colorThemeSlice';
+import activeTaskReducer from './slices/activeTaskSlice';
 
 export const store = configureStore({
   reducer: {
     colorTheme: colorThemeReducer,
+    activeTask: activeTaskReducer,
   },
 });
 
