@@ -4,7 +4,6 @@ import { useEffect, ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
 import { Router } from 'next/router';
 import type { AppProps } from 'next/app';
-import { Inter } from 'next/font/google';
 
 // Libraries
 import { Provider } from 'react-redux';
@@ -28,8 +27,6 @@ type AppPropsWithLayout = AppProps & {
   router: Router // Error if this property doesn't exist
 };
 
-const inter = Inter({ subsets: ['latin'] });
-
 /**
  *
  *
@@ -44,7 +41,7 @@ const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout
   }, []);
 
   return (
-    <div className={inter.className}>
+    <div>
       <ThemeProvider theme={getCurrentColorThemeStyle()}>
         <GlobalStyle />
         <Component {...pageProps} />

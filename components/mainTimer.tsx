@@ -1,95 +1,116 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-const ContainerDiv = styled.div`
+import { useAppDispatch, useAppSelector } from '../stores/hooks';
+import { selectColorTheme } from '../stores/slices/colorThemeSlice';
+import {
+  updateIsTimerRunning,
+  incrementElapsedSeconds,
+  resetTimer,
+} from '../stores/slices/activeTaskSlice';
+
+import { secondsToHHMMSS } from '../utils/timer';
+
+import { ColorThemeName } from '../types/colorTheme';
+
+const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.colors.componentBackground};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.2em;
+  box-shadow: ${({ colorThemeName, theme }) => (colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none')};
 `;
 
 const TaskNameWrapperDiv = styled.div`
-  border: 1px solid #37352f;
+  border: 1px solid ${({ theme }) => theme.colors.text};
   border-radius: 16px;
-  width: 85%;
-  padding: 0.5em;
+  width: 80%;
+  padding: 0.3em 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-// TODO: fix it later (the code below is from chatGPT so...)
+const TaskNameP = styled.p`
+  font-size: 1.3em;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
 
-const MainTimer = () => {
-  // Timer is running or not
-  const [isRunning, setIsRunning] = useState<boolean>(false);
-  // How many seconds has passed
-  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
+const ElapsedTimeP = styled.p`
+  display: block;
+  font-size: 3em;
+  font-weight: bold;
+  max-width: 100%;
+  text-align: center;
+`;
+
+type Props = {
+  taskName: string
+  isTimerRunning: boolean
+  elapsedSeconds: number
+};
+
+/**
+ * Main timer component
+ * Display elapsed time of the a current active task
+ *
+ * @param {Props} { taskName }
+ * @return {JSX.Element}
+ */
+const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
+  const dispatch = useAppDispatch();
+
+  const currentColorThemeName = useAppSelector(selectColorTheme);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
 
-    if (isRunning) {
+    if (isTimerRunning) {
       intervalId = setInterval(() => {
         // update elapsedTime every 1 sec
-        setElapsedSeconds((prevElapsedSeconds) => prevElapsedSeconds + 1);
+        dispatch(incrementElapsedSeconds());
       }, 1000);
     } else if (intervalId) clearInterval(intervalId);
 
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [isRunning]);
+  }, [dispatch, isTimerRunning]);
 
-  const start = () => setIsRunning(true);
+  const start = () => dispatch(updateIsTimerRunning(true));
 
-  const stop = () => setIsRunning(false);
+  const stop = () => dispatch(updateIsTimerRunning(false));
 
-  const reset = () => {
-    setIsRunning(false);
-    setElapsedSeconds(0);
-  };
+  const reset = () => dispatch(resetTimer());
 
-  /**
-   * Format seconds to HH:mm:ss
-   *
-   * @param {number} seconds
-   * @return {*}  {string}
-   */
-  const formatTime = (seconds: number): string => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    const toStr0Pad = (time: number) => (
-      time.toString().padStart(2, '0')
-    );
-
-    return `${toStr0Pad(hours)}:${toStr0Pad(minutes)}:${toStr0Pad(remainingSeconds)}`;
-  };
+  // TODO: Make sure how to stop timer
 
   return (
-    <ContainerDiv>
-      <TaskNameWrapperDiv>
-        <p>Task name</p>
-      </TaskNameWrapperDiv>
-      <p>
-        {formatTime(elapsedSeconds)}
-        {' '}
-        sec
-      </p>
-      <button type="button" onClick={start} disabled={isRunning}>
-        START
-      </button>
-      <button type="button" onClick={stop} disabled={!isRunning}>
-        STOP
-      </button>
-      <button type="button" onClick={reset}>RESET</button>
-    </ContainerDiv>
+    <>
+      <ContainerDiv colorThemeName={currentColorThemeName}>
+        <TaskNameWrapperDiv>
+          <TaskNameP>{taskName}</TaskNameP>
+        </TaskNameWrapperDiv>
+        <ElapsedTimeP>
+          {secondsToHHMMSS(elapsedSeconds)}
+        </ElapsedTimeP>
+      </ContainerDiv>
+
+      {/* TODO: remove buttons later. This is temporary solution to start/stop the timer */}
+      <div>
+        <button type="button" onClick={start} disabled={isTimerRunning}>START</button>
+        <button type="button" onClick={stop} disabled={!isTimerRunning}>STOP</button>
+        <button type="button" onClick={reset}>RESET</button>
+      </div>
+    </>
   );
 };
 

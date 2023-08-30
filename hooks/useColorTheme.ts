@@ -1,6 +1,6 @@
 import { defaultColorThemeName } from '../config/colorTheme';
 
-import { getColorThemeCookie, setColorThemeCookie } from '../services/cookie/colorTheme';
+import { getColorThemeCookie, setColorThemeCookie } from '../utils/cookie/colorTheme';
 
 import { useAppDispatch, useAppSelector } from '../stores/hooks';
 import { selectColorTheme, updateColorTheme } from '../stores/slices/colorThemeSlice';
