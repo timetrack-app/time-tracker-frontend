@@ -7,6 +7,7 @@ export type ColorThemeStyle = {
     componentBackground: string
     border: string
     info: string
+    infoBg,
     danger: string
   },
 };
