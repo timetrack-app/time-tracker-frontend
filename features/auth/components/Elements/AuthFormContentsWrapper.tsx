@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { breakPoint } from '../../../styles/breakPoint';
+import { breakPoint } from '../../../../styles/breakPoint';
 
 const FormMainDiv = styled.div`
   width: 100%;

@@ -1,9 +1,7 @@
 // components
 import TextInput from '../components/Elements/ReactHookForm/TextInput';
-import AuthFormLayout from '../components/Layouts/AuthFormLayout';
-import AuthFormContentsWrapper from '../components/Elements/AuthForm/AuthFormContentsWrapper';
-import AuthForm from '../components/Elements/AuthForm/AuthForm';
 import Button from '../components/Elements/Button/Button';
+import { AuthForm, AuthFormContentsWrapper, AuthFormLayout } from '../features/auth/index';
 
 // validations
 import { emailRegExp } from '../const/validation/rules/email';
