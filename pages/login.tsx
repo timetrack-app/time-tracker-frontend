@@ -25,6 +25,8 @@ type LoginFormValues = {
 // TODO: create react query base function
 
 const Login = () => {
+  // TODO: If the user logged in, redirect to main page
+
   const onSubmit = () => {
     /* do something */
     // TODO: POST: login API
