@@ -10,7 +10,7 @@ import {
 // Reference:
 // https://github.com/alan2207/bulletproof-react/blob/master/src/components/Form/Form.tsx
 
-type FormProps<TFormValues> = {
+export type FormProps<TFormValues> = {
   onSubmit: SubmitHandler<TFormValues>
   children: (methods: UseFormReturn<TFormValues>) => ReactNode
   options?: UseFormProps<TFormValues>
