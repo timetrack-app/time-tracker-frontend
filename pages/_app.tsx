@@ -41,12 +41,10 @@ const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout
   }, []);
 
   return (
-    <div>
-      <ThemeProvider theme={getCurrentColorThemeStyle()}>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={getCurrentColorThemeStyle()}>
+      <GlobalStyle />
+      <Component {...pageProps} />
+    </ThemeProvider>
   );
 };
 
