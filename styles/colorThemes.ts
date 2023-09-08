@@ -12,6 +12,7 @@ import {
   aswadBlack,
   washedBlack,
   softPetals,
+  translucentUnicorn,
 } from './colors';
 
 export const lightTheme: ColorThemeStyle = {
@@ -23,6 +24,7 @@ export const lightTheme: ColorThemeStyle = {
     info: vegetation,
     infoBg: softPetals,
     danger: coralRed,
+    dangerBg: translucentUnicorn,
   },
 };
 
@@ -35,5 +37,6 @@ export const darkTheme: ColorThemeStyle = {
     info: vegetation,
     infoBg: softPetals,
     danger: coralRed,
+    dangerBg: translucentUnicorn,
   },
 };

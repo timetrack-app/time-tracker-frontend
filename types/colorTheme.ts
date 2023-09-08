@@ -7,8 +7,9 @@ export type ColorThemeStyle = {
     componentBackground: string
     border: string
     info: string
-    infoBg,
+    infoBg: string
     danger: string
+    dangerBg: string
   },
 };
 
