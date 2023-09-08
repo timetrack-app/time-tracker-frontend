@@ -21,12 +21,14 @@ const Input = styled.input<{ isError: boolean }>`
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
   type?: 'text' | 'email' | 'password';
+  placeholder?: string
   registration: Partial<UseFormRegisterReturn>;
 };
 
 const TextInput = (props: InputFieldProps) => {
   const {
     type = 'text',
+    placeholder,
     label,
     registration,
     error,
@@ -35,7 +37,12 @@ const TextInput = (props: InputFieldProps) => {
 
   return (
     <FieldWrapper label={label} error={error} className={className}>
-      <Input type={type} {...registration} isError={Boolean(error?.message)} />
+      <Input
+        type={type}
+        {...registration}
+        isError={Boolean(error?.message)}
+        placeholder={placeholder}
+      />
     </FieldWrapper>
   );
 };
