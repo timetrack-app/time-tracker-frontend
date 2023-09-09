@@ -18,7 +18,7 @@ import {
   passwordConfirmationMismatch,
 } from '../const/validation/messages';
 
-import { softPetals, vegetation } from '../styles/colors';
+import { softPetals, vegetation } from '../const/styles/colors';
 
 type SignUpFormValues = {
   email: string

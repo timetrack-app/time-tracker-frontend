@@ -1,4 +1,4 @@
-import { ColorThemeStyle } from '../types/colorTheme';
+import { ColorThemeStyle } from '../../types/colorTheme';
 
 // colors
 import {
@@ -13,7 +13,7 @@ import {
   washedBlack,
   softPetals,
   translucentUnicorn,
-} from './colors';
+} from '../../const/styles/colors';
 
 export const lightTheme: ColorThemeStyle = {
   colors: {

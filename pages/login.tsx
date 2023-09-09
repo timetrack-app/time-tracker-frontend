@@ -20,7 +20,7 @@ import {
 import { getWebRouteFull } from '../routes/web';
 import { setUserLoginCookie } from '../utils/cookie/auth';
 
-import { softPetals, vegetation } from '../styles/colors';
+import { softPetals, vegetation } from '../const/styles/colors';
 
 type LoginFormValues = {
   email: string

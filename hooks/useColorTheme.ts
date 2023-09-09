@@ -5,7 +5,7 @@ import { getColorThemeCookie, setColorThemeCookie } from '../utils/cookie/colorT
 import { useAppDispatch, useAppSelector } from '../stores/hooks';
 import { selectColorTheme, updateColorTheme } from '../stores/slices/colorThemeSlice';
 
-import { darkTheme, lightTheme } from '../styles/colorThemes';
+import { darkTheme, lightTheme } from '../config/styles/colorThemes';
 
 import { ColorThemeName, ColorThemeStyle, isColorThemeName } from '../types/colorTheme';
 
