@@ -1,6 +1,6 @@
 // components
-import TextInput from '../components/Elements/ReactHookForm/TextInput';
-import Button from '../components/Elements/Button/Button';
+import TextInput from '../components/elements/ReactHookForm/TextInput';
+import Button from '../components/elements/Button/Button';
 import { AuthForm, AuthFormContentsWrapper, AuthFormLayout } from '../features/auth/index';
 
 // validations
