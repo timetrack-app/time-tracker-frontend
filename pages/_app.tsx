@@ -8,6 +8,9 @@ import type { AppProps } from 'next/app';
 // Libraries
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import { QueryClientProvider } from 'react-query';
+
+import { queryClient } from '../libs/reactQuery';
 
 import { store } from '../stores/store';
 
@@ -53,13 +56,15 @@ const App = ({ Component, pageProps, router }: AppPropsWithLayout) => {
 
   return (
     <Provider store={store}>
-      {getLayout(
-        <WithThemeProviderComponent
-          Component={Component}
-          pageProps={pageProps}
-          router={router}
-        />,
-      )}
+      <QueryClientProvider client={queryClient}>
+        {getLayout(
+          <WithThemeProviderComponent
+            Component={Component}
+            pageProps={pageProps}
+            router={router}
+          />,
+        )}
+      </QueryClientProvider>
     </Provider>
   );
 };
