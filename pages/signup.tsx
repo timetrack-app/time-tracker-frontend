@@ -1,6 +1,9 @@
+import { useRouter } from 'next/router';
+import { SubmitHandler } from 'react-hook-form';
+
 // components
-import TextInput from '../components/Elements/ReactHookForm/TextInput';
-import Button from '../components/Elements/Button/Button';
+import TextInput from '../components/elements/ReactHookForm/TextInput';
+import Button from '../components/elements/Button/Button';
 import { AuthForm, AuthFormContentsWrapper, AuthFormLayout } from '../features/auth/index';
 
 // validations
@@ -13,8 +16,13 @@ import {
   passwordConfirmationMismatch,
 } from '../const/validation/messages';
 
+// api
+import { useUserRegistration } from '../features/auth/api/hooks/useUserRegistration';
+
 // styles
 import { softPetals, vegetation } from '../styles/colors';
+
+import { getWebRouteFull } from '../routes/web';
 
 type SignUpFormValues = {
   email: string
@@ -23,14 +31,30 @@ type SignUpFormValues = {
 };
 
 const SignUp = () => {
+  const router = useRouter();
+
+  const {
+    isLoading: isUserRegistrationLoading,
+    mutate: registerUser,
+  } = useUserRegistration();
+
   // TODO: If the user logged in, redirect to main page
   // TODO: do this in the layout component
 
-  const onSubmit = () => {
-    /* do something */
-    // TODO: POST: login API
-
-    // TODO: axiosBase, service, reactQueryCustomHook, API endpoint
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (
+    { email, password }: SignUpFormValues,
+  ) => {
+    await registerUser({ email, password }, {
+      onError: () => {
+        /* TODO: do something */
+      },
+      onSuccess: (data) => {
+        // data: UserRegistrationResponse
+        // TODO: set token to cookie
+        // TODO: redirect to the main page
+        router.push(getWebRouteFull('home'));
+      },
+    });
   };
 
   // TODO: Set the same password validation as the backend

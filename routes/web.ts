@@ -5,6 +5,7 @@ const {
   getPath: getWebRoute,
   getFullPath: getWebRouteFull,
 } = pathManager({
+  home: '/',
   signUp: '/signup',
   login: '/login',
   // TODO: add all page routes
