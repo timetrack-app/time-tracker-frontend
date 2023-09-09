@@ -1,4 +1,4 @@
-import { defaultColorThemeName } from '../config/colorTheme';
+import { defaultColorThemeName } from '../const/colorTheme';
 
 import { getColorThemeCookie, setColorThemeCookie } from '../utils/cookie/colorTheme';
 

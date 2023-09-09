@@ -1,4 +1,4 @@
-import { colorThemeNames } from '../config/colorTheme';
+import { colorThemeNames } from '../const/colorTheme';
 
 export type ColorThemeStyle = {
   colors: {
