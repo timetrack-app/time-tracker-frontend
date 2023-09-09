@@ -1,12 +1,14 @@
-import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 
-// components
 import TextInput from '../components/elements/ReactHookForm/TextInput';
 import Button from '../components/elements/Button/Button';
-import { AuthForm, AuthFormContentsWrapper, AuthFormLayout } from '../features/auth/index';
+import {
+  AuthForm,
+  AuthFormContentsWrapper,
+  AuthFormLayout,
+  useUserRegistration,
+} from '../features/auth/index';
 
-// validations
 import { emailRegExp } from '../const/validation/rules/email';
 import {
   emailRequired,
@@ -16,13 +18,7 @@ import {
   passwordConfirmationMismatch,
 } from '../const/validation/messages';
 
-// api
-import { useUserRegistration } from '../features/auth/api/hooks/useUserRegistration';
-
-// styles
 import { softPetals, vegetation } from '../styles/colors';
-
-import { getWebRouteFull } from '../routes/web';
 
 type SignUpFormValues = {
   email: string
@@ -31,8 +27,6 @@ type SignUpFormValues = {
 };
 
 const SignUp = () => {
-  const router = useRouter();
-
   const {
     isLoading: isUserRegistrationLoading,
     mutate: registerUser,
@@ -41,21 +35,21 @@ const SignUp = () => {
   // TODO: If the user logged in, redirect to main page
   // TODO: do this in the layout component
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = async (
-    { email, password }: SignUpFormValues,
-  ) => {
+  const onSubmit: SubmitHandler<SignUpFormValues> = async ({ email, password }) => {
     await registerUser({ email, password }, {
       onError: () => {
         /* TODO: do something */
       },
       onSuccess: (data) => {
-        // data: UserRegistrationResponse
-        // TODO: set token to cookie
-        // TODO: redirect to the main page
-        router.push(getWebRouteFull('home'));
+        // data: void. only 200 status
+        // TODO: toast(use library)
       },
     });
   };
+
+  // TODO: loading -> isLoading conditional rendering
+
+  // TODO: emailVerification->ok->login
 
   // TODO: Set the same password validation as the backend
 

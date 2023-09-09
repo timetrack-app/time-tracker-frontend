@@ -1,9 +1,15 @@
-// components
+import { useRouter } from 'next/router';
+import { SubmitHandler } from 'react-hook-form';
+
 import TextInput from '../components/elements/ReactHookForm/TextInput';
 import Button from '../components/elements/Button/Button';
-import { AuthForm, AuthFormContentsWrapper, AuthFormLayout } from '../features/auth/index';
+import {
+  AuthForm,
+  AuthFormContentsWrapper,
+  AuthFormLayout,
+  useUserLogin,
+} from '../features/auth/index';
 
-// validations
 import { emailRegExp } from '../const/validation/rules/email';
 import {
   emailRequired,
@@ -11,7 +17,9 @@ import {
   passwordRequired,
 } from '../const/validation/messages';
 
-// styles
+import { getWebRouteFull } from '../routes/web';
+import { setUserLoginCookie } from '../utils/cookie/auth';
+
 import { softPetals, vegetation } from '../styles/colors';
 
 type LoginFormValues = {
@@ -23,11 +31,25 @@ type LoginFormValues = {
 // TODO: create react query base function
 
 const Login = () => {
+  const router = useRouter();
+
+  const { isLoading: isUserLoginLoading, mutate: userLogin } = useUserLogin();
+
   // TODO: If the user logged in, redirect to main page
 
-  const onSubmit = () => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async ({ email, password }) => {
     /* do something */
     // TODO: POST: login API
+
+    await userLogin({ email, password }, {
+      onError: () => {
+        /* TODO: do something */
+      },
+      onSuccess: (res) => {
+        setUserLoginCookie(res.token);
+        router.push(getWebRouteFull('home'));
+      },
+    });
   };
 
   // TODO: Set the same password validation as the backend
