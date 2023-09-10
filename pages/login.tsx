@@ -20,6 +20,7 @@ import {
 
 import { getWebRouteFull } from '../routes/web';
 import { setUserLoginCookie } from '../utils/cookie/auth';
+import { showToast } from '../libs/react-toastify/toast';
 
 import { softPetals, vegetation } from '../const/styles/colors';
 
@@ -28,9 +29,11 @@ type LoginFormValues = {
   password: string
 };
 
-// TODO: use react query to call the login API
-// TODO: create react query base function
-
+/**
+ * User login form
+ *
+ * @return {*} JSX.Element
+ */
 const Login = () => {
   const router = useRouter();
 
@@ -39,12 +42,9 @@ const Login = () => {
   // TODO: If the user logged in, redirect to main page
 
   const onSubmit: SubmitHandler<LoginFormValues> = async ({ email, password }) => {
-    /* do something */
-    // TODO: POST: login API
-
     await userLogin({ email, password }, {
       onError: () => {
-        /* TODO: do something */
+        showToast('error', 'An error has occurred.');
       },
       onSuccess: (res) => {
         setUserLoginCookie(res.token);

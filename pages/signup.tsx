@@ -29,6 +29,11 @@ type SignUpFormValues = {
   passwordConfirmation: string
 };
 
+/**
+ * User registration page
+ *
+ * @return {*} JSX.Element
+ */
 const SignUp = () => {
   const {
     isLoading: isUserRegistrationLoading,
@@ -41,16 +46,13 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<SignUpFormValues> = async ({ email, password }) => {
     await registerUser({ email, password }, {
       onError: () => {
-        /* TODO: do something */
-        showToast('error', 'An error has occurred...');
+        showToast('error', 'An error has occurred.');
       },
       onSuccess: () => {
         showToast('success', 'Verification email sent! Please check.');
       },
     });
   };
-
-  // TODO: loading -> isLoading conditional rendering
 
   // TODO: emailVerification->ok->login
 
