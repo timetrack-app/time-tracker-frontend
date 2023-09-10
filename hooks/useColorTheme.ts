@@ -5,7 +5,7 @@ import { getColorThemeCookie, setColorThemeCookie } from '../utils/cookie/colorT
 import { useAppDispatch, useAppSelector } from '../stores/hooks';
 import { selectColorTheme, updateColorTheme } from '../stores/slices/colorThemeSlice';
 
-import { darkTheme, lightTheme } from '../config/styles/colorThemes';
+import { themeNameStyleMap } from '../config/styles/colorThemes';
 
 import { ColorThemeName, ColorThemeStyle, isColorThemeName } from '../types/colorTheme';
 
@@ -48,16 +48,9 @@ const useColorTheme = () => {
    *
    * @return {*}  {ColorThemeStyle}
    */
-  const getCurrentColorThemeStyle = (): ColorThemeStyle => {
-    switch (currentColorTheme) {
-      case 'light':
-        return lightTheme;
-      case 'dark':
-        return darkTheme;
-      default:
-        return lightTheme;
-    }
-  };
+  const getCurrentColorThemeStyle = (): ColorThemeStyle => (
+    themeNameStyleMap[currentColorTheme]
+  );
 
   return {
     setColorTheme,

@@ -1,4 +1,4 @@
-import { ColorThemeStyle } from '../../types/colorTheme';
+import { ColorThemeStyle, ColorThemeName } from '../../types/colorTheme';
 
 // colors
 import {
@@ -14,6 +14,8 @@ import {
   softPetals,
   translucentUnicorn,
 } from '../../const/styles/colors';
+
+export const defaultColorThemeName: ColorThemeName = 'light';
 
 export const lightTheme: ColorThemeStyle = {
   colors: {
@@ -40,3 +42,10 @@ export const darkTheme: ColorThemeStyle = {
     dangerBg: translucentUnicorn,
   },
 };
+
+export const themeNameStyleMap: { [key in ColorThemeName]: ColorThemeStyle } = {
+  light: lightTheme,
+  dark: darkTheme,
+};
+
+export const defaultColorThemeStyle = themeNameStyleMap[defaultColorThemeName];
