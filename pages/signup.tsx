@@ -19,6 +19,8 @@ import {
   passwordConfirmationMismatch,
 } from '../const/validation/messages';
 
+import { showToast } from '../libs/react-toastify/toast';
+
 import { softPetals, vegetation } from '../const/styles/colors';
 
 type SignUpFormValues = {
@@ -40,10 +42,10 @@ const SignUp = () => {
     await registerUser({ email, password }, {
       onError: () => {
         /* TODO: do something */
+        showToast('error', 'An error has occurred...');
       },
-      onSuccess: (data) => {
-        // data: void. only 200 status
-        // TODO: toast(use library)
+      onSuccess: () => {
+        showToast('success', 'Verification email sent! Please check.');
       },
     });
   };
