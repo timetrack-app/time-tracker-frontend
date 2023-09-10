@@ -1,6 +1,15 @@
 import { createGlobalStyle } from 'styled-components';
 
+import { vegetation, coralRed } from '../const/styles/colors';
+
 const GlobalStyle = createGlobalStyle`
+  :root {
+    // https://fkhadra.github.io/react-toastify/how-to-style/
+    --toastify-color-success: ${vegetation};
+    --toastify-color-error: ${coralRed};
+    --toastify-toast-width: 380px;
+  }
+
   h1,
   h2,
   h3,

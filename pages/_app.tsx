@@ -1,4 +1,6 @@
 import { useEffect, ReactElement, ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Next
 import { NextPage } from 'next';
@@ -47,6 +49,7 @@ const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout
     <ThemeProvider theme={getCurrentColorThemeStyle()}>
       <GlobalStyle />
       <Component {...pageProps} />
+      <ToastContainer />
     </ThemeProvider>
   );
 };
