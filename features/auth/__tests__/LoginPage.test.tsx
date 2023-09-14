@@ -1,21 +1,18 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Provider } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
-import { store } from '../../../stores/store';
 import '@testing-library/jest-dom'
 import {
-  render,
   screen,
   fireEvent,
   act,
-  RenderOptions,
 } from '@testing-library/react';
 import LoginPage from '../../../components/pages/login/LoginPage';
 import { lightTheme } from '../../../config/styles/colorThemes';
 import { getWebRoute } from '../../../routes/web';
 import { emailRequired, passwordRequired } from '../../../const/validation/messages';
 import { showToast } from '../../../libs/react-toastify/toast';
+
+import { render } from '../../../utils/test/test-utils';
 
 jest.mock('../../../hooks/useColorTheme.ts', () => ({
   useColorTheme: () => {
@@ -59,23 +56,6 @@ jest.mock('../api/hooks/useUserLogin.ts', () => ({
 // Mock showToast
 jest.mock('../../../libs/react-toastify/toast');
 
-// https://testing-library.com/docs/react-testing-library/setup/
-const AllTheProviders: React.FC = ({ children }: { children?: React.ReactNode }) => {
-  return (
-    <Provider store={store}>
-      <ThemeProvider theme={lightTheme}>
-        {children}
-      </ThemeProvider>
-    </Provider>
-  )
-}
-
-// https://testing-library.com/docs/react-testing-library/setup/
-const customRender = (
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, {wrapper: AllTheProviders, ...options})
-
 describe('Login Component', () => {
   const mockRouter = {
     push: jest.fn(),
@@ -90,7 +70,7 @@ describe('Login Component', () => {
   });
 
   it('Redirect to home page after successful form submission', async () => {
-    customRender(<LoginPage />);
+    render(<LoginPage />);
 
     // Fill in the form fields with correct credentials
     fireEvent.change(screen.getByLabelText('E-mail'), {
@@ -111,7 +91,7 @@ describe('Login Component', () => {
   });
 
   it('Show error with invalid form values', async () => {
-    customRender(<LoginPage />);
+    render(<LoginPage />);
 
     // Fill in the form fields with incorrect credentials
     fireEvent.change(screen.getByLabelText('E-mail'), {
@@ -133,7 +113,7 @@ describe('Login Component', () => {
   });
 
   it ('Show validation messages with invalid form values', async () => {
-    customRender(<LoginPage />);
+    render(<LoginPage />);
 
         // Fill in the form fields with incorrect credentials
         fireEvent.change(screen.getByLabelText('E-mail'), {
