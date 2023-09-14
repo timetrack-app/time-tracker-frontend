@@ -13,7 +13,7 @@ import { ColorThemeName, ColorThemeStyle, isColorThemeName } from '../types/colo
  * Custom hook for handling color themes
  *
  */
-const useColorTheme = () => {
+export const useColorTheme = () => {
   const dispatch = useAppDispatch();
   const currentColorTheme = useAppSelector(selectColorTheme);
 
@@ -58,5 +58,3 @@ const useColorTheme = () => {
     getCurrentColorThemeStyle,
   };
 };
-
-export default useColorTheme;
