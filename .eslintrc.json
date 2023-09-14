@@ -21,7 +21,7 @@
     "airbnb-typescript"
   ],
   "plugins": ["@typescript-eslint", "react"],
-  "ignorePatterns": ["jest.config.mjs"],
+  "ignorePatterns": ["jest.config.mjs", "vitest.config.js", "next.config.js", "**/*.test.tsx", "**/*.test.ts"],
   "rules": {
     // "linebreak-style": ["error", "windows"],
     "react/react-in-jsx-scope": "off",
