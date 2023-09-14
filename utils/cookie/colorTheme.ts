@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from 'cookies-next';
 import { OptionsType } from 'cookies-next/lib/types';
 
-import { colorThemeCookieName } from '../../config/colorTheme';
+import { colorThemeCookieName } from '../../const/colorTheme';
 
 import { ColorThemeName, isColorThemeName } from '../../types/colorTheme';
 

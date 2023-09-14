@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../stores/hooks';
 import { selectActiveTask, updateActiveTaskName } from '../stores/slices/activeTaskSlice';
 
-import MainTimer from '../components/mainTimer';
+import MainTimer from '../components/elements/MainTimer/MainTimer';
 
 // Tmp style
 const TestContainer = styled.div`

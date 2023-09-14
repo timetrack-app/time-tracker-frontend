@@ -1,4 +1,6 @@
 import { useEffect, ReactElement, ReactNode } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Next
 import { NextPage } from 'next';
@@ -8,12 +10,15 @@ import type { AppProps } from 'next/app';
 // Libraries
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import { QueryClientProvider } from 'react-query';
+
+import { queryClient } from '../libs/reactQuery';
 
 import { store } from '../stores/store';
 
 import GlobalStyle from '../components/globalstyles';
 
-import useColorTheme from '../hooks/useColorTheme';
+import { useColorTheme } from '../hooks/useColorTheme';
 
 // Layout configuration doc
 // https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
@@ -41,12 +46,11 @@ const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout
   }, []);
 
   return (
-    <div>
-      <ThemeProvider theme={getCurrentColorThemeStyle()}>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={getCurrentColorThemeStyle()}>
+      <GlobalStyle />
+      <Component {...pageProps} />
+      <ToastContainer />
+    </ThemeProvider>
   );
 };
 
@@ -55,13 +59,15 @@ const App = ({ Component, pageProps, router }: AppPropsWithLayout) => {
 
   return (
     <Provider store={store}>
-      {getLayout(
-        <WithThemeProviderComponent
-          Component={Component}
-          pageProps={pageProps}
-          router={router}
-        />,
-      )}
+      <QueryClientProvider client={queryClient}>
+        {getLayout(
+          <WithThemeProviderComponent
+            Component={Component}
+            pageProps={pageProps}
+            router={router}
+          />,
+        )}
+      </QueryClientProvider>
     </Provider>
   );
 };

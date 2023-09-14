@@ -1,4 +1,4 @@
-import { ColorThemeStyle } from '../types/colorTheme';
+import { ColorThemeStyle, ColorThemeName } from '../../types/colorTheme';
 
 // colors
 import {
@@ -11,7 +11,11 @@ import {
   astrograniteDebris,
   aswadBlack,
   washedBlack,
-} from './colors';
+  softPetals,
+  translucentUnicorn,
+} from '../../const/styles/colors';
+
+export const defaultColorThemeName: ColorThemeName = 'light';
 
 export const lightTheme: ColorThemeStyle = {
   colors: {
@@ -20,7 +24,9 @@ export const lightTheme: ColorThemeStyle = {
     componentBackground: white,
     border: gainsboro,
     info: vegetation,
+    infoBg: softPetals,
     danger: coralRed,
+    dangerBg: translucentUnicorn,
   },
 };
 
@@ -31,6 +37,15 @@ export const darkTheme: ColorThemeStyle = {
     componentBackground: washedBlack,
     border: astrograniteDebris,
     info: vegetation,
+    infoBg: softPetals,
     danger: coralRed,
+    dangerBg: translucentUnicorn,
   },
 };
+
+export const themeNameStyleMap: { [key in ColorThemeName]: ColorThemeStyle } = {
+  light: lightTheme,
+  dark: darkTheme,
+};
+
+export const defaultColorThemeStyle = themeNameStyleMap[defaultColorThemeName];

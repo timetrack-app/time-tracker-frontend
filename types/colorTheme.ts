@@ -1,4 +1,4 @@
-import { colorThemeNames } from '../config/colorTheme';
+import { colorThemeNames } from '../const/colorTheme';
 
 export type ColorThemeStyle = {
   colors: {
@@ -7,7 +7,9 @@ export type ColorThemeStyle = {
     componentBackground: string
     border: string
     info: string
+    infoBg: string
     danger: string
+    dangerBg: string
   },
 };
 
