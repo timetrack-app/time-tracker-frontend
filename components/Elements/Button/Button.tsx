@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import useColorTheme from '../../../hooks/useColorTheme';
+import { useColorTheme } from '../../../hooks/useColorTheme';
 
 type StyledButtonProps = {
   color?: string

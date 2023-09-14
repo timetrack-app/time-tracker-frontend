@@ -18,7 +18,7 @@ import { store } from '../stores/store';
 
 import GlobalStyle from '../components/globalstyles';
 
-import useColorTheme from '../hooks/useColorTheme';
+import { useColorTheme } from '../hooks/useColorTheme';
 
 // Layout configuration doc
 // https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
