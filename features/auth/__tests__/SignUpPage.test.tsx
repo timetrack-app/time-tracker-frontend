@@ -1,8 +1,10 @@
 import React from 'react';
-import { render } from '../../../utils/test/test-utils';
+import { render, fireEvent, screen, act } from '../../../utils/test/test-utils';
 import SignUpPage from '../../../components/pages/signup/SignUpPage'; // Adjust the import path as needed
+import { showToast } from '../../../libs/react-toastify/toast';
 
-// Mock dependencies and hooks as needed
+// mock showToast
+jest.mock('../../../libs/react-toastify/toast/index.ts');
 
 jest.mock('../../../features/auth/api/hooks/useUserRegistration.ts', () => ({
   useUserRegistration: () => ({
@@ -14,13 +16,9 @@ jest.mock('../../../features/auth/api/hooks/useUserRegistration.ts', () => ({
         onError,
       }: { onSuccess: () => void; onError: () => void },
     ) => {
-      // Mock the behavior of the hook here
-      // You can simulate successful and error cases as needed
       if (values.email === 'test@example.com' && values.password === 'password123') {
-        // Simulate a successful registration
         onSuccess();
       } else {
-        // Simulate an error for other cases
         onError();
       }
     },
@@ -28,9 +26,45 @@ jest.mock('../../../features/auth/api/hooks/useUserRegistration.ts', () => ({
 }));
 
 describe('SignUpPage Component', () => {
-  it('Renders SignUpPage component without errors', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('Show success toast after signed up correctly', async () => {
     render(<SignUpPage />);
-    // No assertions needed for this test; it's sufficient to check for rendering without errors.
-    // If there are no errors, the component is considered to be rendered correctly.
+
+    fireEvent.change(screen.getByLabelText('E-mail'), {
+      target: { value: 'test@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'password123' },
+    });
+    fireEvent.change(screen.getByLabelText('Confirm Password'), {
+      target: { value: 'password123' },
+    });
+
+    fireEvent.click(screen.getByText('Sign Up'));
+    await act(async () => {});
+
+    expect(showToast).toHaveBeenCalledWith('success', 'Verification email sent! Please check.');
+  });
+
+  it ('Show error toast after sign up failed', async () => {
+    render(<SignUpPage />);
+
+    fireEvent.change(screen.getByLabelText('E-mail'), {
+      target: { value: 'wrong@example.com' },
+    });
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'password123wrong' },
+    });
+    fireEvent.change(screen.getByLabelText('Confirm Password'), {
+      target: { value: 'password123wrong' },
+    });
+
+    fireEvent.click(screen.getByText('Sign Up'));
+    await act(async () => {});
+
+    expect(showToast).toHaveBeenCalledWith('error', 'An error has occurred.');
   });
 });

@@ -62,7 +62,7 @@ const SignUpPage = () => {
                 backgroundColor={softPetals}
                 borderColor={vegetation}
               >
-                <p>Login</p>
+                <p>Sign Up</p>
               </Button>
             )}
           >
