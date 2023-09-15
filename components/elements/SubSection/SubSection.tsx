@@ -2,8 +2,11 @@ import styled from 'styled-components';
 
 import ButtonDanger from '../Button/ButtonDanger';
 
+import { useEndWorkSession } from '../../../features/workSession/api/hooks/useEndWorkSession';
+
 import { useAppSelector } from '../../../stores/hooks';
 import { selectColorTheme } from '../../../stores/slices/colorThemeSlice';
+
 import { secondsToHHMMSS } from '../../../utils/timer';
 
 import { ColorThemeName } from '../../../types/colorTheme';
@@ -73,6 +76,11 @@ type SubSectionProps = {
   totalSecondsOfSelectedTab: number
 };
 
+// TODO: totalSeconds:
+//  sum of total_time of all tasks(from the latest work session) + selectActiveTask.elapsedSeconds
+// TODO: totalSecondsOfSelectedTab:
+// if active task is in the tab -> sum elapsedSeconds
+
 const SubSection = ({
   totalSeconds,
   selectedTabName,
@@ -80,11 +88,24 @@ const SubSection = ({
 }: SubSectionProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
-  const handleEndWorkSession = () => {
+  const { mutate: endWorkSession } = useEndWorkSession();
+
+  const handleEndWorkSession = async () => {
     // TODO: call API
     // TODO: end working session
+
+    // TODO: get user id
+    // TODO: get work session id
+    // TODO: need an API that returns logged in user
+    const userId = 1;
+    const workSessionId = 1;
+    await endWorkSession({ userId, workSessionId }, {
+      onError: () => {},
+      onSuccess: () => {},
+    });
   };
 
+  // TODO: LoadingOverlay
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
       <SectionDiv>
