@@ -80,6 +80,11 @@ const SubSection = ({
 }: SubSectionProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
+  const handleEndWorkSession = () => {
+    // TODO: call API
+    // TODO: end working session
+  };
+
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
       <SectionDiv>
@@ -100,6 +105,7 @@ const SubSection = ({
         color={coralRed}
         borderColor={coralRed}
         backgroundColor={coralRed}
+        onClick={handleEndWorkSession}
       >
         <ButtonTextP>End this session</ButtonTextP>
       </ButtonCustom>

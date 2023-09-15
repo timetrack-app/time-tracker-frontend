@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import { useColorTheme } from '../../../hooks/useColorTheme';
@@ -24,13 +25,12 @@ const StyledButton = styled.button<StyledButtonProps>`
 `;
 
 export type ButtonProps = {
-  type?: 'button' | 'submit' | 'reset'
   color?: string
   borderColor?: string
   backgroundColor?: string
   className?: string
   children?: React.ReactNode
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
  * Common button component
