@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import { TextInput } from '../../elements/ReactHookForm';
-import Button from '../../elements/Button/Button';
+import ButtonPrimary from '../../elements/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/LoadingOverlay/LoadingOverlay';
 import {
   AuthForm,
@@ -15,8 +15,6 @@ import { emailRequired, emailInvalid, passwordRequired } from '../../../const/va
 import { getWebRouteFull } from '../../../routes/web';
 import { setUserLoginCookie } from '../../../utils/cookie/auth';
 import { showToast } from '../../../libs/react-toastify/toast';
-
-import { softPetals, vegetation } from '../../../const/styles/colors';
 
 type LoginFormValues = {
   email: string
@@ -58,14 +56,9 @@ const LoginPage = () => {
         {({ register, formState }) => (
           <AuthFormContentsWrapper
             button={(
-              <Button
-                type="submit"
-                color={vegetation}
-                backgroundColor={softPetals}
-                borderColor={vegetation}
-              >
+              <ButtonPrimary type="submit">
                 <p>Login</p>
-              </Button>
+              </ButtonPrimary>
             )}
           >
             <TextInput
