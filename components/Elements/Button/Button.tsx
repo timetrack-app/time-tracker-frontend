@@ -21,12 +21,9 @@ const StyledButton = styled.button<StyledButtonProps>`
   border: 1px solid ${(props) => props.borderColor};
   background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
 `;
 
-type ButtonProps = {
+export type ButtonProps = {
   type?: 'button' | 'submit' | 'reset'
   color?: string
   borderColor?: string
