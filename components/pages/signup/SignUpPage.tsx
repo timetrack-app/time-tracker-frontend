@@ -1,7 +1,7 @@
 import { SubmitHandler } from 'react-hook-form';
 
 import { TextInput } from '../../elements/ReactHookForm';
-import Button from '../../elements/Button/Button';
+import ButtonPrimary from '../../elements/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/LoadingOverlay/LoadingOverlay';
 import { AuthForm, AuthFormContentsWrapper, useUserRegistration } from '../../../features/auth';
 
@@ -15,7 +15,6 @@ import {
 } from '../../../const/validation/messages';
 
 import { showToast } from '../../../libs/react-toastify/toast';
-import { softPetals, vegetation } from '../../../const/styles/colors';
 
 type SignUpFormValues = {
   email: string
@@ -56,14 +55,9 @@ const SignUpPage = () => {
         {({ register, formState, getValues }) => (
           <AuthFormContentsWrapper
             button={(
-              <Button
-                type="submit"
-                color={vegetation}
-                backgroundColor={softPetals}
-                borderColor={vegetation}
-              >
+              <ButtonPrimary type="submit">
                 <p>Sign Up</p>
-              </Button>
+              </ButtonPrimary>
             )}
           >
             <TextInput

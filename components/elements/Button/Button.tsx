@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 import { useColorTheme } from '../../../hooks/useColorTheme';
@@ -21,19 +22,15 @@ const StyledButton = styled.button<StyledButtonProps>`
   border: 1px solid ${(props) => props.borderColor};
   background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
-  &:hover {
-    opacity: 0.7;
-  }
 `;
 
-type ButtonProps = {
-  type?: 'button' | 'submit' | 'reset'
+export type ButtonProps = {
   color?: string
   borderColor?: string
   backgroundColor?: string
   className?: string
   children?: React.ReactNode
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
  * Common button component

@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { QueryClientProvider } from 'react-query';
 
-import { queryClient } from '../libs/reactQuery';
+import { queryClient } from '../libs/reactQuery/reactQuery';
 
 import { store } from '../stores/store';
 

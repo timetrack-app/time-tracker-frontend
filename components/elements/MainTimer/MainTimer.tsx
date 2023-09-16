@@ -38,7 +38,7 @@ const TaskNameWrapperDiv = styled.div`
 
 const TaskNameP = styled.p`
   font-size: 1.3em;
-  font-weight: 600;
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

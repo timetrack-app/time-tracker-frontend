@@ -8,8 +8,9 @@ const {
   getFullPath: getApiEndpointFull,
 } = pathManager({
   register: '/register',
-  login: `${apiBaseUrl}/login/{id}/{name}`,
+  login: `/login/{id}/{name}`,
   logout: '/logout',
+  endWorkSession: `/users/{userId}/work-sessions/{workSessionId}/end`,
   // TODO: add all endpoints
 }, apiBaseUrl);
 
