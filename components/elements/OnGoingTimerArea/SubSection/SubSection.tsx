@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
-import ButtonDanger from '../Button/ButtonDanger';
+import ButtonDanger from '../../Button/ButtonDanger';
 
-import { useEndWorkSession } from '../../../features/workSession/api/hooks/useEndWorkSession';
+import { useEndWorkSession } from '../../../../features/workSession/api/hooks/useEndWorkSession';
 
-import { useAppSelector } from '../../../stores/hooks';
-import { selectColorTheme } from '../../../stores/slices/colorThemeSlice';
+import { useAppSelector } from '../../../../stores/hooks';
+import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
-import { secondsToHHMMSS } from '../../../utils/timer';
+import { secondsToHHMMSS } from '../../../../utils/timer';
 
-import { ColorThemeName } from '../../../types/colorTheme';
-import { white, coralRed } from '../../../const/styles/colors';
+import { ColorThemeName } from '../../../../types/colorTheme';
+import { white, coralRed } from '../../../../const/styles/colors';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
@@ -22,7 +22,8 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   border-radius: 40px;
   padding: 2em;
   background-color: ${({ theme }) => theme.colors.componentBackground};
-  box-shadow: ${({ colorThemeName, theme }) => (colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none')};
+  box-shadow: ${({ colorThemeName, theme }) =>
+    colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
 `;
 
 const SectionDiv = styled.div`
@@ -71,9 +72,9 @@ const ButtonCustom = styled(ButtonDanger)`
 `;
 
 type SubSectionProps = {
-  totalSeconds: number
-  selectedTabName: string
-  totalSecondsOfSelectedTab: number
+  totalSeconds: number;
+  selectedTabName: string;
+  totalSecondsOfSelectedTab: number;
 };
 
 // TODO: totalSeconds:
@@ -99,10 +100,13 @@ const SubSection = ({
     // TODO: need an API that returns logged in user
     const userId = 1;
     const workSessionId = 1;
-    await endWorkSession({ userId, workSessionId }, {
-      onError: () => {},
-      onSuccess: () => {},
-    });
+    await endWorkSession(
+      { userId, workSessionId },
+      {
+        onError: () => {},
+        onSuccess: () => {},
+      },
+    );
   };
 
   // TODO: LoadingOverlay
@@ -119,7 +123,9 @@ const SubSection = ({
         <SectionTitleWrapperDiv>
           <SectionTitleP>{`${selectedTabName} Total Time`}</SectionTitleP>
         </SectionTitleWrapperDiv>
-        <ElapsedTimeP>{secondsToHHMMSS(totalSecondsOfSelectedTab)}</ElapsedTimeP>
+        <ElapsedTimeP>
+          {secondsToHHMMSS(totalSecondsOfSelectedTab)}
+        </ElapsedTimeP>
       </SectionDiv>
 
       <ButtonCustom
