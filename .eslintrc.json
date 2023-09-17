@@ -1,8 +1,8 @@
 {
   "env": {
-    "browser" : true,
-    "node" : true,
-    "es2023" : true
+    "browser": true,
+    "node": true,
+    "es2023": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -21,7 +21,13 @@
     "airbnb-typescript"
   ],
   "plugins": ["@typescript-eslint", "react"],
-  "ignorePatterns": ["jest.config.mjs", "vitest.config.js", "next.config.js", "**/*.test.tsx", "**/*.test.ts"],
+  "ignorePatterns": [
+    "jest.config.mjs",
+    "vitest.config.js",
+    "next.config.js",
+    "**/*.test.tsx",
+    "**/*.test.ts"
+  ],
   "rules": {
     // "linebreak-style": ["error", "windows"],
     "react/react-in-jsx-scope": "off",
@@ -34,12 +40,13 @@
     ],
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
-    "no-param-reassign": ["error", {
-      "props": true,
-      "ignorePropertyModificationsFor": [
-        "state"
-      ]
-    }],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": ["state"]
+      }
+    ],
     "@typescript-eslint/ban-types": "off",
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
@@ -64,6 +71,9 @@
         ],
         "optionalDependencies": false
       }
-    ]
+    ],
+    "no-confusing-arrow": "off",
+    "operator-linebreak": "off",
+    "implicit-arrow-linebreak": "off"
   }
 }

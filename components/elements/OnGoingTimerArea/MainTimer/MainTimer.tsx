@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
-import { selectColorTheme } from '../../../stores/slices/colorThemeSlice';
+import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
+import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 import {
   updateIsTimerRunning,
   incrementElapsedSeconds,
   resetTimer,
-} from '../../../stores/slices/activeTaskSlice';
+} from '../../../../stores/slices/activeTaskSlice';
 
-import { secondsToHHMMSS } from '../../../utils/timer';
+import { secondsToHHMMSS } from '../../../../utils/timer';
 
-import { ColorThemeName } from '../../../types/colorTheme';
+import { ColorThemeName } from '../../../../types/colorTheme';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
