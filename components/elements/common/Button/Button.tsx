@@ -1,12 +1,12 @@
 import { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
-import { useColorTheme } from '../../../hooks/useColorTheme';
+import { useColorTheme } from '../../../../hooks/useColorTheme';
 
 type StyledButtonProps = {
-  color?: string
-  borderColor?: string
-  backgroundColor?: string
+  color?: string;
+  borderColor?: string;
+  backgroundColor?: string;
 };
 
 const StyledButton = styled.button<StyledButtonProps>`
@@ -25,11 +25,11 @@ const StyledButton = styled.button<StyledButtonProps>`
 `;
 
 export type ButtonProps = {
-  color?: string
-  borderColor?: string
-  backgroundColor?: string
-  className?: string
-  children?: React.ReactNode
+  color?: string;
+  borderColor?: string;
+  backgroundColor?: string;
+  className?: string;
+  children?: React.ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
