@@ -23,7 +23,7 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
 `;
 
 const TabSelectorWrapper = styled.div`
-  margin-bottom: 24px;
+  margin-bottom: 12px;
 `;
 
 const TabComponentWrapper = styled.div`
@@ -53,7 +53,7 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
           tabs={tabs}
           selectedTabId={selectedTab.id}
           handleSelectTab={handleSelectTab}
-          onClickPlusCircle={handleCreateNewTab}
+          onClickPlusCircleButton={handleCreateNewTab}
         />
       </TabSelectorWrapper>
       <TabComponentWrapper>

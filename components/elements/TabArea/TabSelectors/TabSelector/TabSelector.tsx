@@ -48,7 +48,7 @@ const ContainerDiv = styled.div<{
     colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
 `;
 
-const TabNameP = styled.div<{
+const TabNameP = styled.p<{
   colorThemeName: ColorThemeName;
   isSelected: boolean;
 }>`

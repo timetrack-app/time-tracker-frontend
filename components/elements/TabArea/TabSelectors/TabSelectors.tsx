@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Tab } from '../../../../types/entity';
 import TabSelector from './TabSelector/TabSelector';
-import PlusCircle from '../../common/PlusCircle/PlusCircle';
+import PlusCircleButton from './PlusCircleButton/PlusCircleButton';
 
 type TabSelectorsProps = {
   tabs: Tab[];
   selectedTabId: number;
   handleSelectTab: (tab: Tab) => void;
-  onClickPlusCircle: () => void;
+  onClickPlusCircleButton: () => void;
 };
 
 const ContainerDiv = styled.div`
@@ -21,7 +21,7 @@ const TabSelectors = ({
   tabs,
   selectedTabId,
   handleSelectTab,
-  onClickPlusCircle,
+  onClickPlusCircleButton,
 }: TabSelectorsProps) => (
   <ContainerDiv>
     {tabs.map((tab) => (
@@ -32,7 +32,7 @@ const TabSelectors = ({
         handleSelectTab={handleSelectTab}
       />
     ))}
-    <PlusCircle onClickPlusCircle={onClickPlusCircle} />
+    <PlusCircleButton onClickPlusCircleButton={onClickPlusCircleButton} />
   </ContainerDiv>
 );
 

@@ -1,30 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ColorThemeName } from '../../../../../types/colorTheme';
 import {
-  dryadBark,
   astrograniteDebris,
+  dryadBark,
+  gainsboro,
   washedBlack,
   white,
-  gainsboro,
-} from '../../../../const/styles/colors';
-import { ColorThemeName } from '../../../../types/colorTheme';
-import { useAppSelector } from '../../../../stores/hooks';
-import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
+} from '../../../../../const/styles/colors';
+import { useAppSelector } from '../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
 
-type PlusCircleProps = {
-  onClickPlusCircle: () => void;
+type CreateTaskListButtonProps = {
+  onClickCreateTaskList: () => void;
 };
 
 const ContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
-  width: 30px;
-  height: 30px;
+  position: relative;
+  width: 100%;
+  height: 44px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  border-radius: 999px;
+  align-items: center;
+  border-radius: 8px;
   cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
   border: 1px solid
     ${({ colorThemeName }) => {
       if (colorThemeName === 'light') return gainsboro;
@@ -38,7 +42,7 @@ const ContainerDiv = styled.div<{
     colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
 `;
 
-const PlusP = styled.div<{
+const NameP = styled.p<{
   colorThemeName: ColorThemeName;
 }>`
   color: ${({ colorThemeName }) => {
@@ -49,16 +53,18 @@ const PlusP = styled.div<{
   font-weight: 400;
 `;
 
-const PlusCircle = ({ onClickPlusCircle }: PlusCircleProps) => {
+const CreateTaskListButton = ({
+  onClickCreateTaskList,
+}: CreateTaskListButtonProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
   return (
     <ContainerDiv
       colorThemeName={currentColorThemeName}
-      onClick={onClickPlusCircle}
+      onClick={onClickCreateTaskList}
     >
-      <PlusP colorThemeName={currentColorThemeName}>+</PlusP>
+      <NameP colorThemeName={currentColorThemeName}>+ Create new list</NameP>
     </ContainerDiv>
   );
 };
 
-export default PlusCircle;
+export default CreateTaskListButton;
