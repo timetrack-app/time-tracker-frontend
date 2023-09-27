@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import Button, { ButtonProps } from './Button';
 
-import { roseMadder, tartanRed } from '../../../const/styles/colors';
+import { roseMadder, tartanRed } from '../../../../const/styles/colors';
 
 const StyledButton = styled(Button)`
   &:hover {
@@ -12,11 +12,11 @@ const StyledButton = styled(Button)`
 
   &:active {
     border: 1px solid ${tartanRed};
-    box-shadow:0 0 0 1px ${tartanRed} inset;
+    box-shadow: 0 0 0 1px ${tartanRed} inset;
     background-color: ${roseMadder};
   }
 `;
 
-const ButtonDanger = (props: ButtonProps) => (<StyledButton {...props} />);
+const ButtonDanger = (props: ButtonProps) => <StyledButton {...props} />;
 
 export default ButtonDanger;

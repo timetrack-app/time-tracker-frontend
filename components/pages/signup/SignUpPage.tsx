@@ -1,9 +1,13 @@
 import { SubmitHandler } from 'react-hook-form';
 
 import { TextInput } from '../../elements/ReactHookForm';
-import ButtonPrimary from '../../elements/Button/ButtonPrimary';
-import LoadingOverlay from '../../elements/LoadingOverlay/LoadingOverlay';
-import { AuthForm, AuthFormContentsWrapper, useUserRegistration } from '../../../features/auth';
+import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
+import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
+import {
+  AuthForm,
+  AuthFormContentsWrapper,
+  useUserRegistration,
+} from '../../../features/auth';
 
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
@@ -17,29 +21,33 @@ import {
 import { showToast } from '../../../libs/react-toastify/toast';
 
 type SignUpFormValues = {
-  email: string
-  password: string
-  passwordConfirmation: string
+  email: string;
+  password: string;
+  passwordConfirmation: string;
 };
 
 const SignUpPage = () => {
-  const {
-    isLoading: isUserRegistrationLoading,
-    mutate: registerUser,
-  } = useUserRegistration();
+  const { isLoading: isUserRegistrationLoading, mutate: registerUser } =
+    useUserRegistration();
 
   // TODO: If the user logged in, redirect to main page
   // TODO: do this in the layout component
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = async ({ email, password }) => {
-    await registerUser({ email, password }, {
-      onError: () => {
-        showToast('error', 'An error has occurred.');
+  const onSubmit: SubmitHandler<SignUpFormValues> = async ({
+    email,
+    password,
+  }) => {
+    await registerUser(
+      { email, password },
+      {
+        onError: () => {
+          showToast('error', 'An error has occurred.');
+        },
+        onSuccess: () => {
+          showToast('success', 'Verification email sent! Please check.');
+        },
       },
-      onSuccess: () => {
-        showToast('success', 'Verification email sent! Please check.');
-      },
-    });
+    );
   };
 
   // TODO: emailVerification->ok->login
@@ -49,16 +57,14 @@ const SignUpPage = () => {
   return (
     <>
       <LoadingOverlay loading={isUserRegistrationLoading} />
-      <AuthForm<SignUpFormValues>
-        onSubmit={onSubmit}
-      >
+      <AuthForm<SignUpFormValues> onSubmit={onSubmit}>
         {({ register, formState, getValues }) => (
           <AuthFormContentsWrapper
-            button={(
+            button={
               <ButtonPrimary type="submit">
                 <p>Sign Up</p>
               </ButtonPrimary>
-            )}
+            }
           >
             <TextInput
               type="text"
@@ -88,7 +94,9 @@ const SignUpPage = () => {
               label="Confirm Password"
               registration={register('passwordConfirmation', {
                 required: passwordConfirmationRequired,
-                validate: (value) => (value === getValues('password') || passwordConfirmationMismatch),
+                validate: (value) =>
+                  value === getValues('password') ||
+                  passwordConfirmationMismatch,
               })}
               error={formState.errors.passwordConfirmation}
             />

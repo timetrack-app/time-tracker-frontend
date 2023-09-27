@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import ButtonDanger from '../../Button/ButtonDanger';
+import ButtonDanger from '../../common/Button/ButtonDanger';
 
 import { useEndWorkSession } from '../../../../features/workSession/api/hooks/useEndWorkSession';
 

@@ -2,7 +2,11 @@ import styled from 'styled-components';
 
 import Button, { ButtonProps } from './Button';
 
-import { mintFlash, softPetals, vegetation } from '../../../const/styles/colors';
+import {
+  mintFlash,
+  softPetals,
+  vegetation,
+} from '../../../../const/styles/colors';
 
 const StyledButton = styled(Button)`
   &:hover {
@@ -10,7 +14,7 @@ const StyledButton = styled(Button)`
   }
 
   &:active {
-    box-shadow:0 0 0 1px ${vegetation} inset;
+    box-shadow: 0 0 0 1px ${vegetation} inset;
     background-color: ${mintFlash};
   }
 `;

@@ -3,7 +3,7 @@ import { LoaderSizeMarginProps } from 'react-spinners/helpers/props';
 import Overlay from './Overlay';
 import Loader from './Loader';
 
-import { vegetation } from '../../../const/styles/colors';
+import { vegetation } from '../../../../const/styles/colors';
 
 /**
  * Loading overlay and loader
