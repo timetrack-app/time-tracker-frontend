@@ -26,7 +26,7 @@ const TaskListComponent = ({ taskList }: TaskListComponentProps) => {
     <ContainerDiv>
       <TaskListName name={taskList.name} />
       {taskList.tasks.map((task) => (
-        <TaskCard task={task} onClickEditIcon={() => handleEditTask(task)} />
+        <TaskCard key={task.id} task={task} onClickEditIcon={() => handleEditTask(task)} />
       ))}
       <CreateTaskButton onClickCreateTaskCard={() => alert('create task')} />
     </ContainerDiv>
