@@ -8,23 +8,12 @@ import {
   incrementElapsedSeconds,
   resetTimer,
 } from '../../../../stores/slices/activeTaskSlice';
+import { selectStartStatus } from '../../../../stores/slices/workSessionSlice';
+
+import Layout from './Layout';
+import StartWorkSessionButton from './StartWorkSessionButton';
 
 import { secondsToHHMMSS } from '../../../../utils/timer';
-
-import { ColorThemeName } from '../../../../types/colorTheme';
-
-const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.componentBackground};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.2em;
-  box-shadow: ${({ colorThemeName, theme }) => (colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none')};
-`;
 
 const TaskNameWrapperDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.text};
@@ -69,6 +58,7 @@ const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
   const dispatch = useAppDispatch();
 
   const currentColorThemeName = useAppSelector(selectColorTheme);
+  const hasWorkSessionStarted = useAppSelector(selectStartStatus);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
@@ -93,17 +83,23 @@ const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
 
   // TODO: Make sure how to stop timer
 
+  // TODO: Display start button if work session has not started yet
+
+  // TODO: If no onGoingTask, display message in TaskNameP
+
   return (
     <>
-      <ContainerDiv colorThemeName={currentColorThemeName}>
-        <TaskNameWrapperDiv>
-          <TaskNameP>{taskName}</TaskNameP>
-        </TaskNameWrapperDiv>
-        <ElapsedTimeP>
-          {secondsToHHMMSS(elapsedSeconds)}
-        </ElapsedTimeP>
-      </ContainerDiv>
-
+      {hasWorkSessionStarted
+        ? <Layout colorThemeName={currentColorThemeName}>
+            <TaskNameWrapperDiv>
+              <TaskNameP>{taskName}</TaskNameP>
+            </TaskNameWrapperDiv>
+            <ElapsedTimeP>
+              {secondsToHHMMSS(elapsedSeconds)}
+            </ElapsedTimeP>
+          </Layout>
+        : <StartWorkSessionButton />
+      }
       {/* TODO: remove buttons later. This is temporary solution to start/stop the timer */}
       <div>
         <button type="button" onClick={start} disabled={isTimerRunning}>START</button>
