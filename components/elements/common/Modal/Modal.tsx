@@ -1,5 +1,33 @@
-import { useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import styled from 'styled-components';
+
+/**
+ * Custom hook for managing Modal component open/close state
+ * Use it with Modal component
+ *
+ * @return {
+      isModalOpen: boolean;
+      openModal: () => void;
+      closeModal: () => void;
+    }
+ */
+export const useModal = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
+
+  return {
+    isModalOpen,
+    openModal,
+    closeModal,
+  };
+};
 
 const ModalOverlay = styled.div<{ isOpen: boolean }>`
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
@@ -18,8 +46,7 @@ const ModalContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 16px;
-  border-radius: 4px;
+  border-radius: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1001;
 `;
