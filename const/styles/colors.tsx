@@ -1,11 +1,13 @@
 export const dryadBark = '#37352f'; // light theme string color
 export const white = '#ffffff'; // light theme component color
+export const gray90 = '#e5e5e5';
 export const errigalWhite = '#f6f6f9'; // light theme background color
 export const gainsboro = '#d9d9d9'; // light theme border color
 export const coralRed = '#f93e3d'; // common danger color
 export const roseMadder = '#e03736';
 export const tartanRed = '#ae2b2a';
 export const translucentUnicorn = '#fcecee';
+export const petalBloom ='#f9d6da';
 export const softPetals = '#e9f6ef';
 export const vegetation = '#48cd90'; // common info color
 export const mintFlash = '#daf5e8';
