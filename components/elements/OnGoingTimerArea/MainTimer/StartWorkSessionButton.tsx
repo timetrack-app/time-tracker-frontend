@@ -16,14 +16,15 @@ const Button = styled.button<{ colorThemeName: ColorThemeName }>`
   color: ${vegetation};
   border: 2.5px solid ${vegetation};
   cursor: pointer;
+  transition: border-width 0.1s ease-in-out;
 
   &:hover {
-    border: 4px solid ${vegetation};
+    border: 5px solid ${vegetation};
   }
 
   &:active {
     color: ${viridian};
-    border: 4px solid ${viridian};
+    border: 5px solid ${viridian};
   }
 `;
 

@@ -55,31 +55,33 @@ type Props = {
  * @return {JSX.Element}
  */
 const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const currentColorThemeName = useAppSelector(selectColorTheme);
   const hasWorkSessionStarted = useAppSelector(selectIsWorkSessionActive);
 
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
+  // TODO: move these functions to right components
+  // useEffect(() => {
+  //   let intervalId: NodeJS.Timeout | null = null;
 
-    if (isTimerRunning) {
-      intervalId = setInterval(() => {
-        // update elapsedTime every 1 sec
-        dispatch(incrementElapsedSeconds());
-      }, 1000);
-    } else if (intervalId) clearInterval(intervalId);
+  //   if (isTimerRunning) {
+  //     intervalId = setInterval(() => {
+  //       // update elapsedTime every 1 sec
+  //       dispatch(incrementElapsedSeconds());
+  //     }, 1000);
+  //   } else if (intervalId) clearInterval(intervalId);
 
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [dispatch, isTimerRunning]);
+  //   return () => {
+  //     if (intervalId) clearInterval(intervalId);
+  //   };
+  // }, [dispatch, isTimerRunning]);
 
-  const start = () => dispatch(updateIsTimerRunning(true));
+  // TODO: move these functions to right components
+  // const start = () => dispatch(updateIsTimerRunning(true));
 
-  const stop = () => dispatch(updateIsTimerRunning(false));
+  // const stop = () => dispatch(updateIsTimerRunning(false));
 
-  const reset = () => dispatch(resetTimer());
+  // const reset = () => dispatch(resetTimer());
 
   // TODO: Make sure how to stop timer
 
@@ -101,11 +103,11 @@ const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
         : <StartWorkSessionButton />
       }
       {/* TODO: remove buttons later. This is temporary solution to start/stop the timer */}
-      <div>
+      {/* <div>
         <button type="button" onClick={start} disabled={isTimerRunning}>START</button>
         <button type="button" onClick={stop} disabled={!isTimerRunning}>STOP</button>
         <button type="button" onClick={reset}>RESET</button>
-      </div>
+      </div> */}
     </>
   );
 };
