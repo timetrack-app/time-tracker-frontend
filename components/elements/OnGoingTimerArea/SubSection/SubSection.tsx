@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-import ButtonDanger from '../../common/Button/ButtonDanger';
+import Button from '../../common/Button/Button';
+import { useModal } from '../../common/Modal/Modal';
+import EndWorkSessionConfirmModal from './EndWorkSessionConfirmModal';
 
 import { useEndWorkSession } from '../../../../features/workSession/api/hooks/useEndWorkSession';
 
@@ -8,11 +10,10 @@ import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
 import { updateIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
 import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
-import { secondsToHHMMSS } from '../../../../utils/timer';
-
 import { ColorThemeName } from '../../../../types/colorTheme';
-import { white, coralRed } from '../../../../const/styles/colors';
-import Button from '../../common/Button/Button';
+
+import { secondsToHHMMSS } from '../../../../utils/timer';
+import { white, coralRed, roseMadder, tartanRed, gray90 } from '../../../../const/styles/colors';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
@@ -63,14 +64,26 @@ const ElapsedTimeP = styled.p`
   text-align: center;
 `;
 
-const ButtonTextP = styled.p`
-  display: block;
+const ButtonCustom = styled(Button)`
+  padding: 0.5em 1em;
   color: ${white};
-  font-weight: 500;
+
+  &:hover {
+    color: ${gray90};
+    background-color: ${roseMadder};
+    border: 1px solid ${roseMadder};
+  }
+
+  &:active {
+    color: ${gray90};
+    background-color: ${tartanRed};
+    border: 1px solid ${tartanRed};
+  }
 `;
 
-const ButtonCustom = styled(ButtonDanger)`
-  padding: 0.5em 1em;
+const ButtonTextP = styled.p`
+  display: block;
+  font-weight: 500;
 `;
 
 type SubSectionProps = {
@@ -92,8 +105,13 @@ const SubSection = ({
   const dispatch = useAppDispatch();
 
   const currentColorTheme = useAppSelector(selectColorTheme);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   const { mutate: endWorkSession } = useEndWorkSession();
+
+  const handleEndSessionOnClick = () => {
+    openModal();
+  };
 
   const handleEndWorkSession = async () => {
     // TODO: get user id
@@ -114,33 +132,39 @@ const SubSection = ({
 
   // TODO: LoadingOverlay
   return (
-    <ContainerDiv colorThemeName={currentColorTheme}>
-      <SectionDiv>
-        <SectionTitleWrapperDiv>
-          <SectionTitleP>Total Time</SectionTitleP>
-        </SectionTitleWrapperDiv>
-        <ElapsedTimeP>{secondsToHHMMSS(totalSeconds)}</ElapsedTimeP>
-      </SectionDiv>
+    <>
+      <ContainerDiv colorThemeName={currentColorTheme}>
+        <SectionDiv>
+          <SectionTitleWrapperDiv>
+            <SectionTitleP>Total Time</SectionTitleP>
+          </SectionTitleWrapperDiv>
+          <ElapsedTimeP>{secondsToHHMMSS(totalSeconds)}</ElapsedTimeP>
+        </SectionDiv>
 
-      <SectionDiv>
-        <SectionTitleWrapperDiv>
-          <SectionTitleP>{`${selectedTabName} Total Time`}</SectionTitleP>
-        </SectionTitleWrapperDiv>
-        <ElapsedTimeP>
-          {secondsToHHMMSS(totalSecondsOfSelectedTab)}
-        </ElapsedTimeP>
-      </SectionDiv>
+        <SectionDiv>
+          <SectionTitleWrapperDiv>
+            <SectionTitleP>{`${selectedTabName} Total Time`}</SectionTitleP>
+          </SectionTitleWrapperDiv>
+          <ElapsedTimeP>
+            {secondsToHHMMSS(totalSecondsOfSelectedTab)}
+          </ElapsedTimeP>
+        </SectionDiv>
 
-      <ButtonCustom
-        color={coralRed}
-        borderColor={coralRed}
-        backgroundColor={coralRed}
-        onClick={handleEndWorkSession}
-      >
-        <ButtonTextP>End this session</ButtonTextP>
-      </ButtonCustom>
-
-    </ContainerDiv>
+        <ButtonCustom
+          color={coralRed}
+          borderColor={coralRed}
+          backgroundColor={coralRed}
+          onClick={handleEndSessionOnClick}
+        >
+          <ButtonTextP>End this session</ButtonTextP>
+        </ButtonCustom>
+      </ContainerDiv>
+      <EndWorkSessionConfirmModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        handleYesButtonOnClick={handleEndWorkSession}
+      />
+    </>
   );
 };
 
