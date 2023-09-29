@@ -51,6 +51,7 @@ const Button = ({
   backgroundColor,
   className,
   children,
+  ...props
 }: ButtonProps) => {
   const { getCurrentColorThemeStyle } = useColorTheme();
   const currentTheme = getCurrentColorThemeStyle();
@@ -62,6 +63,7 @@ const Button = ({
       borderColor={borderColor || currentTheme.colors.text}
       backgroundColor={backgroundColor || currentTheme.colors.background}
       className={className}
+      {...props}
     >
       {children}
     </StyledButton>
