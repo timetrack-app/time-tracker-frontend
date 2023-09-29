@@ -8,7 +8,7 @@ import {
   incrementElapsedSeconds,
   resetTimer,
 } from '../../../../stores/slices/activeTaskSlice';
-import { selectStartStatus } from '../../../../stores/slices/workSessionSlice';
+import { selectIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
 
 import Layout from './Layout';
 import StartWorkSessionButton from './StartWorkSessionButton';
@@ -58,7 +58,7 @@ const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
   const dispatch = useAppDispatch();
 
   const currentColorThemeName = useAppSelector(selectColorTheme);
-  const hasWorkSessionStarted = useAppSelector(selectStartStatus);
+  const hasWorkSessionStarted = useAppSelector(selectIsWorkSessionActive);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;

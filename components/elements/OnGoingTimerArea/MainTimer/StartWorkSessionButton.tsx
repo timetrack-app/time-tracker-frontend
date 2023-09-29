@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
 import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
-import { updateStartStatus } from '../../../../stores/slices/workSessionSlice';
+import { updateIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
 
 import { vegetation, viridian } from '../../../../const/styles/colors';
 import { baseStyle } from './Layout';
@@ -43,7 +43,8 @@ const StartWorkSessionButton = () => {
 
   const startWorkSession = () => {
     // TODO: Call start work session API
-    dispatch(updateStartStatus(true));
+
+    dispatch(updateIsWorkSessionActive(true));
   }
 
   return (

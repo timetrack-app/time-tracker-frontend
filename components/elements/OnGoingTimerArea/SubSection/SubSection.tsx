@@ -4,13 +4,15 @@ import ButtonDanger from '../../common/Button/ButtonDanger';
 
 import { useEndWorkSession } from '../../../../features/workSession/api/hooks/useEndWorkSession';
 
-import { useAppSelector } from '../../../../stores/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
+import { updateIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
 import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
 import { secondsToHHMMSS } from '../../../../utils/timer';
 
 import { ColorThemeName } from '../../../../types/colorTheme';
 import { white, coralRed } from '../../../../const/styles/colors';
+import Button from '../../common/Button/Button';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
@@ -87,14 +89,13 @@ const SubSection = ({
   selectedTabName,
   totalSecondsOfSelectedTab,
 }: SubSectionProps) => {
+  const dispatch = useAppDispatch();
+
   const currentColorTheme = useAppSelector(selectColorTheme);
 
   const { mutate: endWorkSession } = useEndWorkSession();
 
   const handleEndWorkSession = async () => {
-    // TODO: call API
-    // TODO: end working session
-
     // TODO: get user id
     // TODO: get work session id
     // TODO: need an API that returns logged in user
@@ -104,7 +105,9 @@ const SubSection = ({
       { userId, workSessionId },
       {
         onError: () => {},
-        onSuccess: () => {},
+        onSuccess: () => {
+          dispatch(updateIsWorkSessionActive(false));
+        },
       },
     );
   };
@@ -136,6 +139,7 @@ const SubSection = ({
       >
         <ButtonTextP>End this session</ButtonTextP>
       </ButtonCustom>
+
     </ContainerDiv>
   );
 };

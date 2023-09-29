@@ -3,29 +3,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 type WorkSessionState = {
-  hasStarted: boolean
+  isActive: boolean
 };
 
 const initialState: WorkSessionState = {
-  hasStarted: false,
+  isActive: false,
 };
 
 const workSessionSlice = createSlice({
   name: 'workSession',
   initialState,
   reducers: {
-    updateStartStatus: (state, action: PayloadAction<boolean>) => {
-      state.hasStarted = action.payload;
+    updateIsWorkSessionActive: (state, action: PayloadAction<boolean>) => {
+      state.isActive = action.payload;
     },
   },
 });
 
 // selectors
-export const selectStartStatus = (state: RootState) => state.workSession.hasStarted;
+export const selectIsWorkSessionActive = (state: RootState) => state.workSession.isActive;
 
 // actions
 export const {
-  updateStartStatus,
+  updateIsWorkSessionActive,
 } = workSessionSlice.actions;
 
 export default workSessionSlice.reducer;
