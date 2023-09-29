@@ -1,0 +1,59 @@
+import { useCallback } from 'react';
+import styled from 'styled-components';
+
+const ModalOverlay = styled.div<{ isOpen: boolean }>`
+  display: ${(props) => (props.isOpen ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+`;
+
+const ModalContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+`;
+
+type ModalProps = {
+  isOpen: boolean
+  onClose: () => void
+  children?: React.ReactNode
+};
+
+/**
+ * Reusable modal component
+ * Use it with useModal custom hook
+ *
+ * @param {ModalProps} { isOpen, onClose, children }
+ * @return {JSX.Element}
+ */
+const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+
+  // Close modal when the outside of the modal is clicked
+  // useCallback because this function will be created every time Modal is rendered
+  const handleOverlayClick = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }, [onClose]);
+
+  return (
+    <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
+      <ModalContainer>
+        {children}
+      </ModalContainer>
+    </ModalOverlay>
+  );
+};
+
+export default Modal;
