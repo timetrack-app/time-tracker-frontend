@@ -8,23 +8,12 @@ import {
   incrementElapsedSeconds,
   resetTimer,
 } from '../../../../stores/slices/activeTaskSlice';
+import { selectIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
+
+import Layout from './Layout';
+import StartWorkSessionButton from './StartWorkSessionButton';
 
 import { secondsToHHMMSS } from '../../../../utils/timer';
-
-import { ColorThemeName } from '../../../../types/colorTheme';
-
-const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.componentBackground};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.2em;
-  box-shadow: ${({ colorThemeName, theme }) => (colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none')};
-`;
 
 const TaskNameWrapperDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.text};
@@ -66,50 +55,59 @@ type Props = {
  * @return {JSX.Element}
  */
 const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds }: Props) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const currentColorThemeName = useAppSelector(selectColorTheme);
+  const hasWorkSessionStarted = useAppSelector(selectIsWorkSessionActive);
 
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
+  // TODO: move these functions to right components
+  // useEffect(() => {
+  //   let intervalId: NodeJS.Timeout | null = null;
 
-    if (isTimerRunning) {
-      intervalId = setInterval(() => {
-        // update elapsedTime every 1 sec
-        dispatch(incrementElapsedSeconds());
-      }, 1000);
-    } else if (intervalId) clearInterval(intervalId);
+  //   if (isTimerRunning) {
+  //     intervalId = setInterval(() => {
+  //       // update elapsedTime every 1 sec
+  //       dispatch(incrementElapsedSeconds());
+  //     }, 1000);
+  //   } else if (intervalId) clearInterval(intervalId);
 
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [dispatch, isTimerRunning]);
+  //   return () => {
+  //     if (intervalId) clearInterval(intervalId);
+  //   };
+  // }, [dispatch, isTimerRunning]);
 
-  const start = () => dispatch(updateIsTimerRunning(true));
+  // TODO: move these functions to right components
+  // const start = () => dispatch(updateIsTimerRunning(true));
 
-  const stop = () => dispatch(updateIsTimerRunning(false));
+  // const stop = () => dispatch(updateIsTimerRunning(false));
 
-  const reset = () => dispatch(resetTimer());
+  // const reset = () => dispatch(resetTimer());
 
   // TODO: Make sure how to stop timer
 
+  // TODO: Display start button if work session has not started yet
+
+  // TODO: If no onGoingTask, display message in TaskNameP
+
   return (
     <>
-      <ContainerDiv colorThemeName={currentColorThemeName}>
-        <TaskNameWrapperDiv>
-          <TaskNameP>{taskName}</TaskNameP>
-        </TaskNameWrapperDiv>
-        <ElapsedTimeP>
-          {secondsToHHMMSS(elapsedSeconds)}
-        </ElapsedTimeP>
-      </ContainerDiv>
-
+      {hasWorkSessionStarted
+        ? <Layout colorThemeName={currentColorThemeName}>
+            <TaskNameWrapperDiv>
+              <TaskNameP>{taskName}</TaskNameP>
+            </TaskNameWrapperDiv>
+            <ElapsedTimeP>
+              {secondsToHHMMSS(elapsedSeconds)}
+            </ElapsedTimeP>
+          </Layout>
+        : <StartWorkSessionButton />
+      }
       {/* TODO: remove buttons later. This is temporary solution to start/stop the timer */}
-      <div>
+      {/* <div>
         <button type="button" onClick={start} disabled={isTimerRunning}>START</button>
         <button type="button" onClick={stop} disabled={!isTimerRunning}>STOP</button>
         <button type="button" onClick={reset}>RESET</button>
-      </div>
+      </div> */}
     </>
   );
 };

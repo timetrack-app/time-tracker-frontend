@@ -10,7 +10,8 @@ import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
-  width: 80%;
+  // 100% - (width of OnGoingTimerArea + flex gap)
+  width: calc(100% - (310px + 24px));
   display: flex;
   flex-direction: column;
   /* align-items: center; */

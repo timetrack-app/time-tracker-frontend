@@ -75,6 +75,7 @@
     "no-confusing-arrow": "off",
     "operator-linebreak": "off",
     "implicit-arrow-linebreak": "off",
-    "@typescript-eslint/indent": "off"
+    "@typescript-eslint/indent": "off",
+    "react/jsx-wrap-multilines": "off",
   }
 }
