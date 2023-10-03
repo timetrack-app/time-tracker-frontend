@@ -14,19 +14,24 @@ import { ColorThemeName } from '../../../../types/colorTheme';
 
 import { secondsToHHMMSS } from '../../../../utils/timer';
 import { white, coralRed, roseMadder, tartanRed, gray90 } from '../../../../const/styles/colors';
+import { breakPoint } from '../../../../const/styles/breakPoint';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5em;
-  border-radius: 40px;
-  padding: 2em;
-  background-color: ${({ theme }) => theme.colors.componentBackground};
-  box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+  display: none;
+
+  @media ${breakPoint.tablet} {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5em;
+    border-radius: 40px;
+    padding: 2em;
+    background-color: ${({ theme }) => theme.colors.componentBackground};
+    box-shadow: ${({ colorThemeName, theme }) =>
+      colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+  }
 `;
 
 const SectionDiv = styled.div`
