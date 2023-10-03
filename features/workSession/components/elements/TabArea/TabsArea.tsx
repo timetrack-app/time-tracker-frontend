@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 import { useState } from 'react';
-import { useAppSelector } from '../../../stores/hooks';
-import { selectColorTheme } from '../../../stores/slices/colorThemeSlice';
+import { useAppSelector } from '../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
 
-import { ColorThemeName } from '../../../types/colorTheme';
-import { Tab } from '../../../types/entity';
+import { ColorThemeName } from '../../../../../types/colorTheme';
+import { Tab } from '../../../../../types/entity';
 import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
 

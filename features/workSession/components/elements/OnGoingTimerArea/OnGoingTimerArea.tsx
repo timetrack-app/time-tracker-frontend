@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
 import {
   selectActiveTask,
   updateActiveTaskName,
-} from '../../../stores/slices/activeTaskSlice';
+} from '../../../../../stores/slices/activeTaskSlice';
 import MainTimer from './MainTimer/MainTimer';
 import SubSection from './SubSection/SubSection';
 

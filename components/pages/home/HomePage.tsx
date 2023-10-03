@@ -3,9 +3,10 @@ import { useIsFetching, useIsMutating } from 'react-query';
 import styled from 'styled-components';
 import { GiHamburgerMenu, GiCancel } from 'react-icons/gi';
 
-import OnGoingTimerArea from '../../elements/OnGoingTimerArea/OnGoingTimerArea';
+import OnGoingTimerArea from '../../../features/workSession/components/elements/OnGoingTimerArea/OnGoingTimerArea';
+import TabsArea from '../../../features/workSession/components/elements/TabArea/TabsArea';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
-import TabsArea from '../../elements/TabArea/TabsArea';
+
 import Navbar from '../../elements/Navbar/Navbar';
 
 import { breakPoint } from '../../../const/styles/breakPoint';

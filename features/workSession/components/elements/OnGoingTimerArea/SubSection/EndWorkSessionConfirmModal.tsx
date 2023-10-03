@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
 
-import ButtonPrimary from '../../common/Button/ButtonPrimary';
-import ButtonDanger from '../../common/Button/ButtonDanger';
-import Modal from '../../common/Modal/Modal';
+import ButtonPrimary from '../../../../../../components/elements/common/Button/ButtonPrimary';
+import ButtonDanger from '../../../../../../components/elements/common/Button/ButtonDanger';
+import Modal from '../../../../../../components/elements/common/Modal/Modal';
 
-import { breakPoint } from '../../../../const/styles/breakPoint';
+import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 const HeaderDiv = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab } from '../../../../types/entity';
+import { Tab } from '../../../../../../types/entity';
 import TabSelector from './TabSelector/TabSelector';
 import PlusCircleButton from './PlusCircleButton/PlusCircleButton';
 

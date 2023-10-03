@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
-import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
-import { updateIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
+import { useAppDispatch, useAppSelector } from '../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
+import { updateIsWorkSessionActive } from '../../../../../../stores/slices/workSessionSlice';
 
-import { vegetation, viridian } from '../../../../const/styles/colors';
+import { vegetation, viridian } from '../../../../../../const/styles/colors';
 import { baseStyle } from './Layout';
 
-import { ColorThemeName } from '../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
 
 const Button = styled.button<{ colorThemeName: ColorThemeName }>`
   ${baseStyle}

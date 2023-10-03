@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab } from '../../../../types/entity';
-import { ColorThemeName } from '../../../../types/colorTheme';
+import { Tab } from '../../../../../../types/entity';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
   gainsboro,
   washedBlack,
   white,
-} from '../../../../const/styles/colors';
-import { useAppSelector } from '../../../../stores/hooks';
-import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
+} from '../../../../../../const/styles/colors';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import CreateTaskListButton from './CreateTaskListButton/CreateTaskListButton';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab } from '../../../../../types/entity';
+import { Tab } from '../../../../../../../types/entity';
 import {
   dryadBark,
   gainsboro,
@@ -9,10 +9,10 @@ import {
   softPetals,
   astrograniteDebris,
   washedBlack,
-} from '../../../../../const/styles/colors';
-import { ColorThemeName } from '../../../../../types/colorTheme';
-import { useAppSelector } from '../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
+} from '../../../../../../../const/styles/colors';
+import { ColorThemeName } from '../../../../../../../types/colorTheme';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
 
 type TabSelectorProps = {
   tab: Tab;

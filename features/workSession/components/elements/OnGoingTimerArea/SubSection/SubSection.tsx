@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 
-import Button from '../../common/Button/Button';
-import { useModal } from '../../common/Modal/Modal';
+import Button from '../../../../../../components/elements/common/Button/Button';
+import { useModal } from '../../../../../../components/elements/common/Modal/Modal';
 import EndWorkSessionConfirmModal from './EndWorkSessionConfirmModal';
 
-import { useEndWorkSession } from '../../../../features/workSession/api/hooks/useEndWorkSession';
+import { useEndWorkSession } from '../../../../api/hooks/useEndWorkSession';
 
-import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
-import { updateIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
-import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
+import { useAppDispatch, useAppSelector } from '../../../../../../stores/hooks';
+import { updateIsWorkSessionActive } from '../../../../../../stores/slices/workSessionSlice';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
-import { ColorThemeName } from '../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
 
-import { secondsToHHMMSS } from '../../../../utils/timer';
-import { white, coralRed, roseMadder, tartanRed, gray90 } from '../../../../const/styles/colors';
-import { breakPoint } from '../../../../const/styles/breakPoint';
+import { secondsToHHMMSS } from '../../../../../../utils/timer';
+import { white, coralRed, roseMadder, tartanRed, gray90 } from '../../../../../../const/styles/colors';
+import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   display: none;

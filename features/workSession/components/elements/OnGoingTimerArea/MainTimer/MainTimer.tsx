@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
-import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
+import { useAppDispatch, useAppSelector } from '../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 import {
   updateIsTimerRunning,
   incrementElapsedSeconds,
   resetTimer,
-} from '../../../../stores/slices/activeTaskSlice';
-import { selectIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
+} from '../../../../../../stores/slices/activeTaskSlice';
+import { selectIsWorkSessionActive } from '../../../../../../stores/slices/workSessionSlice';
 
 import Layout from './Layout';
 import StartWorkSessionButton from './StartWorkSessionButton';
 
-import { secondsToHHMMSS } from '../../../../utils/timer';
+import { secondsToHHMMSS } from '../../../../../../utils/timer';
 
 const TaskNameWrapperDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.text};

@@ -6,10 +6,10 @@ import {
   washedBlack,
   white,
   gainsboro,
-} from '../../../../../const/styles/colors';
-import { ColorThemeName } from '../../../../../types/colorTheme';
-import { useAppSelector } from '../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
+} from '../../../../../../../const/styles/colors';
+import { ColorThemeName } from '../../../../../../../types/colorTheme';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
 
 type PlusCircleButtonProps = {
   onClickPlusCircleButton: () => void;

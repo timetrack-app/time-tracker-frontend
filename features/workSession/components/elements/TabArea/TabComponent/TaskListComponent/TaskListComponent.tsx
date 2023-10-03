@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Task, TaskList } from '../../../../../types/entity';
+import { Task, TaskList } from '../../../../../../../types/entity';
 import TaskListName from './TaskListName/TaskListName';
 import TaskCard from './TaskCard/TaskCard';
 import CreateTaskButton from './CreateTaskButton/CreateTaskButton';

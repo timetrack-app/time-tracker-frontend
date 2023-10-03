@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ColorThemeName } from '../../../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
   dryadBark,
   gainsboro,
   washedBlack,
   white,
-} from '../../../../../../const/styles/colors';
-import { useAppSelector } from '../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
+} from '../../../../../../../const/styles/colors';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
 
-type TaskListNameProps = {
-  name: string;
+type CreateTaskListButtonProps = {
+  onClickCreateTaskList: () => void;
 };
 
 const ContainerDiv = styled.div<{
@@ -25,6 +25,10 @@ const ContainerDiv = styled.div<{
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
   border: 1px solid
     ${({ colorThemeName }) => {
       if (colorThemeName === 'light') return gainsboro;
@@ -49,13 +53,18 @@ const NameP = styled.p<{
   font-weight: 400;
 `;
 
-const TaskListName = ({ name }: TaskListNameProps) => {
+const CreateTaskListButton = ({
+  onClickCreateTaskList,
+}: CreateTaskListButtonProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
   return (
-    <ContainerDiv colorThemeName={currentColorThemeName}>
-      <NameP colorThemeName={currentColorThemeName}>{name}</NameP>
+    <ContainerDiv
+      colorThemeName={currentColorThemeName}
+      onClick={onClickCreateTaskList}
+    >
+      <NameP colorThemeName={currentColorThemeName}>+ Create new list</NameP>
     </ContainerDiv>
   );
 };
 
-export default TaskListName;
+export default CreateTaskListButton;

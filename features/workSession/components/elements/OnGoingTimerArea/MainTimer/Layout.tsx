@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 
-import { ColorThemeName } from '../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
 
 export const baseStyle = css<{ colorThemeName: ColorThemeName }>`
   width: 100%;
