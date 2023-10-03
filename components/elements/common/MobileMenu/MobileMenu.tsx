@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import { IoMenu, IoClose } from 'react-icons/io5';
 
-const MenuContainer = styled.div<{isOpen: boolean}>`
+import { useWindowResize } from '../../../../hooks/useWindowResize';
+
+import { breakPoint } from '../../../../const/styles/breakPoint';
+
+const WrapperDiv = styled.div`
+  @media ${breakPoint.tablet} {
+    display: none;
+  }
+`;
+
+const Container = styled.div<{isOpen: boolean}>`
   position: fixed;
   top: 0;
   left: 0;
@@ -16,19 +25,28 @@ const MenuContainer = styled.div<{isOpen: boolean}>`
   pointer-events: ${(props) => (props.isOpen ? 'auto' : 'none')};
   transition: opacity 0.3s ease;
   z-index: 1000;
+  overflow: hidden; /* Disable scrolling in the menu */
 `;
 
-const MenuContent = styled.div`
+const ContentsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 40%;
-  background-color: #fff; // TODO: change later
+  width: calc(100% - 1.5em);
+  background-color: ${(props) => props.theme.colors.componentBackground};
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   position: absolute;
-  top: 1.5em; // TODO: adjust later (align with padding-top)
+  top: 3em;
 `;
 
-const MenuButton = styled.button`
+const ContentItemDiv = styled.div`
+  padding: 0.5em;
+`;
+
+const ButtonWrapper = styled.button`
   position: absolute;
   top: 16px;
   right: 10px;
@@ -47,7 +65,9 @@ type Props = {
 // TODO: fix later
 
 const MobileMenu = ({ items }: Props) => {
+  // TODO: when the screen size changes from mobile to PC: close
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isBelowBreakPoint] = useWindowResize();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -57,19 +77,40 @@ const MobileMenu = ({ items }: Props) => {
     setIsOpen(false);
   };
 
+  // close menu when the screen size goes bigger than the breakpoint
+  useEffect(() => {
+    if (!isBelowBreakPoint) {
+      setIsOpen(false);
+    }
+  }, [isBelowBreakPoint]);
+
+  useEffect(() => {
+    const body = document.body;
+
+    // disable scrolling when the menu is open, re-enable scrolling when the menu is closed
+    isOpen
+      ? body.style.overflow = 'hidden'
+      : body.style.overflow = 'auto';
+
+    // re-enable scrolling when the component unmounts
+    return () => {
+      body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
+
   return (
-    <>
-      <MenuButton onClick={toggleMenu}>
+    <WrapperDiv>
+      <ButtonWrapper onClick={toggleMenu}>
         {isOpen ? <IoClose /> : <IoMenu />}
-      </MenuButton>
-      <MenuContainer isOpen={isOpen} onClick={closeMenu}>
-        <MenuContent onClick={(e) => e.stopPropagation()}>
+      </ButtonWrapper>
+      <Container isOpen={isOpen} onClick={closeMenu}>
+        <ContentsContainer onClick={(e) => e.stopPropagation()}>
           {items.map((item, index) => (
-            <div key={index}>{item}</div>
+            <ContentItemDiv key={index}>{item}</ContentItemDiv>
           ))}
-        </MenuContent>
-      </MenuContainer>
-    </>
+        </ContentsContainer>
+      </Container>
+    </WrapperDiv>
   );
 };
 
