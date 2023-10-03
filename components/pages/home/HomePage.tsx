@@ -92,6 +92,7 @@ const testTabs = [
 const MainAreaContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
   gap: 24px;
@@ -99,10 +100,15 @@ const MainAreaContainer = styled.div`
 
   @media ${breakPoint.tablet} {
     flex-direction: row;
+    align-items: normal;
     padding-inline: 24px;
     padding-bottom: 24px;
   }
 `;
+
+//TODO: centralize all the elements, and set max/min width to prevent the elements expand forever(especially tab area)
+
+
 
 // You can now use the 'tabs' variable, which is of type 'Tab[]'.
 
@@ -118,10 +124,16 @@ const HomePage = () => {
   // TODO: MainAreaContainer -> flex-direction: column;
   // TODO: OnGoingTimerArea -> flex, carousel, display only timer components. each timer components represents: current task, total time, total in selected tab
   // TODO: TabsArea -> scroll-y. List: carousel
+  // const menuItems = [
+  //   <a href="/">Home</a>,
+  //   <a href="/about">About</a>,
+  //   <a href="/contact">Contact</a>,
+  // ];
   const menuItems = [
-    <a href="/">Home</a>,
-    <a href="/about">About</a>,
-    <a href="/contact">Contact</a>,
+    'item1',
+    'item2',
+    'item3',
+    'item4',
   ];
 
   return (
