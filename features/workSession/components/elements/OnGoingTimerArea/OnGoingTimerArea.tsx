@@ -8,6 +8,10 @@ import {
 } from '../../../../../stores/slices/activeTaskSlice';
 import MainTimer from './MainTimer/MainTimer';
 import SubSection from './SubSection/SubSection';
+import { breakPoint } from '../../../../../const/styles/breakPoint';
+import EmblaCarousel from '../CarouselSample';
+import { EmblaOptionsType } from 'embla-carousel-react';
+import { useWindowResize } from '../../../../../hooks/useWindowResize';
 
 const Container = styled.div`
   width: 310px;
@@ -21,6 +25,9 @@ const MainTimerContainer = styled.div`
 const OnGoingTimerArea = () => {
   const dispatch = useAppDispatch();
 
+  const [isBelowBreakPoint] = useWindowResize();
+  console.log(isBelowBreakPoint);
+
   const { name, isTimerRunning, elapsedSeconds } =
     useAppSelector(selectActiveTask);
 
@@ -29,14 +36,19 @@ const OnGoingTimerArea = () => {
     dispatch(updateActiveTaskName('Sample task 01'));
   }, [dispatch]);
 
+  const OPTIONS: EmblaOptionsType = { align: 'start', containScroll: 'trimSnaps' }
+
   return (
     <Container>
       <MainTimerContainer>
-        <MainTimer
-          taskName={name}
-          isTimerRunning={isTimerRunning}
-          elapsedSeconds={elapsedSeconds}
-        />
+        {isBelowBreakPoint
+          ? <EmblaCarousel slides={[1,2,3,4]} options={OPTIONS} />
+          : <MainTimer
+              taskName={name}
+              isTimerRunning={isTimerRunning}
+              elapsedSeconds={elapsedSeconds}
+            />
+        }
       </MainTimerContainer>
       <SubSection
         totalSeconds={8000}

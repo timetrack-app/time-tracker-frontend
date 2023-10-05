@@ -94,7 +94,7 @@ const MainAreaContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100%;
+  max-height: 100vh;
   gap: 24px;
   padding: 2em 1.5em 1.5em;
 

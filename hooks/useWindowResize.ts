@@ -22,7 +22,7 @@ export const useWindowResize = (breakPoint = sizePxNum.tablet) => {
 
   useEffect(() => {
     if (isInBrowser) {
-      if (window.innerWidth >= breakPoint) {
+      if (window.innerWidth <= breakPoint) {
         setIsBelowBreakPoint(true);
       }
       resizeEvent();

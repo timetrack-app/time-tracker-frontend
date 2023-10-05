@@ -33,12 +33,17 @@ const LabelP = styled.p`
   font-weight: 600;
 `;
 
+type Props = {
+  className?: string
+};
+
 /**
  * Click and create a new work session
  *
- * @return { JSX.Element }
+ * @param {Props} { className }
+ * @return {JSX.Element}
  */
-const StartWorkSessionButton = () => {
+const StartWorkSessionButton = ({ className }: Props) => {
   const dispatch = useAppDispatch();
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
@@ -53,6 +58,7 @@ const StartWorkSessionButton = () => {
       type="button"
       colorThemeName={currentColorThemeName}
       onClick={startWorkSession}
+      className={className}
     >
       <LabelP>START SESSION</LabelP>
     </Button>

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react'
 import { DotButton, useDotButton } from './EmblaCarouselDotButton'
-// import imageByIndex from './imageByIndex'
 
 import MainTimer from './OnGoingTimerArea/MainTimer/MainTimer'
 
@@ -76,18 +75,20 @@ const EmblaDots = styled.div`
   align-items: center;
 `;
 
-const EmblaDotContainer = styled.div`
-  width: 2.4rem;
-  height: 2.4rem;
+const EmblaDotContainer = styled.div<{isSelected: boolean}>`
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
-  margin-right: 0.75rem;
-  margin-left: 0.75rem;
+  justify-content: center;
+  gap: 0.5em;
+  /* margin-right: 0.75rem;
+  margin-left: 0.75rem; */
   &:after {
-    background-color: green;
-    border-radius: 0.2rem;
-    width: 100%;
-    height: 0.3rem;
+    background-color: ${(props) =>  props.isSelected ? props.theme.colors.text : props.theme.colors.border};
+    border-radius: 50%;
+    width: 20%;
+    height: 20%;
     content: '';
   }
   &.selected:after {
@@ -96,6 +97,9 @@ const EmblaDotContainer = styled.div`
   };
 `;
 
+const CustomMainTimer = styled(MainTimer)`
+  box-shadow: none;
+`;
 type PropType = {
   slides: number[]
   options?: EmblaOptionsType
@@ -116,12 +120,8 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
         <EmblaContainer>
           {slides.map((index) => (
             <EmblaSlide key={index}>
-              <MainTimer taskName={taskNames[index+1]} isTimerRunning={false} elapsedSeconds={0} />
-              {/* <img
-                className="embla__slide__img"
-                src={imageByIndex(index)}
-                alt="Your alt text"
-              /> */}
+              {/* TODO: replace with valid components */}
+              <CustomMainTimer taskName={taskNames[index+1]} isTimerRunning={false} elapsedSeconds={0} />
             </EmblaSlide>
           ))}
         </EmblaContainer>
@@ -129,22 +129,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
       <EmblaDots>
         {scrollSnaps.map((_, index) => (
-          // Conditionally render EmblaDotSelected if it's selected
-          // index === selectedIndex ? (
-          //   <EmblaDotSelected
-          //     key={index}
-          //     onClick={() => onDotButtonClick(index)}
-          //   />
-          // ) : (
-          //   // Render EmblaDot if it's not selected
-          //   <EmblaDotContainer
-          //     key={index}
-          //     onClick={() => onDotButtonClick(index)}
-          //   />
-          // )
           <EmblaDotContainer
               key={index}
               onClick={() => onDotButtonClick(index)}
+              isSelected={index === selectedIndex}
             />
         ))}
       </EmblaDots>
