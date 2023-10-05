@@ -5,7 +5,7 @@ import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlic
 import { updateIsWorkSessionActive } from '../../../../../../stores/slices/workSessionSlice';
 
 import { vegetation, viridian } from '../../../../../../const/styles/colors';
-import { baseStyle } from './Layout';
+import { baseStyle } from '../Timer/Layout';
 
 import { ColorThemeName } from '../../../../../../types/colorTheme';
 

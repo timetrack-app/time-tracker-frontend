@@ -1,5 +1,5 @@
+export { default as Timer } from './components/elements/OnGoingTimerArea/Timer/Timer';
 export { default as MainTimer } from './components/elements/OnGoingTimerArea/MainTimer/MainTimer';
-export { default as Layout } from './components/elements/OnGoingTimerArea/MainTimer/Layout';
 export { default as StartWorkSessionButton } from './components/elements/OnGoingTimerArea/MainTimer/StartWorkSessionButton';
 export { default as SubSection } from './components/elements/OnGoingTimerArea/SubSection/SubSection';
 export { default as EndWorkSessionConfirmModal } from './components/elements/OnGoingTimerArea/SubSection/EndWorkSessionConfirmModal';

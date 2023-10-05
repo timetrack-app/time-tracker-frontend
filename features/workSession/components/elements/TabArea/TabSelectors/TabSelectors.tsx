@@ -17,6 +17,7 @@ const ContainerDiv = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
 const TabSelectors = ({
   tabs,
   selectedTabId,

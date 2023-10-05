@@ -50,6 +50,8 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
     setSelectedTab(tab);
   };
 
+  // TODO: add scroll-x TabSelector
+
   // on creating a new tab
   const handleCreateNewTab = () => {};
   return (

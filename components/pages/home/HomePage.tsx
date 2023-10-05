@@ -87,6 +87,22 @@ const testTabs = [
     ],
   },
   // Add more tabs as needed
+  {
+    id: 4,
+    name: 'Tab 4',
+    displayOrder: 4,
+    taskLists: [
+      // Define task lists for Tab 3 here if needed
+    ],
+  },
+  {
+    id: 5,
+    name: 'Tab 5',
+    displayOrder: 5,
+    taskLists: [
+      // Define task lists for Tab 3 here if needed
+    ],
+  },
 ];
 
 // TODO: MainAreaContainer -> flex-direction: column;
