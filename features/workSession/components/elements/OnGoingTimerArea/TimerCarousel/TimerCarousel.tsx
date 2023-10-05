@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react'
-import { DotButton, useDotButton } from './EmblaCarouselDotButton'
+import React from 'react';
+import styled from 'styled-components';
+import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
+import DotButton, { useDotButton } from './DotButton';
 
-import MainTimer from './OnGoingTimerArea/MainTimer/MainTimer'
-
+// https://www.embla-carousel.com/
+// Used the generator in the official doc of Embla
 
 const Embla = styled.div`
   --slide-spacing: 5px;
@@ -39,14 +39,7 @@ const EmblaSlide = styled.div`
   position: relative;
 `;
 
-const EmblaSlideImg = styled.img`
-  display: block;
-  height: var(--slide-height);
-  width: 100%;
-  object-fit: cover;
-`;
-
-const EmblaDot = styled.button`
+const EmblaDot = styled(DotButton)`
   -webkit-appearance: none;
   background-color: transparent;
   touch-action: manipulation;
@@ -56,12 +49,6 @@ const EmblaDot = styled.button`
   border: 0;
   padding: 0;
   margin: 0;
-`;
-
-const EmblaDotSelected = styled(EmblaDot)`
-  /* Add additional styles when selected */
-  /* background: linear-gradient(45deg, var(--brand-primary), var(--brand-secondary)); */
-  background-color: red;
 `;
 
 const EmblaDots = styled.div`
@@ -91,37 +78,24 @@ const EmblaDotContainer = styled.div<{isSelected: boolean}>`
     height: 20%;
     content: '';
   }
-  &.selected:after {
-    /* background: linear-gradient(45deg, var(--brand-primary), var(--brand-secondary)); */
-    background-color: red;
-  };
 `;
 
-const CustomMainTimer = styled(MainTimer)`
-  box-shadow: none;
-`;
-type PropType = {
-  slides: number[]
+type Props = {
+  slides: { [key: string]: React.ReactNode }
   options?: EmblaOptionsType
-}
+};
 
-const EmblaCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props
-  const [emblaRef, emblaApi] = useEmblaCarousel(options)
-
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi)
-
-  const taskNames = ['sample1', 'sample2', 'sample3', 'sample4'];
+const TimerCarousel = ({ slides, options }: Props) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
 
   return (
     <Embla>
       <EmblaViewport ref={emblaRef}>
         <EmblaContainer>
-          {slides.map((index) => (
-            <EmblaSlide key={index}>
-              {/* TODO: replace with valid components */}
-              <CustomMainTimer taskName={taskNames[index+1]} isTimerRunning={false} elapsedSeconds={0} />
+        {Object.entries(slides).map(([key, SlideComponent]) => (
+            <EmblaSlide key={key}>
+              {SlideComponent}
             </EmblaSlide>
           ))}
         </EmblaContainer>
@@ -129,15 +103,17 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
       <EmblaDots>
         {scrollSnaps.map((_, index) => (
-          <EmblaDotContainer
-              key={index}
-              onClick={() => onDotButtonClick(index)}
-              isSelected={index === selectedIndex}
-            />
+          <EmblaDot key={index}>
+            <EmblaDotContainer
+            key={index}
+            onClick={() => onDotButtonClick(index)}
+            isSelected={index === selectedIndex}
+          />
+          </EmblaDot>
         ))}
       </EmblaDots>
     </Embla>
-  )
-}
+  );
+};
 
-export default EmblaCarousel
+export default TimerCarousel;
