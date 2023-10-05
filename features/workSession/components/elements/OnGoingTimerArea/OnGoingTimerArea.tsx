@@ -1,16 +1,18 @@
-import styled from 'styled-components';
-
 import { useEffect } from 'react';
+import styled from 'styled-components';
+import { EmblaOptionsType } from 'embla-carousel-react';
+
+import Timer from './Timer/Timer';
+import MainTimer from './MainTimer/MainTimer';
+import SubSection from './SubSection/SubSection';
+
 import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
 import {
   selectActiveTask,
   updateActiveTaskName,
 } from '../../../../../stores/slices/activeTaskSlice';
-import MainTimer from './MainTimer/MainTimer';
-import SubSection from './SubSection/SubSection';
 import { breakPoint } from '../../../../../const/styles/breakPoint';
-import EmblaCarousel from '../CarouselSample';
-import { EmblaOptionsType } from 'embla-carousel-react';
+import TimerCarousel from './TimerCarousel/TimerCarousel';
 import { useWindowResize } from '../../../../../hooks/useWindowResize';
 
 const Container = styled.div`
@@ -22,11 +24,34 @@ const MainTimerContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const OnGoingTimerArea = () => {
+const CustomMainTimer = styled(MainTimer)`
+  box-shadow: none;
+`;
+
+const CustomTimer = styled(Timer)`
+  box-shadow: none;
+`;
+
+// TODO: Props
+// currentTaskTime
+// totalTime
+// totalTimeInTab
+type Props = {
+  activeTaskName?: string
+  activeTaskElapsedTimeSec?: number
+  totalTimeSec?: number
+  totalTimeSecInSelectedTab?: number
+};
+
+const OnGoingTimerArea = ({
+  activeTaskName = '',
+  activeTaskElapsedTimeSec = 0,
+  totalTimeSec = 0,
+  totalTimeSecInSelectedTab = 0,
+}: Props) => {
   const dispatch = useAppDispatch();
 
   const [isBelowBreakPoint] = useWindowResize();
-  console.log(isBelowBreakPoint);
 
   const { name, isTimerRunning, elapsedSeconds } =
     useAppSelector(selectActiveTask);
@@ -38,11 +63,17 @@ const OnGoingTimerArea = () => {
 
   const OPTIONS: EmblaOptionsType = { align: 'start', containScroll: 'trimSnaps' }
 
+  const slides = {
+    current: <CustomMainTimer taskName="main" isTimerRunning={false} elapsedSeconds={0} />,
+    total: <CustomTimer taskName="sub" elapsedSeconds={0} />,
+    totalInTab: <CustomTimer taskName="another" elapsedSeconds={0} />,
+  };
+
   return (
     <Container>
       <MainTimerContainer>
         {isBelowBreakPoint
-          ? <EmblaCarousel slides={[1,2,3,4]} options={OPTIONS} />
+          ? <TimerCarousel slides={slides} options={OPTIONS} />
           : <MainTimer
               taskName={name}
               isTimerRunning={isTimerRunning}

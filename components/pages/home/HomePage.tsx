@@ -1,16 +1,17 @@
-import { useState } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import styled from 'styled-components';
-import { GiHamburgerMenu, GiCancel } from 'react-icons/gi';
 
 import OnGoingTimerArea from '../../../features/workSession/components/elements/OnGoingTimerArea/OnGoingTimerArea';
 import TabsArea from '../../../features/workSession/components/elements/TabArea/TabsArea';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
 import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
-
 import Navbar from '../../elements/Navbar/Navbar';
 
+import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
+import { selectActiveTask, updateActiveTaskName } from '../../../stores/slices/activeTaskSlice';
+
 import { breakPoint } from '../../../const/styles/breakPoint';
+import { useEffect } from 'react';
 
 const testTabs = [
   {
@@ -118,6 +119,20 @@ const HomePage = () => {
   const isMutating = useIsMutating();
   const isLoading = isFetching > 0 || isMutating > 0;
 
+  const dispatch = useAppDispatch();
+
+  const {
+    name: activeTaskName,
+    isTimerRunning,
+    elapsedSeconds: activeTaskElapsedTimeSec,
+  } = useAppSelector(selectActiveTask);
+
+    // TODO: Temporary solution. Fix this later
+    useEffect(() => {
+      dispatch(updateActiveTaskName('Sample task 01'));
+    }, [dispatch]);
+
+
   // TODO: mobile layout
   // TODO: break point: tablet
   // TODO: NavBar -> Hamburger menu
@@ -142,7 +157,12 @@ const HomePage = () => {
       <Navbar />
       <MobileMenu items={menuItems} />
       <MainAreaContainer>
-        <OnGoingTimerArea />
+        <OnGoingTimerArea
+          activeTaskName={activeTaskName}
+          activeTaskElapsedTimeSec={activeTaskElapsedTimeSec}
+          totalTimeSec={0}
+          totalTimeSecInSelectedTab={0}
+        />
         <TabsArea tabs={testTabs} />
       </MainAreaContainer>
     </>
