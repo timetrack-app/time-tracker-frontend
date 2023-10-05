@@ -8,10 +8,10 @@ import { ColorThemeName } from '../../../../../types/colorTheme';
 import { Tab } from '../../../../../types/entity';
 import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
+import { breakPoint } from '../../../../../const/styles/breakPoint';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
-  // 100% - (width of OnGoingTimerArea + flex gap)
-  width: calc(100% - (310px + 24px));
+  width: 100%;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -21,6 +21,11 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   background-color: ${({ theme }) => theme.colors.componentBackground};
   box-shadow: ${({ colorThemeName, theme }) =>
     colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+
+  @media ${breakPoint.tablet} {
+    // 100% - (width of OnGoingTimerArea + flex gap)
+    width: calc(100% - (310px + 24px));
+  }
 `;
 
 const TabSelectorWrapper = styled.div`

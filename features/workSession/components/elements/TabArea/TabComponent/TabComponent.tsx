@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import CreateTaskListButton from './CreateTaskListButton/CreateTaskListButton';
+import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 type TabComponentProps = {
   tab: Tab;
@@ -40,7 +41,15 @@ const ContainerDiv = styled.div<{
 `;
 
 const TaskListContainerDiv = styled.div`
-  width: 322px;
+  /* width: 322px; */
+
+  flex: 0 0 auto;
+  width: 100%;
+
+  @media ${breakPoint.tablet} {
+    flex: initial;
+    width: auto;
+  }
 `;
 
 const TabComponent = ({ tab }: TabComponentProps) => {
