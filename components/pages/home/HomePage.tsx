@@ -103,6 +103,14 @@ const testTabs = [
       // Define task lists for Tab 3 here if needed
     ],
   },
+  {
+    id: 6,
+    name: 'Tab 6',
+    displayOrder: 6,
+    taskLists: [
+      // Define task lists for Tab 3 here if needed
+    ],
+  },
 ];
 
 // TODO: MainAreaContainer -> flex-direction: column;

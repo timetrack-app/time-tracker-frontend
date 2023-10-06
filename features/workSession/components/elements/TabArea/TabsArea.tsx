@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import { useState } from 'react';
 import { useAppSelector } from '../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
 
@@ -8,14 +8,13 @@ import { ColorThemeName } from '../../../../../types/colorTheme';
 import { Tab } from '../../../../../types/entity';
 import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
+
 import { breakPoint } from '../../../../../const/styles/breakPoint';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: center; */
   padding: 24px;
   border-radius: 40px;
   background-color: ${({ theme }) => theme.colors.componentBackground};
@@ -28,8 +27,41 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   }
 `;
 
-const TabSelectorWrapper = styled.div`
+const TabSelectorWrapper = styled.div<{colorThemeName: ColorThemeName}>`
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
   margin-bottom: 12px;
+
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 20px;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: ${({ theme, colorThemeName }) =>
+      colorThemeName === 'light'
+        ? `linear-gradient(to right, ${theme.colors.componentBackground}, rgba(255,255,255,0))`
+        : `linear-gradient(to right, ${theme.colors.componentBackground}, rgba(32,37,40,0))`};
+  }
+
+  &::after {
+    right: 0;
+    background: ${({ theme, colorThemeName }) =>
+      colorThemeName === 'light'
+        ? `linear-gradient(to left, ${theme.colors.componentBackground}, rgba(255,255,255,0))`
+        : `linear-gradient(to left, ${theme.colors.componentBackground}, rgba(32,37,40,0))`};
+  }
+
+  @media ${breakPoint.tablet} {
+    /* padding-right: 1em; */
+  }
 `;
 
 const TabComponentWrapper = styled.div`
@@ -50,13 +82,12 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
     setSelectedTab(tab);
   };
 
-  // TODO: add scroll-x TabSelector
-
   // on creating a new tab
   const handleCreateNewTab = () => {};
+
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
-      <TabSelectorWrapper>
+      <TabSelectorWrapper colorThemeName={currentColorTheme}>
         <TabSelectors
           tabs={tabs}
           selectedTabId={selectedTab.id}
