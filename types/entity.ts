@@ -16,9 +16,9 @@ export type WorkSession = {
 
 // Tab type
 export type Tab = {
-  id: number;
+  id: number | null;
   name: string;
-  displayOrder: number;
+  displayOrder: number | null;
   taskLists: TaskList[];
 };
 
