@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { useAppSelector } from '../../../../../stores/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
+import { updateSelectedTab, selectCurrentSelectedTab } from '../../../../../stores/slices/selectedTabSlice';
 
 import { ColorThemeName } from '../../../../../types/colorTheme';
 import { Tab } from '../../../../../types/entity';
@@ -75,15 +76,20 @@ type TabsAreaProps = {
 const TabsArea = ({ tabs }: TabsAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
-  const [selectedTab, setSelectedTab] = useState<Tab>(tabs[0]);
+  const dispatch = useAppDispatch();
+  const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
   // on selecting a tab
   const handleSelectTab = (tab: Tab) => {
-    setSelectedTab(tab);
+    dispatch(updateSelectedTab(tab));
   };
 
   // on creating a new tab
   const handleCreateNewTab = () => {};
+
+  useEffect(() => {
+    dispatch(updateSelectedTab(tabs[0]));
+  }, [dispatch]);
 
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
