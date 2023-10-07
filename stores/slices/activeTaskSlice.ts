@@ -3,12 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 type ActiveTaskState = {
+  id: number | null // null when nothing is active
   name: string
   elapsedSeconds: number
   isTimerRunning: boolean
 };
 
 const initialState: ActiveTaskState = {
+  id: null,
   name: '',
   elapsedSeconds: 0,
   isTimerRunning: false,
@@ -26,6 +28,12 @@ const activeTaskSlice = createSlice({
     resetTimer: (state) => {
       state.elapsedSeconds = 0;
       state.isTimerRunning = false;
+    },
+    updateActiveTask: (state, action: PayloadAction<ActiveTaskState>) => {
+      state.id = action.payload.id;
+      state.name = action.payload.name;
+      state.elapsedSeconds = action.payload.elapsedSeconds;
+      state.isTimerRunning = action.payload.isTimerRunning;
     },
     updateActiveTaskName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
@@ -48,6 +56,7 @@ export const selectActiveTask = (state: RootState) => state.activeTask;
 // actions
 export const {
   resetActiveTask,
+  updateActiveTask,
   updateActiveTaskName,
   updateElapsedSeconds,
   updateIsTimerRunning,
