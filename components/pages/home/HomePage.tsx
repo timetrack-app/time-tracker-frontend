@@ -157,17 +157,7 @@ const HomePage = () => {
     }, [dispatch]);
 
 
-  // TODO: mobile layout
-  // TODO: break point: tablet
-  // TODO: NavBar -> Hamburger menu
-  // TODO: MainAreaContainer -> flex-direction: column;
-  // TODO: OnGoingTimerArea -> flex, carousel, display only timer components. each timer components represents: current task, total time, total in selected tab
-  // TODO: TabsArea -> scroll-y. List: carousel
-  // const menuItems = [
-  //   <a href="/">Home</a>,
-  //   <a href="/about">About</a>,
-  //   <a href="/contact">Contact</a>,
-  // ];
+  // TODO: replace with valid items later...
   const menuItems = [
     'item1',
     'item2',
