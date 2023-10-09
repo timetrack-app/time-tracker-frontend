@@ -3,6 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 type ActiveTaskState = {
+  tabId: number | null
+  listId: number | null
   id: number | null // null when nothing is active
   name: string
   elapsedSeconds: number
@@ -10,6 +12,8 @@ type ActiveTaskState = {
 };
 
 const initialState: ActiveTaskState = {
+  tabId: null,
+  listId: null,
   id: null,
   name: '',
   elapsedSeconds: 0,
@@ -30,10 +34,7 @@ const activeTaskSlice = createSlice({
       state.isTimerRunning = false;
     },
     updateActiveTask: (state, action: PayloadAction<ActiveTaskState>) => {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
-      state.elapsedSeconds = action.payload.elapsedSeconds;
-      state.isTimerRunning = action.payload.isTimerRunning;
+      return action.payload;
     },
     updateActiveTaskName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
