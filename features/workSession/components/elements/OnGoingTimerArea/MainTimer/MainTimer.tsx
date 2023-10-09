@@ -13,7 +13,7 @@ import Timer from '../Timer/Timer';
 import StartWorkSessionButton from './StartWorkSessionButton';
 
 type Props = {
-  taskName: string
+  title: string
   isTimerRunning: boolean
   elapsedSeconds: number
   className?: string
@@ -26,7 +26,7 @@ type Props = {
  * @param {Props} { taskName }
  * @return {JSX.Element}
  */
-const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds, className }: Props) => {
+const MainTimer = ({ title, isTimerRunning, elapsedSeconds, className }: Props) => {
   // const dispatch = useAppDispatch();
 
   const currentColorThemeName = useAppSelector(selectColorTheme);
@@ -64,7 +64,7 @@ const MainTimer = ({ taskName, isTimerRunning, elapsedSeconds, className }: Prop
   return (
     <>
       {hasWorkSessionStarted
-        ? <Timer taskName={taskName} elapsedSeconds={elapsedSeconds} />
+        ? <Timer title={title} elapsedSeconds={elapsedSeconds} />
         : <StartWorkSessionButton className={className} />
       }
       {/* TODO: remove buttons later. This is temporary solution to start/stop the timer */}

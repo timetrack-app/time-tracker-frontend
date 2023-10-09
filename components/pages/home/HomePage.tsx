@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import styled from 'styled-components';
 
@@ -9,9 +10,12 @@ import Navbar from '../../elements/Navbar/Navbar';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
 import { selectActiveTask, updateActiveTaskName } from '../../../stores/slices/activeTaskSlice';
+import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
-import { useEffect } from 'react';
+import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
+
+import { Tab, Task, TaskList } from '../../../types/entity';
 
 const testTabs = [
   {
@@ -144,17 +148,13 @@ const HomePage = () => {
   const isLoading = isFetching > 0 || isMutating > 0;
 
   const dispatch = useAppDispatch();
+  const activeTask = useAppSelector(selectActiveTask);
+  const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
-  const {
-    name: activeTaskName,
-    isTimerRunning,
-    elapsedSeconds: activeTaskElapsedTimeSec,
-  } = useAppSelector(selectActiveTask);
+  // TODO: temporary solution. fix later
+  const tabs = testTabs;
 
-    // TODO: Temporary solution. Fix this later
-    useEffect(() => {
-      dispatch(updateActiveTaskName('Sample task 01'));
-    }, [dispatch]);
+  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
 
 
   // TODO: replace with valid items later...
@@ -165,6 +165,15 @@ const HomePage = () => {
     'item4',
   ];
 
+  // TODO: in tab total
+  // sum up totalSec of every task in tab
+  // if active task is in the tab, add up
+
+  // TODO: Temporary solution. Fix this later
+  useEffect(() => {
+    dispatch(updateActiveTaskName('Sample task 01'));
+  }, [dispatch]);
+
   return (
     <>
       <LoadingOverlay loading={isLoading} />
@@ -172,10 +181,10 @@ const HomePage = () => {
       <MobileMenu items={menuItems} />
       <MainAreaContainer>
         <OnGoingTimerArea
-          activeTaskName={activeTaskName}
-          activeTaskElapsedTimeSec={activeTaskElapsedTimeSec}
-          totalTimeSec={0}
-          totalTimeSecInSelectedTab={0}
+          activeTaskName={activeTask.name}
+          activeTaskElapsedTimeSec={activeTask.elapsedSeconds}
+          totalTimeSec={calcTotalTimeSec(tabs)}
+          totalTimeSecInSelectedTab={calcTotalTimeSecOfATab(tabs, selectedTab.id)}
         />
         <TabsArea tabs={testTabs} />
       </MainAreaContainer>

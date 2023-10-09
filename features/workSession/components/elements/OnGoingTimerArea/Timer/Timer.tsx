@@ -34,7 +34,7 @@ const ElapsedTimeP = styled.p`
 `;
 
 type Props = {
-  taskName: string
+  title: string
   elapsedSeconds: number
   className?: string
 };
@@ -45,13 +45,13 @@ type Props = {
  * @param {Props} { taskName, elapsedSeconds }
  * @return {JSX.Element}
  */
-const Timer = ({ taskName, elapsedSeconds, className }: Props) => {
+const Timer = ({ title, elapsedSeconds, className }: Props) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
   return (
     <Layout colorThemeName={currentColorThemeName} className={className}>
       <TaskNameWrapperDiv>
-        <TaskNameP>{taskName}</TaskNameP>
+        <TaskNameP>{title}</TaskNameP>
       </TaskNameWrapperDiv>
       <ElapsedTimeP>
         {secondsToHHMMSS(elapsedSeconds)}
