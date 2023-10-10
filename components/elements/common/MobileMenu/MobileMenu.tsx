@@ -1,4 +1,5 @@
 import { useState, useEffect, memo } from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import { IoMenu, IoClose } from 'react-icons/io5';
 
@@ -106,12 +107,12 @@ const MobileMenu = () => {
   }, [isOpen]);
 
   // TODO: temporary values
-  const menuItems = [
-    'item1',
-    'item2',
-    'item3',
-    'item4',
-  ];
+  const menuItems = {
+    'label1': '#',
+    'label2': '#',
+    'label3': '#',
+    'label4': '#',
+  };
 
   return (
     <WrapperDiv>
@@ -125,8 +126,12 @@ const MobileMenu = () => {
       <Container isOpen={isOpen} onClick={closeMenu}>
         {/* e.stopPropagation() is necessary to avoid close the menu when the menu items are clicked */}
         <ContentsContainer onClick={(e) => e.stopPropagation()}>
-          {menuItems.map((item, index) => (
-            <ContentItemDiv key={index}>{item}</ContentItemDiv>
+          {Object.keys(menuItems).map((label) => (
+            <ContentItemDiv key={label}>
+              <Link href={menuItems[label]}>
+                {label}
+              </Link>
+            </ContentItemDiv>
           ))}
         </ContentsContainer>
       </Container>
