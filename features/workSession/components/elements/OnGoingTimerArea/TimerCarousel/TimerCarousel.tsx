@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import DotButton, { useDotButton } from './DotButton';
@@ -81,7 +81,7 @@ const EmblaDotContainer = styled.div<{isSelected: boolean}>`
 `;
 
 type Props = {
-  slides: { [key: string]: React.ReactNode }
+  slides: { [key: string]: ReactNode }
   options?: EmblaOptionsType
 };
 
@@ -105,10 +105,10 @@ const TimerCarousel = ({ slides, options }: Props) => {
         {scrollSnaps.map((_, index) => (
           <EmblaDot key={index}>
             <EmblaDotContainer
-            key={index}
-            onClick={() => onDotButtonClick(index)}
-            isSelected={index === selectedIndex}
-          />
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              isSelected={index === selectedIndex}
+            />
           </EmblaDot>
         ))}
       </EmblaDots>

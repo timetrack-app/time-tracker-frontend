@@ -1,4 +1,3 @@
-import { memo, useEffect } from 'react';
 import styled from 'styled-components';
 import { EmblaOptionsType } from 'embla-carousel-react';
 
@@ -16,6 +15,9 @@ import { selectCurrentSelectedTab } from '../../../../../stores/slices/selectedT
 
 
 import { useWindowResize } from '../../../../../hooks/useWindowResize';
+import { useElapsedTimeCalc } from '../../../../../hooks/useElapsedTimeCalc';
+import { selectIsWorkSessionActive } from '../../../../../stores/slices/workSessionSlice';
+import { testTabs } from '../../../../../components/pages/home/dummyData';
 
 const Container = styled.div`
   width: 310px;
@@ -52,17 +54,14 @@ const OnGoingTimerArea = ({
   totalTimeSecInSelectedTab = 0,
 }: Props) => {
   const dispatch = useAppDispatch();
-
-  const [isBelowBreakPoint] = useWindowResize();
-
-  const { name, isTimerRunning, elapsedSeconds } = useAppSelector(selectActiveTask);
-
+  const isWorkSessionActive = useAppSelector(selectIsWorkSessionActive);
+  const activeTask = useAppSelector(selectActiveTask);
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
-  // TODO: Temporary solution. Fix this later
-  useEffect(() => {
-    dispatch(updateActiveTaskName('Sample task 01'));
-  }, [dispatch]);
+  const [isBelowBreakPoint] = useWindowResize();
+  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
+
+  const tabs = testTabs;
 
   //　https://www.embla-carousel.com/api/options/
   const carouselOptions: EmblaOptionsType = {
@@ -73,9 +72,19 @@ const OnGoingTimerArea = ({
   // Timer components in mobile view
   const slides = {
     // TODO: Fix current timer later...
-    current: <CustomMainTimer title="main" isTimerRunning={false} elapsedSeconds={0} />,
-    total: <CustomTimer title="Total Time" elapsedSeconds={0} />,
-    totalInTab: <CustomTimer title={`${selectedTab.name} Total Time`} elapsedSeconds={0} />,
+    current: <CustomMainTimer
+      title={activeTask.name}
+      isTimerRunning={activeTask.isTimerRunning}
+      elapsedSeconds={activeTaskElapsedTimeSec}
+    />,
+    total: <CustomTimer
+      title="Total Time"
+      elapsedSeconds={totalTimeSec}
+    />,
+    totalInTab: <CustomTimer
+      title={`${selectedTab.name} Total Time`}
+      elapsedSeconds={totalTimeSecInSelectedTab}
+    />,
   };
 
   return (
@@ -84,9 +93,9 @@ const OnGoingTimerArea = ({
         {isBelowBreakPoint
           ? <TimerCarousel slides={slides} options={carouselOptions} />
           : <MainTimer
-              title={name}
-              isTimerRunning={isTimerRunning}
-              elapsedSeconds={elapsedSeconds}
+              title={activeTask.name}
+              isTimerRunning={activeTask.isTimerRunning}
+              elapsedSeconds={activeTaskElapsedTimeSec}
             />
         }
       </MainTimerContainer>
@@ -99,4 +108,4 @@ const OnGoingTimerArea = ({
   );
 };
 
-export default memo(OnGoingTimerArea);
+export default OnGoingTimerArea;

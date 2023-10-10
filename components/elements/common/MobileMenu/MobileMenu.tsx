@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import styled from 'styled-components';
 import { IoMenu, IoClose } from 'react-icons/io5';
 
@@ -71,11 +71,7 @@ const ButtonWrapper = styled.button<{colorThemeName: ColorThemeName; isOpen: boo
   z-index: 1100;
 `;
 
-type Props = {
-  items: React.ReactNode[];
-}
-
-const MobileMenu = ({ items }: Props) => {
+const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isBelowBreakPoint] = useWindowResize();
   const currentColorTheme = useAppSelector(selectColorTheme);
@@ -109,6 +105,14 @@ const MobileMenu = ({ items }: Props) => {
     };
   }, [isOpen]);
 
+  // TODO: temporary values
+  const menuItems = [
+    'item1',
+    'item2',
+    'item3',
+    'item4',
+  ];
+
   return (
     <WrapperDiv>
       <ButtonWrapper
@@ -121,7 +125,7 @@ const MobileMenu = ({ items }: Props) => {
       <Container isOpen={isOpen} onClick={closeMenu}>
         {/* e.stopPropagation() is necessary to avoid close the menu when the menu items are clicked */}
         <ContentsContainer onClick={(e) => e.stopPropagation()}>
-          {items.map((item, index) => (
+          {menuItems.map((item, index) => (
             <ContentItemDiv key={index}>{item}</ContentItemDiv>
           ))}
         </ContentsContainer>
@@ -130,4 +134,4 @@ const MobileMenu = ({ items }: Props) => {
   );
 };
 
-export default MobileMenu;
+export default memo(MobileMenu);

@@ -9,7 +9,7 @@ import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
 import Navbar from '../../elements/Navbar/Navbar';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
-import { selectActiveTask, updateActiveTaskName } from '../../../stores/slices/activeTaskSlice';
+import { selectActiveTask, updateActiveTask, updateActiveTaskName } from '../../../stores/slices/activeTaskSlice';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
@@ -17,105 +17,8 @@ import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
 
 import { Tab, Task, TaskList } from '../../../types/entity';
 
-const testTabs = [
-  {
-    id: 1,
-    name: 'Tab 1',
-    displayOrder: 1,
-    taskLists: [
-      {
-        id: 1,
-        name: 'Task List 1',
-        displayOrder: 1,
-        tasks: [
-          {
-            id: 1,
-            displayOrder: 1,
-            name: 'Task 1',
-            description: 'Description for Task 1',
-            totalTime: 30,
-          },
-          {
-            id: 2,
-            displayOrder: 2,
-            name: 'Task 2',
-            description: 'Description for Task 2',
-            totalTime: 45,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Task List 2',
-        displayOrder: 2,
-        tasks: [
-          {
-            id: 3,
-            displayOrder: 1,
-            name: 'Task 3',
-            description: 'Description for Task 3',
-            totalTime: 20,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Tab 2',
-    displayOrder: 2,
-    taskLists: [
-      {
-        id: 3,
-        name: 'Task List 3',
-        displayOrder: 1,
-        tasks: [
-          {
-            id: 4,
-            displayOrder: 1,
-            name: 'Task 4',
-            description: 'Description for Task 4',
-            totalTime: 15,
-          },
-        ],
-      },
-      // You can add more task lists for Tab 2 if needed
-    ],
-  },
-  {
-    id: 3,
-    name: 'Tab 3',
-    displayOrder: 3,
-    taskLists: [
-      // Define task lists for Tab 3 here if needed
-    ],
-  },
-  // Add more tabs as needed
-  {
-    id: 4,
-    name: 'Tab 4',
-    displayOrder: 4,
-    taskLists: [
-      // Define task lists for Tab 3 here if needed
-    ],
-  },
-  {
-    id: 5,
-    name: 'Tab 5',
-    displayOrder: 5,
-    taskLists: [
-      // Define task lists for Tab 3 here if needed
-    ],
-  },
-  {
-    id: 6,
-    name: 'Tab 6',
-    displayOrder: 6,
-    taskLists: [
-      // Define task lists for Tab 3 here if needed
-    ],
-  },
-];
+import { testTabs } from './dummyData';
+import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
 
 // TODO: MainAreaContainer -> flex-direction: column;
 const MainAreaContainer = styled.div`
@@ -148,6 +51,7 @@ const HomePage = () => {
   const isLoading = isFetching > 0 || isMutating > 0;
 
   const dispatch = useAppDispatch();
+  const isWorkSessionActive = useAppSelector(selectIsWorkSessionActive);
   const activeTask = useAppSelector(selectActiveTask);
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
@@ -158,12 +62,6 @@ const HomePage = () => {
 
 
   // TODO: replace with valid items later...
-  const menuItems = [
-    'item1',
-    'item2',
-    'item3',
-    'item4',
-  ];
 
   // TODO: in tab total
   // sum up totalSec of every task in tab
@@ -171,14 +69,23 @@ const HomePage = () => {
 
   // TODO: Temporary solution. Fix this later
   useEffect(() => {
-    dispatch(updateActiveTaskName('Sample task 01'));
-  }, [dispatch]);
+    if (isWorkSessionActive) {
+      dispatch(updateActiveTask({
+        tabId: tabs[0].id,
+        listId: tabs[0].taskLists[0].id,
+        id: tabs[0].taskLists[0].tasks[0].id,
+        name: tabs[0].taskLists[0].tasks[0].name,
+        elapsedSeconds: tabs[0].taskLists[0].tasks[0].totalTime,
+        isTimerRunning: true,
+      }));
+    }
+  }, [isWorkSessionActive]);
 
   return (
     <>
       <LoadingOverlay loading={isLoading} />
       <Navbar />
-      <MobileMenu items={menuItems} />
+      <MobileMenu />
       <MainAreaContainer>
         <OnGoingTimerArea
           activeTaskName={activeTask.name}

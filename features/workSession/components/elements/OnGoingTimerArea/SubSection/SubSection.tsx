@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import styled from 'styled-components';
 
 import Button from '../../../../../../components/elements/common/Button/Button';
@@ -174,4 +173,4 @@ const SubSection = ({
   );
 };
 
-export default memo(SubSection);
+export default SubSection;
