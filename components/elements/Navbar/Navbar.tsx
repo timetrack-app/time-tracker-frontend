@@ -1,18 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { breakPoint } from '../../../const/styles/breakPoint';
+
 // Import your dummy SVG for the apps icon here
 // import AppsIcon from './dummy.svg';
 
 const NavbarContainer = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: transparent;
-  padding: 10px 20px;
-  top: 0;
-  left: 0;
-  right: 0;
+  display: none;
+
+  @media ${breakPoint.tablet} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    padding: 10px 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 `;
 
 const Logo = styled.a`

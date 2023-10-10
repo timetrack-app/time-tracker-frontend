@@ -1,97 +1,42 @@
+import { useEffect } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import styled from 'styled-components';
 
-import OnGoingTimerArea from '../../elements/OnGoingTimerArea/OnGoingTimerArea';
+import OnGoingTimerArea from '../../../features/workSession/components/elements/OnGoingTimerArea/OnGoingTimerArea';
+import TabsArea from '../../../features/workSession/components/elements/TabArea/TabsArea';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
-import TabsArea from '../../elements/TabArea/TabsArea';
+import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
 import Navbar from '../../elements/Navbar/Navbar';
+
+import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
+import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
+import { selectActiveTask, updateActiveTask } from '../../../stores/slices/activeTaskSlice';
+import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
+
+import { breakPoint } from '../../../const/styles/breakPoint';
+
+import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
+
+import { testTabs } from './dummyData';
 
 const MainAreaContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  height: 100%;
+  max-height: 100vh;
+  min-height: 100vh;
   gap: 24px;
-  padding-inline: 24px;
-  padding-bottom: 24px;
+  padding: 2em 1.5em 1.5em;
+
+  @media ${breakPoint.tablet} {
+    min-height: auto;
+    flex-direction: row;
+    align-items: normal;
+    padding-inline: 24px;
+    padding-bottom: 24px;
+  }
 `;
-
-const testTabs = [
-  {
-    id: 1,
-    name: 'Tab 1',
-    displayOrder: 1,
-    taskLists: [
-      {
-        id: 1,
-        name: 'Task List 1',
-        displayOrder: 1,
-        tasks: [
-          {
-            id: 1,
-            displayOrder: 1,
-            name: 'Task 1',
-            description: 'Description for Task 1',
-            totalTime: 30,
-          },
-          {
-            id: 2,
-            displayOrder: 2,
-            name: 'Task 2',
-            description: 'Description for Task 2',
-            totalTime: 45,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Task List 2',
-        displayOrder: 2,
-        tasks: [
-          {
-            id: 3,
-            displayOrder: 1,
-            name: 'Task 3',
-            description: 'Description for Task 3',
-            totalTime: 20,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Tab 2',
-    displayOrder: 2,
-    taskLists: [
-      {
-        id: 3,
-        name: 'Task List 3',
-        displayOrder: 1,
-        tasks: [
-          {
-            id: 4,
-            displayOrder: 1,
-            name: 'Task 4',
-            description: 'Description for Task 4',
-            totalTime: 15,
-          },
-        ],
-      },
-      // You can add more task lists for Tab 2 if needed
-    ],
-  },
-  {
-    id: 3,
-    name: 'Tab 3',
-    displayOrder: 3,
-    taskLists: [
-      // Define task lists for Tab 3 here if needed
-    ],
-  },
-  // Add more tabs as needed
-];
-
-// You can now use the 'tabs' variable, which is of type 'Tab[]'.
 
 const HomePage = () => {
   // TODO: Check if this method works or not...
@@ -99,12 +44,39 @@ const HomePage = () => {
   const isMutating = useIsMutating();
   const isLoading = isFetching > 0 || isMutating > 0;
 
+  const dispatch = useAppDispatch();
+  const isWorkSessionActive = useAppSelector(selectIsWorkSessionActive);
+  const selectedTab = useAppSelector(selectCurrentSelectedTab);
+
+  // TODO: temporary solution. fix later
+  const tabs = testTabs;
+
+  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
+
+  // TODO: Temporary solution. Fix this later
+  useEffect(() => {
+    if (isWorkSessionActive) {
+      dispatch(updateActiveTask({
+        tabId: tabs[0].id,
+        listId: tabs[0].taskLists[0].id,
+        id: tabs[0].taskLists[0].tasks[0].id,
+        name: tabs[0].taskLists[0].tasks[0].name,
+        elapsedSeconds: tabs[0].taskLists[0].tasks[0].totalTime,
+        isTimerRunning: true,
+      }));
+    }
+  }, [isWorkSessionActive]);
+
   return (
     <>
       <LoadingOverlay loading={isLoading} />
       <Navbar />
+      <MobileMenu />
       <MainAreaContainer>
-        <OnGoingTimerArea />
+        <OnGoingTimerArea
+          totalTimeSec={calcTotalTimeSec(tabs)}
+          totalTimeSecInSelectedTab={calcTotalTimeSecOfATab(tabs, selectedTab.id)}
+        />
         <TabsArea tabs={testTabs} />
       </MainAreaContainer>
     </>

@@ -16,9 +16,9 @@ export type WorkSession = {
 
 // Tab type
 export type Tab = {
-  id: number;
+  id: number | null;
   name: string;
-  displayOrder: number;
+  displayOrder: number | null;
   taskLists: TaskList[];
 };
 
@@ -36,7 +36,7 @@ export type Task = {
   displayOrder: number;
   name: string;
   description: string;
-  totalTime: number;
+  totalTime: number; // seconds
 };
 
 // Template type

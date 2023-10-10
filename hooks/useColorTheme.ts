@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { defaultColorThemeName } from '../const/colorTheme';
 
 import { getColorThemeCookie, setColorThemeCookie } from '../utils/cookie/colorTheme';
@@ -22,17 +23,17 @@ export const useColorTheme = () => {
    *
    * @param {ColorThemeName} colorThemeName
    */
-  const setColorTheme = (colorThemeName: ColorThemeName) => {
+  const setColorTheme = useCallback((colorThemeName: ColorThemeName) => {
     setColorThemeCookie(colorThemeName);
     dispatch(updateColorTheme(colorThemeName));
-  };
+  }, [dispatch]);
 
   /**
    * Initialize color theme cookie and state
    *
    * @return {void}
    */
-  const initColorTheme = () => {
+  const initColorTheme = useCallback(() => {
     const currentColorThemeCookie = getColorThemeCookie();
 
     if (!currentColorThemeCookie || !isColorThemeName(currentColorThemeCookie)) {
@@ -41,16 +42,16 @@ export const useColorTheme = () => {
     }
 
     dispatch(updateColorTheme(currentColorThemeCookie));
-  };
+  }, [dispatch, setColorTheme]);
 
   /**
    *
    *
    * @return {*}  {ColorThemeStyle}
    */
-  const getCurrentColorThemeStyle = (): ColorThemeStyle => (
+  const getCurrentColorThemeStyle = useCallback((): ColorThemeStyle => (
     themeNameStyleMap[currentColorTheme]
-  );
+  ), [currentColorTheme]);
 
   return {
     setColorTheme,
