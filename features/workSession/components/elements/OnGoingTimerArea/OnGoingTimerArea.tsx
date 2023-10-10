@@ -6,18 +6,11 @@ import MainTimer from './MainTimer/MainTimer';
 import SubSection from './SubSection/SubSection';
 import TimerCarousel from './TimerCarousel/TimerCarousel';
 
-import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
-import {
-  selectActiveTask,
-  updateActiveTaskName,
-} from '../../../../../stores/slices/activeTaskSlice';
+import { useAppSelector } from '../../../../../stores/hooks';
+import { selectActiveTask } from '../../../../../stores/slices/activeTaskSlice';
 import { selectCurrentSelectedTab } from '../../../../../stores/slices/selectedTabSlice';
 
-
 import { useWindowResize } from '../../../../../hooks/useWindowResize';
-import { useElapsedTimeCalc } from '../../../../../hooks/useElapsedTimeCalc';
-import { selectIsWorkSessionActive } from '../../../../../stores/slices/workSessionSlice';
-import { testTabs } from '../../../../../components/pages/home/dummyData';
 
 const Container = styled.div`
   width: 310px;
@@ -36,32 +29,19 @@ const CustomTimer = styled(Timer)`
   box-shadow: none;
 `;
 
-// TODO: Props
-// currentTaskTime
-// totalTime
-// totalTimeInTab
 type Props = {
-  activeTaskName?: string
-  activeTaskElapsedTimeSec?: number
   totalTimeSec?: number
   totalTimeSecInSelectedTab?: number
 };
 
 const OnGoingTimerArea = ({
-  activeTaskName = '',
-  activeTaskElapsedTimeSec = 0,
   totalTimeSec = 0,
   totalTimeSecInSelectedTab = 0,
 }: Props) => {
-  const dispatch = useAppDispatch();
-  const isWorkSessionActive = useAppSelector(selectIsWorkSessionActive);
   const activeTask = useAppSelector(selectActiveTask);
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
   const [isBelowBreakPoint] = useWindowResize();
-  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
-
-  const tabs = testTabs;
 
   //　https://www.embla-carousel.com/api/options/
   const carouselOptions: EmblaOptionsType = {
@@ -69,13 +49,13 @@ const OnGoingTimerArea = ({
     containScroll: 'trimSnaps',
   };
 
-  // Timer components in mobile view
+  // Timer components for mobile view
   const slides = {
     // TODO: Fix current timer later...
     current: <CustomMainTimer
       title={activeTask.name}
       isTimerRunning={activeTask.isTimerRunning}
-      elapsedSeconds={activeTaskElapsedTimeSec}
+      elapsedSeconds={activeTask.elapsedSeconds}
     />,
     total: <CustomTimer
       title="Total Time"
@@ -95,7 +75,7 @@ const OnGoingTimerArea = ({
           : <MainTimer
               title={activeTask.name}
               isTimerRunning={activeTask.isTimerRunning}
-              elapsedSeconds={activeTaskElapsedTimeSec}
+              elapsedSeconds={activeTask.elapsedSeconds}
             />
         }
       </MainTimerContainer>

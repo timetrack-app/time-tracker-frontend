@@ -16,6 +16,7 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1;
   padding: 24px;
   border-radius: 40px;
   background-color: ${({ theme }) => theme.colors.componentBackground};

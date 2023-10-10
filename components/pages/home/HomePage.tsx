@@ -9,40 +9,34 @@ import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
 import Navbar from '../../elements/Navbar/Navbar';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
-import { selectActiveTask, updateActiveTask, updateActiveTaskName } from '../../../stores/slices/activeTaskSlice';
+import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
+import { selectActiveTask, updateActiveTask } from '../../../stores/slices/activeTaskSlice';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
+
 import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
 
-import { Tab, Task, TaskList } from '../../../types/entity';
-
 import { testTabs } from './dummyData';
-import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
 
-// TODO: MainAreaContainer -> flex-direction: column;
 const MainAreaContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   max-height: 100vh;
+  min-height: 100vh;
   gap: 24px;
   padding: 2em 1.5em 1.5em;
 
   @media ${breakPoint.tablet} {
+    min-height: auto;
     flex-direction: row;
     align-items: normal;
     padding-inline: 24px;
     padding-bottom: 24px;
   }
 `;
-
-//TODO: centralize all the elements, and set max/min width to prevent the elements expand forever(especially tab area)
-
-
-
-// You can now use the 'tabs' variable, which is of type 'Tab[]'.
 
 const HomePage = () => {
   // TODO: Check if this method works or not...
@@ -52,20 +46,12 @@ const HomePage = () => {
 
   const dispatch = useAppDispatch();
   const isWorkSessionActive = useAppSelector(selectIsWorkSessionActive);
-  const activeTask = useAppSelector(selectActiveTask);
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
   // TODO: temporary solution. fix later
   const tabs = testTabs;
 
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
-
-
-  // TODO: replace with valid items later...
-
-  // TODO: in tab total
-  // sum up totalSec of every task in tab
-  // if active task is in the tab, add up
 
   // TODO: Temporary solution. Fix this later
   useEffect(() => {
@@ -88,8 +74,6 @@ const HomePage = () => {
       <MobileMenu />
       <MainAreaContainer>
         <OnGoingTimerArea
-          activeTaskName={activeTask.name}
-          activeTaskElapsedTimeSec={activeTask.elapsedSeconds}
           totalTimeSec={calcTotalTimeSec(tabs)}
           totalTimeSecInSelectedTab={calcTotalTimeSecOfATab(tabs, selectedTab.id)}
         />
