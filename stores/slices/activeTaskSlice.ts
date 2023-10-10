@@ -42,9 +42,6 @@ const activeTaskSlice = createSlice({
     updateIsTimerRunning: (state, action: PayloadAction<boolean>) => {
       state.isTimerRunning = action.payload;
     },
-    updateElapsedSeconds: (state, action: PayloadAction<number>) => {
-      state.elapsedSeconds = action.payload;
-    },
     incrementElapsedSeconds: (state) => {
       state.elapsedSeconds += 1;
     },
@@ -59,7 +56,6 @@ export const {
   resetActiveTask,
   updateActiveTask,
   updateActiveTaskName,
-  updateElapsedSeconds,
   updateIsTimerRunning,
   incrementElapsedSeconds,
   resetTimer,
