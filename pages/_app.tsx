@@ -16,7 +16,9 @@ import { queryClient } from '../libs/reactQuery/reactQuery';
 
 import { store } from '../stores/store';
 
+// Components
 import GlobalStyle from '../components/globalstyles';
+import BackgroundTask from '../components/elements/BackgroundTask/BackgroundTask';
 
 import { useColorTheme } from '../hooks/useColorTheme';
 
@@ -60,6 +62,7 @@ const App = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <BackgroundTask />
         {getLayout(
           <WithThemeProviderComponent
             Component={Component}
