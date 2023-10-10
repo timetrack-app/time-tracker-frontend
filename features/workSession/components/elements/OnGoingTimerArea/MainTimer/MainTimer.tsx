@@ -64,7 +64,7 @@ const MainTimer = ({ title, isTimerRunning, elapsedSeconds, className }: Props) 
   return (
     <>
       {hasWorkSessionStarted
-        ? <Timer title={title} elapsedSeconds={elapsedSeconds} />
+        ? <Timer title={title} elapsedSeconds={elapsedSeconds} className={className} />
         : <StartWorkSessionButton className={className} />
       }
       {/* TODO: remove buttons later. This is temporary solution to start/stop the timer */}
