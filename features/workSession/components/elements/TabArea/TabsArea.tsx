@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
@@ -108,4 +108,4 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
   );
 };
 
-export default TabsArea;
+export default memo(TabsArea);
