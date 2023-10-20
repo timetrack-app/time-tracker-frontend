@@ -13,6 +13,8 @@ import {
   washedBlack,
   softPetals,
   translucentUnicorn,
+  whiteSmoke,
+  carbon,
 } from '../../const/styles/colors';
 
 export const defaultColorThemeName: ColorThemeName = 'light';
@@ -27,6 +29,7 @@ export const lightTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
+    overlay: whiteSmoke,
   },
 };
 
@@ -40,6 +43,7 @@ export const darkTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
+    overlay: carbon,
   },
 };
 
