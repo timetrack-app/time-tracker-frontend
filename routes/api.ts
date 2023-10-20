@@ -2,6 +2,11 @@ import pathManager from 'path-kanri';
 
 import { apiBaseUrl } from '../const/api';
 
+/* Auth Endpoints */
+const register = 'auth/register';
+const login = `auth/login/{id}/{name}`;
+const logout = 'auth/logout';
+
 /* Users Endpoints */
 const getUser = `/users/{userId}`;
 const updateUserEmail = `/users/{userId}/email-update`;
@@ -9,7 +14,7 @@ const verifyUserNewEmail = `/users/email-update/verification`;
 const updateUserPassword = `/users/{userId}/password-update`;
 const sendPasswordChangeEmail = `/users/password-update/request`;
 const verifyPasswordChangeToken = `/user/password-update/verification`;
-// haven't implemented
+// haven't implemented the server side
 const saveUserNewPassword = `/user/password-update/save`;
 const getLoggedInUser = `/users/authenticated`;
 
@@ -41,9 +46,9 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
   pathManager(
     {
       // auth
-      register: 'auth/register',
-      login: `auth/login/{id}/{name}`,
-      logout: 'auth/logout',
+      register,
+      login,
+      logout,
       // users
       getUser,
       updateUserEmail,
