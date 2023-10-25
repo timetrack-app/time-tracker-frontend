@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { IoClose } from 'react-icons/io5';
 
 /**
  * Custom hook for managing Modal component open/close state
@@ -20,7 +21,7 @@ export const useModal = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  }
+  };
 
   return {
     isModalOpen,
@@ -51,10 +52,23 @@ const ModalContainer = styled.div`
   z-index: 1001;
 `;
 
+const HeaderDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.5em 0.8em 0;
+  font-size: 1.5em;
+`;
+
+const CloseButton = styled(IoClose)`
+  cursor: pointer;
+`;
+
 type ModalProps = {
-  isOpen: boolean
-  onClose: () => void
-  children?: React.ReactNode
+  isOpen: boolean;
+  onClose: () => void;
+  children?: React.ReactNode;
 };
 
 /**
@@ -65,18 +79,23 @@ type ModalProps = {
  * @return {JSX.Element}
  */
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
-
   // Close modal when the outside of the modal is clicked
   // useCallback because this function will be created every time Modal is rendered
-  const handleOverlayClick = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  }, [onClose]);
+  const handleOverlayClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    },
+    [onClose],
+  );
 
   return (
     <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
       <ModalContainer>
+        <HeaderDiv>
+          <CloseButton onClick={onClose} />
+        </HeaderDiv>
         {children}
       </ModalContainer>
     </ModalOverlay>
