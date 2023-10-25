@@ -27,6 +27,12 @@ type CreateInitialTaskFormValues = {
   taskName: string;
 };
 
+const defaultValues: CreateInitialTaskFormValues = {
+  tabIndex: 0,
+  listIndex: 0,
+  taskName: '',
+};
+
 const BodyDiv = styled.div`
   width: 70vw;
   display: flex;
@@ -46,16 +52,6 @@ const MessageP = styled.p`
   font-size: 1.2em;
 `;
 
-const FooterDiv = styled.div`
-  width: 70vw;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  @media ${breakPoint.tablet} {
-    width: 30em;
-  }
-`;
-
 const CreateInitialTaskModal = ({
   isOpen,
   tabs,
@@ -71,12 +67,15 @@ const CreateInitialTaskModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <BodyDiv>
         <MessageP> initial task</MessageP>
-        <CreateInitialTaskForm<CreateInitialTaskFormValues> onSubmit={onSubmit}>
+        <CreateInitialTaskForm<CreateInitialTaskFormValues>
+          onSubmit={onSubmit}
+          options={{ defaultValues }}
+        >
           {({ register, formState, getValues }) => (
             <CreateInitialTaskFormContentsWrapper
               button={
-                <ButtonPrimary type="submit">
-                  <p>Start a Session</p>
+                <ButtonPrimary type="submit" onClick={startWorkSession}>
+                  Start Session
                 </ButtonPrimary>
               }
             >
@@ -111,9 +110,6 @@ const CreateInitialTaskModal = ({
           )}
         </CreateInitialTaskForm>
       </BodyDiv>
-      <FooterDiv>
-        <ButtonPrimary onClick={startWorkSession}>Start Session</ButtonPrimary>
-      </FooterDiv>
     </Modal>
   );
 };
