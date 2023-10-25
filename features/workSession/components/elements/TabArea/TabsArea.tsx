@@ -3,7 +3,10 @@ import styled from 'styled-components';
 
 import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
-import { updateSelectedTab, selectCurrentSelectedTab } from '../../../../../stores/slices/selectedTabSlice';
+import {
+  updateSelectedTab,
+  selectCurrentSelectedTab,
+} from '../../../../../stores/slices/selectedTabSlice';
 
 import { ColorThemeName } from '../../../../../types/colorTheme';
 import { Tab } from '../../../../../types/entity';
@@ -29,14 +32,15 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   }
 `;
 
-const TabSelectorWrapper = styled.div<{colorThemeName: ColorThemeName}>`
+const TabSelectorWrapper = styled.div<{ colorThemeName: ColorThemeName }>`
   position: relative;
   overflow-x: scroll;
   overflow-y: hidden;
   margin-bottom: 12px;
 
-  &::before, &::after {
-    content: "";
+  &::before,
+  &::after {
+    content: '';
     position: absolute;
     top: 0;
     z-index: 1;
@@ -89,7 +93,7 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
   const handleCreateNewTab = () => {};
 
   useEffect(() => {
-    dispatch(updateSelectedTab(tabs[0]));
+    tabs.length && dispatch(updateSelectedTab(tabs[0]));
   }, [dispatch]);
 
   return (
