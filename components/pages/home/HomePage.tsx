@@ -18,9 +18,9 @@ import { updateActiveTask } from '../../../stores/slices/activeTaskSlice';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
+import { initialTabs } from '../../../const/initialTabsState';
 
 import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
-
 import { Tab } from '../../../types/entity';
 
 const MainAreaContainer = styled.div`
@@ -43,7 +43,7 @@ const MainAreaContainer = styled.div`
 `;
 
 const HomePage = () => {
-  const [tabs, setTabs] = useState<Tab[]>([]);
+  const [tabs, setTabs] = useState<Tab[]>(initialTabs);
   const {
     onClickStartWorkSession,
     isOpenSelectInitialTaskModal,
