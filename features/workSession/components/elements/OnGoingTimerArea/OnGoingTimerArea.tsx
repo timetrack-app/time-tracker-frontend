@@ -30,13 +30,15 @@ const CustomTimer = styled(Timer)`
 `;
 
 type Props = {
-  totalTimeSec?: number
-  totalTimeSecInSelectedTab?: number
+  totalTimeSec?: number;
+  totalTimeSecInSelectedTab?: number;
+  onClickStartSession: () => void;
 };
 
 const OnGoingTimerArea = ({
   totalTimeSec = 0,
   totalTimeSecInSelectedTab = 0,
+  onClickStartSession,
 }: Props) => {
   const activeTask = useAppSelector(selectActiveTask);
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
@@ -52,32 +54,36 @@ const OnGoingTimerArea = ({
   // Timer components for mobile view
   const slides = {
     // TODO: Fix current timer later...
-    current: <CustomMainTimer
-      title={activeTask.name}
-      isTimerRunning={activeTask.isTimerRunning}
-      elapsedSeconds={activeTask.elapsedSeconds}
-    />,
-    total: <CustomTimer
-      title="Total Time"
-      elapsedSeconds={totalTimeSec}
-    />,
-    totalInTab: <CustomTimer
-      title={`${selectedTab.name} Total Time`}
-      elapsedSeconds={totalTimeSecInSelectedTab}
-    />,
+    current: (
+      <CustomMainTimer
+        title={activeTask.name}
+        isTimerRunning={activeTask.isTimerRunning}
+        elapsedSeconds={activeTask.elapsedSeconds}
+        onClickStartSession={onClickStartSession}
+      />
+    ),
+    total: <CustomTimer title="Total Time" elapsedSeconds={totalTimeSec} />,
+    totalInTab: (
+      <CustomTimer
+        title={`${selectedTab.name} Total Time`}
+        elapsedSeconds={totalTimeSecInSelectedTab}
+      />
+    ),
   };
 
   return (
     <Container>
       <MainTimerContainer>
-        {isBelowBreakPoint
-          ? <TimerCarousel slides={slides} options={carouselOptions} />
-          : <MainTimer
-              title={activeTask.name}
-              isTimerRunning={activeTask.isTimerRunning}
-              elapsedSeconds={activeTask.elapsedSeconds}
-            />
-        }
+        {isBelowBreakPoint ? (
+          <TimerCarousel slides={slides} options={carouselOptions} />
+        ) : (
+          <MainTimer
+            title={activeTask.name}
+            isTimerRunning={activeTask.isTimerRunning}
+            elapsedSeconds={activeTask.elapsedSeconds}
+            onClickStartSession={onClickStartSession}
+          />
+        )}
       </MainTimerContainer>
       <SubSection
         totalSeconds={totalTimeSec}

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 import styled from 'styled-components';
 
@@ -7,17 +7,21 @@ import TabsArea from '../../../features/workSession/components/elements/TabArea/
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
 import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
 import Navbar from '../../elements/Navbar/Navbar';
+import { useCreateWorkSession } from '../../../features/workSession/api/hooks/useCreateWorkSession';
+import SelectInitialTaskModal from '../../../features/workSession/components/elements/modals/SelectInitialTaskModal/SelectInitialTaskModal';
+import CreateInitialTaskModal from '../../../features/workSession/components/elements/modals/CreateInitialTaskModal/CreateInitialTaskModal';
+import { useStartWorkSessionModals } from '../../../features/workSession/hooks/useStartWorkSessionModals';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
 import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
-import { selectActiveTask, updateActiveTask } from '../../../stores/slices/activeTaskSlice';
+import { updateActiveTask } from '../../../stores/slices/activeTaskSlice';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
 
 import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
 
-import { testTabs } from './dummyData';
+import { Tab } from '../../../types/entity';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -39,6 +43,14 @@ const MainAreaContainer = styled.div`
 `;
 
 const HomePage = () => {
+  const [tabs, setTabs] = useState<Tab[]>([]);
+  const {
+    onClickStartWorkSession,
+    isOpenSelectInitialTaskModal,
+    isOpenCreateInitialTaskModal,
+    onCloseSelectInitialTaskModal,
+    onCloseCreateInitialTaskModal,
+  } = useStartWorkSessionModals(tabs);
   // TODO: Check if this method works or not...
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
@@ -48,22 +60,32 @@ const HomePage = () => {
   const isWorkSessionActive = useAppSelector(selectIsWorkSessionActive);
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
-  // TODO: temporary solution. fix later
-  const tabs = testTabs;
+  const { mutate: createWorkSession } = useCreateWorkSession();
+  // temporary solution
+  const fakeUserId = 1;
 
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
 
+  // data post & close the modal.
+  const startWorkSession = useCallback(async () => {
+    await createWorkSession({ tabs, userId: fakeUserId });
+    isOpenSelectInitialTaskModal && onCloseSelectInitialTaskModal();
+    isOpenCreateInitialTaskModal && onCloseCreateInitialTaskModal();
+  }, [tabs]);
+
   // TODO: Temporary solution. Fix this later
   useEffect(() => {
-    if (isWorkSessionActive) {
-      dispatch(updateActiveTask({
-        tabId: tabs[0].id,
-        listId: tabs[0].taskLists[0].id,
-        id: tabs[0].taskLists[0].tasks[0].id,
-        name: tabs[0].taskLists[0].tasks[0].name,
-        elapsedSeconds: tabs[0].taskLists[0].tasks[0].totalTime,
-        isTimerRunning: true,
-      }));
+    if (isWorkSessionActive && tabs.length > 0) {
+      dispatch(
+        updateActiveTask({
+          tabId: tabs[0].id,
+          listId: tabs[0].taskLists[0].id,
+          id: tabs[0].taskLists[0].tasks[0].id,
+          name: tabs[0].taskLists[0].tasks[0].name,
+          elapsedSeconds: tabs[0].taskLists[0].tasks[0].totalTime,
+          isTimerRunning: true,
+        }),
+      );
     }
   }, [isWorkSessionActive]);
 
@@ -72,12 +94,28 @@ const HomePage = () => {
       <LoadingOverlay loading={isLoading} />
       <Navbar />
       <MobileMenu />
+      <SelectInitialTaskModal
+        isOpen={isOpenSelectInitialTaskModal}
+        tabs={tabs}
+        onClose={onCloseSelectInitialTaskModal}
+        startWorkSession={startWorkSession}
+      />
+      <CreateInitialTaskModal
+        isOpen={isOpenCreateInitialTaskModal}
+        tabs={tabs}
+        onClose={onCloseCreateInitialTaskModal}
+        startWorkSession={startWorkSession}
+      />
       <MainAreaContainer>
         <OnGoingTimerArea
           totalTimeSec={calcTotalTimeSec(tabs)}
-          totalTimeSecInSelectedTab={calcTotalTimeSecOfATab(tabs, selectedTab.id)}
+          totalTimeSecInSelectedTab={calcTotalTimeSecOfATab(
+            tabs,
+            selectedTab.id,
+          )}
+          onClickStartSession={onClickStartWorkSession}
         />
-        <TabsArea tabs={testTabs} />
+        <TabsArea tabs={tabs} />
       </MainAreaContainer>
     </>
   );
