@@ -30,7 +30,7 @@ const SubmitButtonWrapperDiv = styled.div`
   height: 3em;
 `;
 
-type CreateTaskFormLayoutProps = {
+type SelectInitialTaskFormLayoutProps = {
   button: JSX.Element;
   children?: React.ReactNode;
 };
@@ -39,18 +39,17 @@ type CreateTaskFormLayoutProps = {
  * Wrapper component for login and registration form
  * Wraps input fields and submit button
  *
- * @param {CreateTaskFormLayoutProps} { button, children }
+ * @param {SelectInitialTaskFormLayoutProps} { button, children }
  * @returns {JSX.Element}
  */
-const CreateInitialTaskFormContentsWrapper = ({
+const SelectInitialTaskFormContentsWrapper = ({
   button,
   children,
-}: CreateTaskFormLayoutProps) => (
+}: SelectInitialTaskFormLayoutProps) => (
   <FormMainDiv>
     <FormFieldsDiv>{children}</FormFieldsDiv>
-
     <SubmitButtonWrapperDiv>{button}</SubmitButtonWrapperDiv>
   </FormMainDiv>
 );
 
-export default CreateInitialTaskFormContentsWrapper;
+export default SelectInitialTaskFormContentsWrapper;

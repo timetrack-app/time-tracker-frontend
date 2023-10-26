@@ -3,16 +3,25 @@ import styled from 'styled-components';
 import ButtonPrimary from '../../../../../../components/elements/common/Button/ButtonPrimary';
 import Modal from '../../../../../../components/elements/common/Modal/Modal';
 
-import InitialTaskCard from './InitialTackCard/InitialTaskCard';
-import { useState } from 'react';
-import { Tab } from '../../../../../../types/entity';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import { SelectInput } from '../../../../../../components/elements/ReactHookForm/SelectInput';
+import SelectInitialTaskForm from '../../forms/SelectInitialTaskForm/SelectInitialTaskForm/SelectInitialTaskForm';
+import SelectInitialTaskFormContentsWrapper from '../../forms/SelectInitialTaskForm/SelectInitialTaskFormContentWrapper/SelectInitialTaskFormContentWrapper';
+
+import {
+  SelectInitialTaskFormValues,
+  TaskInfoForInitialSelection,
+} from '../../../../types';
 
 type SelectInitialTaskModalProps = {
   isOpen: boolean;
-  tabs: Tab[];
+  selectableTaskInfos: TaskInfoForInitialSelection[];
   onClose: () => void;
-  startWorkSession: () => void;
+  startWorkSession: (initialTaskInfo: SelectInitialTaskFormValues) => void;
+};
+
+const defaultValues: SelectInitialTaskFormValues = {
+  taskInfoIndex: 0,
 };
 
 const BodyDiv = styled.div`
@@ -34,54 +43,39 @@ const MessageP = styled.p`
   font-size: 1.2em;
 `;
 
-const TaskCardsContainerDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1em;
-`;
-
-const FooterDiv = styled.div`
-  width: 70vw;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  @media ${breakPoint.tablet} {
-    width: 30em;
-  }
-`;
-
 const SelectInitialTaskModal = ({
   isOpen,
-  tabs,
+  selectableTaskInfos,
   onClose,
   startWorkSession,
 }: SelectInitialTaskModalProps) => {
-  const [selectedTaskIndex, setSelectedTaskIndex] = useState(0);
-  // temporary
-  const tasks = [];
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <BodyDiv>
         <MessageP>Select initial task</MessageP>
-        <TaskCardsContainerDiv>
-          {tasks.map((task, i) => {
-            return (
-              <InitialTaskCard
-                key={i}
-                task={task}
-                isSelected={i === selectedTaskIndex}
-                onClick={() => setSelectedTaskIndex(i)}
+
+        <SelectInitialTaskForm<SelectInitialTaskFormValues>
+          onSubmit={startWorkSession}
+          options={{ defaultValues }}
+        >
+          {({ register }) => (
+            <SelectInitialTaskFormContentsWrapper
+              button={
+                <ButtonPrimary type="submit">Start Session</ButtonPrimary>
+              }
+            >
+              <SelectInput
+                label="Choose a task"
+                defaultValue={0}
+                registration={register('taskInfoIndex')}
+                options={selectableTaskInfos.map((taskInfo, i) => {
+                  return { label: taskInfo.taskName, value: i };
+                })}
               />
-            );
-          })}
-        </TaskCardsContainerDiv>
+            </SelectInitialTaskFormContentsWrapper>
+          )}
+        </SelectInitialTaskForm>
       </BodyDiv>
-      <FooterDiv>
-        <ButtonPrimary onClick={() => startWorkSession()}>
-          Start Session
-        </ButtonPrimary>
-      </FooterDiv>
     </Modal>
   );
 };

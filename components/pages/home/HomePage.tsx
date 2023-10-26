@@ -9,8 +9,6 @@ import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
 import Navbar from '../../elements/Navbar/Navbar';
 import { useCreateWorkSession } from '../../../features/workSession/api/hooks/useCreateWorkSession';
 import SelectInitialTaskModal from '../../../features/workSession/components/elements/modals/SelectInitialTaskModal/SelectInitialTaskModal';
-import CreateInitialTaskModal from '../../../features/workSession/components/elements/modals/CreateInitialTaskModal/CreateInitialTaskModal';
-import { useStartWorkSessionModals } from '../../../features/workSession/hooks/useStartWorkSessionModals';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
 import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
@@ -22,6 +20,8 @@ import { initialTabs } from '../../../const/initialTabsState';
 
 import { useElapsedTimeCalc } from '../../../hooks/useElapsedTimeCalc';
 import { Tab } from '../../../types/entity';
+import { useSelectInitialTaskModal } from '../../../features/workSession/hooks/useSelectInitialTaskModal';
+import { SelectInitialTaskFormValues } from '../../../features/workSession/types';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -45,12 +45,11 @@ const MainAreaContainer = styled.div`
 const HomePage = () => {
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
   const {
-    onClickStartWorkSession,
+    generateTaskInfoArr,
     isOpenSelectInitialTaskModal,
-    isOpenCreateInitialTaskModal,
+    onOpenSelectInitialTaskModal,
     onCloseSelectInitialTaskModal,
-    onCloseCreateInitialTaskModal,
-  } = useStartWorkSessionModals(tabs);
+  } = useSelectInitialTaskModal(tabs);
   // TODO: Check if this method works or not...
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
@@ -66,16 +65,9 @@ const HomePage = () => {
 
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
 
-  // data post & close the modal.
-  const startWorkSession = useCallback(async () => {
-    await createWorkSession({ tabs, userId: fakeUserId });
-    isOpenSelectInitialTaskModal && onCloseSelectInitialTaskModal();
-    isOpenCreateInitialTaskModal && onCloseCreateInitialTaskModal();
-  }, [tabs]);
-
   // TODO: Temporary solution. Fix this later
   useEffect(() => {
-    if (isWorkSessionActive && tabs.length > 0) {
+    if (isWorkSessionActive) {
       dispatch(
         updateActiveTask({
           tabId: tabs[0].id,
@@ -89,6 +81,33 @@ const HomePage = () => {
     }
   }, [isWorkSessionActive]);
 
+  const selectableTaskInfos = generateTaskInfoArr();
+
+  // data post & close the modal.
+  const startWorkSession = useCallback(
+    async (values: SelectInitialTaskFormValues) => {
+      // Get the initial task info with the index
+      const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
+      // Set the active task state in client side
+      setTabs((prevTabs) => {
+        const newTabs = [...prevTabs];
+        const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
+        newTabs[tabIndex].taskLists[listIndex].tasks[taskIndex].isActive = true;
+        return newTabs;
+      });
+      // API call
+      await createWorkSession({ tabs, userId: fakeUserId });
+      // Close the modal
+      onCloseSelectInitialTaskModal();
+    },
+    [
+      createWorkSession,
+      onCloseSelectInitialTaskModal,
+      selectableTaskInfos,
+      tabs,
+    ],
+  );
+
   return (
     <>
       <LoadingOverlay loading={isLoading} />
@@ -96,14 +115,8 @@ const HomePage = () => {
       <MobileMenu />
       <SelectInitialTaskModal
         isOpen={isOpenSelectInitialTaskModal}
-        tabs={tabs}
+        selectableTaskInfos={selectableTaskInfos}
         onClose={onCloseSelectInitialTaskModal}
-        startWorkSession={startWorkSession}
-      />
-      <CreateInitialTaskModal
-        isOpen={isOpenCreateInitialTaskModal}
-        tabs={tabs}
-        onClose={onCloseCreateInitialTaskModal}
         startWorkSession={startWorkSession}
       />
       <MainAreaContainer>
@@ -113,7 +126,7 @@ const HomePage = () => {
             tabs,
             selectedTab.id,
           )}
-          onClickStartSession={onClickStartWorkSession}
+          onClickStartSession={onOpenSelectInitialTaskModal}
         />
         <TabsArea tabs={tabs} />
       </MainAreaContainer>

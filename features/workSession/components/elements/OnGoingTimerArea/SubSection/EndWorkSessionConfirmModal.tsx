@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { IoClose } from 'react-icons/io5';
 
 import ButtonPrimary from '../../../../../../components/elements/common/Button/ButtonPrimary';
 import ButtonDanger from '../../../../../../components/elements/common/Button/ButtonDanger';

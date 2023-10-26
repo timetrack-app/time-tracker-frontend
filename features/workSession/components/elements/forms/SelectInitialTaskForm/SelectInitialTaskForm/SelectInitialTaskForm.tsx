@@ -12,13 +12,13 @@ const StyledForm = styled(Form)`
  * Styled Form component for login, registration page
  * (This is just a wrapper for Form)
  *
- * @template CreateInitialTaskFormValues
+ * @template SelectInitialTaskTaskFormValues
  * @param {FormProps<TFormValues>} props
  */
-const CreateInitialTaskForm = <
+const SelectInitialTaskTaskForm = <
   TFormValues extends Record<string, unknown> = Record<string, unknown>,
 >(
   props: FormProps<TFormValues>,
 ) => <StyledForm<TFormValues> {...props} />;
 
-export default CreateInitialTaskForm;
+export default SelectInitialTaskTaskForm;
