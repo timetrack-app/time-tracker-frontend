@@ -14,7 +14,7 @@ export const initialTabs: Tab[] = [
         tasks: [
           {
             id: 1,
-            name: 'aaa',
+            name: 'Untitled',
             displayOrder: 1,
             description: '',
             totalTime: 0,
