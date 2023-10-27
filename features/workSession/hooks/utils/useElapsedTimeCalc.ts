@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { useAppSelector } from '../stores/hooks';
-import { selectActiveTask } from '../stores/slices/activeTaskSlice';
-import { Tab, TaskList, Task } from '../types/entity';
+import { useAppSelector } from '../../../../stores/hooks';
+import { selectActiveTask } from '../../../../stores/slices/activeTaskSlice';
+import { Tab, TaskList, Task } from '../../../../types/entity';
 
 /**
  * Custom hook for calculate elapsed time of tasks
@@ -79,9 +79,12 @@ export const useElapsedTimeCalc = () => {
    * @param {Tab[]} tabs
    * @return {number}
    */
-  const calcTotalTimeSec = useCallback((tabs: Tab[]): number => {
-    return calcNonActiveTaskTotalSec(tabs) + activeTask.elapsedSeconds;
-  }, [calcNonActiveTaskTotalSec, activeTask]);
+  const calcTotalTimeSec = useCallback(
+    (tabs: Tab[]): number => {
+      return calcNonActiveTaskTotalSec(tabs) + activeTask.elapsedSeconds;
+    },
+    [calcNonActiveTaskTotalSec, activeTask],
+  );
 
   /**
    *
@@ -90,10 +93,13 @@ export const useElapsedTimeCalc = () => {
    * @param {number} tabId
    * @return {number}
    */
-  const calcNonActiveTaskTotalSecOfATab = (tabs: Tab[], tabId: number): number => {
+  const calcNonActiveTaskTotalSecOfATab = (
+    tabs: Tab[],
+    tabId: number,
+  ): number => {
     if (!tabs.length) return 0;
 
-    const tab = tabs.find(tab => tab.id === tabId);
+    const tab = tabs.find((tab) => tab.id === tabId);
     if (!tab || !tab.taskLists.length) return 0;
 
     return sumTaskTotalSec(extractTasksFromTaskLists(tab.taskLists), true);
@@ -106,13 +112,16 @@ export const useElapsedTimeCalc = () => {
    * @param {number} tabId
    * @return {number}
    */
-  const calcTotalTimeSecOfATab = useCallback((tabs: Tab[], tabId: number): number => {
-    const nonActiveTaskTotal = calcNonActiveTaskTotalSecOfATab(tabs, tabId);
+  const calcTotalTimeSecOfATab = useCallback(
+    (tabs: Tab[], tabId: number): number => {
+      const nonActiveTaskTotal = calcNonActiveTaskTotalSecOfATab(tabs, tabId);
 
-    return activeTask.tabId === tabId
-      ? nonActiveTaskTotal + activeTask.elapsedSeconds
-      : nonActiveTaskTotal;
-  }, [calcNonActiveTaskTotalSecOfATab, activeTask]);
+      return activeTask.tabId === tabId
+        ? nonActiveTaskTotal + activeTask.elapsedSeconds
+        : nonActiveTaskTotal;
+    },
+    [calcNonActiveTaskTotalSecOfATab, activeTask],
+  );
 
   return {
     calcTotalTimeSec,

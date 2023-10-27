@@ -1,27 +1,25 @@
-import { Tab } from '../types/entity';
+import { Tab, Task, TaskList } from '../types/entity';
 
+export const initialDefaultTask: Task = {
+  id: 1,
+  name: 'Untitled',
+  displayOrder: 1,
+  description: '',
+  totalTime: 0,
+};
+
+export const initialDefaultTaskList: TaskList = {
+  id: 1,
+  name: 'Untitled',
+  displayOrder: 1,
+  tasks: [initialDefaultTask],
+};
 //  TODO : Consider where to place this initial tabs state
 export const initialTabs: Tab[] = [
   {
     id: 1,
     name: 'Untitled',
     displayOrder: 1,
-    taskLists: [
-      {
-        id: 1,
-        name: 'Untitled',
-        displayOrder: 1,
-        tasks: [
-          {
-            id: 1,
-            name: 'Untitled',
-            displayOrder: 1,
-            description: '',
-            totalTime: 0,
-            isActive: false,
-          },
-        ],
-      },
-    ],
+    taskLists: [initialDefaultTaskList],
   },
 ];

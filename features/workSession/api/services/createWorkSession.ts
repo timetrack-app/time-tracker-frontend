@@ -14,6 +14,12 @@ export const createWorkSession = async ({
   tabs,
 }: CreateWorkSessionParams): Promise<WorkSession> => {
   const body = { tabs };
+  console.log(
+    'API Request URL:',
+    getApiEndpointFull('createWorkSession', { userId }),
+  );
+  console.log('Request Body:', body);
+
   const res = await axiosBase().post(
     getApiEndpointFull('createWorkSession', { userId }),
     body,

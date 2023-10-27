@@ -93,8 +93,8 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
   const handleCreateNewTab = () => {};
 
   useEffect(() => {
-    tabs.length && dispatch(updateSelectedTab(tabs[0]));
-  }, [dispatch]);
+    if (tabs.length) dispatch(updateSelectedTab(tabs[0]));
+  }, [dispatch, tabs]);
 
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>

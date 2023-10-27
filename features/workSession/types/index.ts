@@ -1,6 +1,6 @@
 import { Tab } from '../../../types/entity';
 
-// Params
+// API Params
 export type EndWorkSessionParams = {
   userId: number;
   workSessionId: number;
@@ -9,6 +9,10 @@ export type EndWorkSessionParams = {
 export type CreateWorkSessionParams = {
   userId: number;
   tabs: Tab[];
+};
+
+export type GetLatestWorkSessionParams = {
+  userId: number;
 };
 
 // Related to initial task selection

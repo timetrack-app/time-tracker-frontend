@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
-import { selectActiveTask, incrementElapsedSeconds } from '../../../stores/slices/activeTaskSlice';
+import {
+  selectActiveTask,
+  incrementElapsedSeconds,
+} from '../../../stores/slices/activeTaskSlice';
 
 /**
  * Custom hook for updating elapsedSeconds of the activeTask
@@ -13,7 +16,6 @@ export const useUpdateActiveTaskTimer = () => {
   let intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-
     if (isTimerRunning) {
       intervalIdRef.current = setInterval(() => {
         // update elapsedTime every 1 sec

@@ -48,6 +48,8 @@
         "ignorePropertyModificationsFor": ["state"]
       }
     ],
+    "@typescript-eslint/no-shadow": "off",
+    "no-restricted-syntax": "off",
     "@typescript-eslint/ban-types": "off",
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
@@ -77,6 +79,9 @@
     "operator-linebreak": "off",
     "implicit-arrow-linebreak": "off",
     "@typescript-eslint/indent": "off",
-    "react/jsx-wrap-multilines": "off"
+    "react/jsx-wrap-multilines": "off",
+    "no-plusplus": "off",
+    "function-paren-newline": "off",
+    "object-curly-newline": "off"
   }
 }

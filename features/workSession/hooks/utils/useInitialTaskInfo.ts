@@ -1,11 +1,16 @@
 import { useCallback, useState } from 'react';
-import { Tab } from '../../../types/entity';
-import { TaskInfoForInitialSelection } from '../types';
+import { initialDefaultTask } from '../../../../const/initialTabsState';
+import { Tab } from '../../../../types/entity';
+import { TaskInfoForInitialSelection } from '../../types';
 
-export const useSelectInitialTaskModal = (tabs: Tab[]) => {
-  const [isOpenSelectInitialTaskModal, setIsOpenSelectInitialTaskModal] =
-    useState(false);
-
+export const useInitialTaskInfo = (tabs: Tab[]) => {
+  const [selectedTaskInfo, setSelectedTaskInfo] =
+    useState<TaskInfoForInitialSelection>({
+      tabIndex: 0,
+      listIndex: 0,
+      taskIndex: 0,
+      taskName: initialDefaultTask.name,
+    });
   const generateTaskInfoArr = useCallback(() => {
     const taskInfoArr: TaskInfoForInitialSelection[] = [];
     for (let i = 0; i < tabs.length; i++) {
@@ -26,18 +31,5 @@ export const useSelectInitialTaskModal = (tabs: Tab[]) => {
     return taskInfoArr;
   }, [tabs]);
 
-  const onOpenSelectInitialTaskModal = useCallback(() => {
-    setIsOpenSelectInitialTaskModal(true);
-  }, []);
-
-  const onCloseSelectInitialTaskModal = useCallback(() => {
-    setIsOpenSelectInitialTaskModal(false);
-  }, []);
-
-  return {
-    generateTaskInfoArr,
-    isOpenSelectInitialTaskModal,
-    onOpenSelectInitialTaskModal,
-    onCloseSelectInitialTaskModal,
-  };
+  return { generateTaskInfoArr, selectedTaskInfo, setSelectedTaskInfo };
 };

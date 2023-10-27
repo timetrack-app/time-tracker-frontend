@@ -32,12 +32,11 @@ export type TaskList = {
 
 // Task type
 export type Task = {
-  id: number;
+  id: number | undefined;
   displayOrder: number;
   name: string;
   description: string;
   totalTime: number; // seconds
-  isActive: boolean;
 };
 
 // Template type
