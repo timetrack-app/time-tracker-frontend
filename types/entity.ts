@@ -19,7 +19,7 @@ export type Tab = {
   id: number | null;
   name: string;
   displayOrder: number | null;
-  taskLists: TaskList[];
+  lists: TaskList[];
 };
 
 // List type
@@ -51,7 +51,7 @@ export type TemplateTab = {
   id: number;
   name: string;
   displayOrder: number;
-  templateTaskLists: TemplateTaskList[];
+  templatelists: TemplateTaskList[];
 };
 
 // TemplateList type

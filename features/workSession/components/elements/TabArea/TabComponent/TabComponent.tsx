@@ -54,11 +54,11 @@ const TaskListContainerDiv = styled.div`
 
 const TabComponent = ({ tab }: TabComponentProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
-  const { taskLists } = tab;
+  const { lists } = tab;
   const handleCreateTaskList = () => {};
   return (
     <ContainerDiv colorThemeName={currentColorThemeName}>
-      {taskLists.map((taskList) => (
+      {lists.map((taskList) => (
         <TaskListContainerDiv key={taskList.id}>
           <TaskListComponent taskList={taskList} />
         </TaskListContainerDiv>

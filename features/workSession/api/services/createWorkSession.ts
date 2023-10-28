@@ -1,7 +1,9 @@
 import { axiosBase } from '../../../../libs/axios';
 import { getApiEndpointFull } from '../../../../routes/api';
-import { WorkSession } from '../../../../types/entity';
-import { CreateWorkSessionParams } from '../../types';
+import {
+  CreateWorkSessionParams,
+  CreateWorkSessionResponse,
+} from '../../types';
 
 /**
  *
@@ -12,17 +14,12 @@ import { CreateWorkSessionParams } from '../../types';
 export const createWorkSession = async ({
   userId,
   tabs,
-}: CreateWorkSessionParams): Promise<WorkSession> => {
+}: CreateWorkSessionParams): Promise<CreateWorkSessionResponse> => {
   const body = { tabs };
-  console.log(
-    'API Request URL:',
-    getApiEndpointFull('createWorkSession', { userId }),
-  );
-  console.log('Request Body:', body);
-
   const res = await axiosBase().post(
     getApiEndpointFull('createWorkSession', { userId }),
     body,
   );
+  console.log('createWorkSession', res);
   return res.data;
 };

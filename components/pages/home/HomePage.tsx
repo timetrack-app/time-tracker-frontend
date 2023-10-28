@@ -57,7 +57,7 @@ const HomePage = () => {
   // Utility hooks
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
   const { selectedTaskInfo, setSelectedTaskInfo, generateTaskInfoArr } =
-    useInitialTaskInfo(tabs);
+    useInitialTaskInfo();
 
   // Modal
   const {
@@ -75,20 +75,23 @@ const HomePage = () => {
     useCreateWorkSession({
       onSuccess: (data) => {
         console.log("createWorkSession's onSuccess");
+        console.log(data);
+        console.log('workSession', data.workSession);
 
-        const { tabs } = data;
+        const { tabs } = data.workSession;
+
         // attach id to the tabs,list,tasks
-        setTabs(tabs);
 
+        setTabs(tabs);
         const { tabIndex, listIndex, taskIndex, taskName } = selectedTaskInfo;
         dispatch(
           updateActiveTask({
             tabId: tabs[tabIndex].id,
-            listId: tabs[tabIndex].taskLists[listIndex].id,
-            id: tabs[tabIndex].taskLists[listIndex].tasks[taskIndex].id,
+            listId: tabs[tabIndex].lists[listIndex].id,
+            id: tabs[tabIndex].lists[listIndex].tasks[taskIndex].id,
             name: taskName,
             elapsedSeconds:
-              tabs[tabIndex].taskLists[listIndex].tasks[taskIndex].totalTime,
+              tabs[tabIndex].lists[listIndex].tasks[taskIndex].totalTime,
             isTimerRunning: true,
           }),
         );
@@ -119,7 +122,7 @@ const HomePage = () => {
     },
   );
 
-  const selectableTaskInfos = generateTaskInfoArr();
+  const selectableTaskInfos = generateTaskInfoArr(tabs);
 
   // data post & close the modal.
   const startWorkSession = useCallback(

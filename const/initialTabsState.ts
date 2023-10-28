@@ -20,6 +20,6 @@ export const initialTabs: Tab[] = [
     id: 1,
     name: 'Untitled',
     displayOrder: 1,
-    taskLists: [initialDefaultTaskList],
+    lists: [initialDefaultTaskList],
   },
 ];

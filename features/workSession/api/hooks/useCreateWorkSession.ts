@@ -1,7 +1,9 @@
 import { UseMutationOptions, useMutation } from 'react-query';
 import { createWorkSession } from '../services/createWorkSession';
-import { CreateWorkSessionParams } from '../../types';
-import { WorkSession } from '../../../../types/entity';
+import {
+  CreateWorkSessionParams,
+  CreateWorkSessionResponse,
+} from '../../types';
 
 /**
  * Custom hook for create a work session
@@ -9,7 +11,11 @@ import { WorkSession } from '../../../../types/entity';
  * @param {UseMutationOptions<void, CreateWorkSessionParams, undefined>} [options]
  */
 export const useCreateWorkSession = (
-  options?: UseMutationOptions<WorkSession, CreateWorkSessionParams, undefined>,
+  options?: UseMutationOptions<
+    CreateWorkSessionResponse,
+    CreateWorkSessionParams,
+    undefined
+  >,
 ) =>
   useMutation((values: CreateWorkSessionParams) => createWorkSession(values), {
     ...options,

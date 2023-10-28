@@ -14,15 +14,15 @@ export const useElapsedTimeCalc = () => {
   /**
    *
    *
-   * @param {TaskList[]} taskLists
+   * @param {TaskList[]} lists
    * @return {Task[]}
    */
-  const extractTasksFromTaskLists = (taskLists: TaskList[]): Task[] => {
-    if (!taskLists.length) return [];
+  const extractTasksFromlists = (lists: TaskList[]): Task[] => {
+    if (!lists.length) return [];
 
     let tasks: Task[] = [];
 
-    for (let list of taskLists) {
+    for (let list of lists) {
       if (list.tasks.length) {
         tasks = tasks.concat(list.tasks);
       }
@@ -63,14 +63,14 @@ export const useElapsedTimeCalc = () => {
 
     let taskListQueue: TaskList[] = [];
 
-    // extract taskLists from tabs
+    // extract lists from tabs
     for (let tab of tabs) {
-      if (tab.taskLists.length) {
-        taskListQueue = taskListQueue.concat(tab.taskLists);
+      if (tab.lists.length) {
+        taskListQueue = taskListQueue.concat(tab.lists);
       }
     }
 
-    return sumTaskTotalSec(extractTasksFromTaskLists(taskListQueue), true);
+    return sumTaskTotalSec(extractTasksFromlists(taskListQueue), true);
   };
 
   /**
@@ -100,9 +100,9 @@ export const useElapsedTimeCalc = () => {
     if (!tabs.length) return 0;
 
     const tab = tabs.find((tab) => tab.id === tabId);
-    if (!tab || !tab.taskLists.length) return 0;
+    if (!tab || !tab.lists.length) return 0;
 
-    return sumTaskTotalSec(extractTasksFromTaskLists(tab.taskLists), true);
+    return sumTaskTotalSec(extractTasksFromlists(tab.lists), true);
   };
 
   /**

@@ -1,4 +1,4 @@
-import { Tab } from '../../../types/entity';
+import { Tab, WorkSession } from '../../../types/entity';
 
 // API Params
 export type EndWorkSessionParams = {
@@ -13,6 +13,12 @@ export type CreateWorkSessionParams = {
 
 export type GetLatestWorkSessionParams = {
   userId: number;
+};
+
+// API Responses
+export type CreateWorkSessionResponse = {
+  isUnfinished: boolean;
+  workSession: WorkSession;
 };
 
 // Related to initial task selection

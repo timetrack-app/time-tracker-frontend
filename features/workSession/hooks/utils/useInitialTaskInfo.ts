@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import { initialDefaultTask } from '../../../../const/initialTabsState';
-import { Tab } from '../../../../types/entity';
 import { TaskInfoForInitialSelection } from '../../types';
+import { Tab } from '../../../../types/entity';
 
-export const useInitialTaskInfo = (tabs: Tab[]) => {
+export const useInitialTaskInfo = () => {
   const [selectedTaskInfo, setSelectedTaskInfo] =
     useState<TaskInfoForInitialSelection>({
       tabIndex: 0,
@@ -11,12 +11,12 @@ export const useInitialTaskInfo = (tabs: Tab[]) => {
       taskIndex: 0,
       taskName: initialDefaultTask.name,
     });
-  const generateTaskInfoArr = useCallback(() => {
+  const generateTaskInfoArr = useCallback((tabs: Tab[]) => {
     const taskInfoArr: TaskInfoForInitialSelection[] = [];
     for (let i = 0; i < tabs.length; i++) {
-      const { taskLists } = tabs[i];
-      for (let j = 0; j < taskLists.length; j++) {
-        const { tasks } = taskLists[j];
+      const { lists } = tabs[i];
+      for (let j = 0; j < lists.length; j++) {
+        const { tasks } = lists[j];
         for (let k = 0; k < tasks.length; k++) {
           const taskInfo: TaskInfoForInitialSelection = {
             tabIndex: i,
@@ -29,7 +29,7 @@ export const useInitialTaskInfo = (tabs: Tab[]) => {
       }
     }
     return taskInfoArr;
-  }, [tabs]);
+  }, []);
 
   return { generateTaskInfoArr, selectedTaskInfo, setSelectedTaskInfo };
 };
