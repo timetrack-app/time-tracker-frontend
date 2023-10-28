@@ -1,6 +1,7 @@
 import { useEffect, ReactElement, ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import styled, { css, keyframes } from 'styled-components';
 
 // Next
 import { NextPage } from 'next';
@@ -15,12 +16,15 @@ import { QueryClientProvider } from 'react-query';
 import { queryClient } from '../libs/reactQuery/reactQuery';
 
 import { store } from '../stores/store';
+import { useAppSelector } from '../stores/hooks';
+import { selectIsInit } from '../stores/slices/colorThemeSlice';
 
 // Components
 import GlobalStyle from '../components/globalstyles';
 import BackgroundTask from '../components/elements/BackgroundTask/BackgroundTask';
 
 import { useColorTheme } from '../hooks/useColorTheme';
+import LoadingOverlay from '../components/elements/common/LoadingOverlay/LoadingOverlay';
 
 // Layout configuration doc
 // https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
@@ -42,17 +46,24 @@ type AppPropsWithLayout = AppProps & {
  */
 const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout) => {
   const { initColorTheme, getCurrentColorThemeStyle } = useColorTheme();
+  const isInitColorTheme = useAppSelector(selectIsInit);
 
   useEffect(() => {
     initColorTheme();
   }, []);
 
   return (
-    <ThemeProvider theme={getCurrentColorThemeStyle()}>
-      <GlobalStyle />
-      <Component {...pageProps} />
-      <ToastContainer />
-    </ThemeProvider>
+    <FadeInDiv isVisible={isInitColorTheme}>
+    {isInitColorTheme ? (
+      <ThemeProvider theme={getCurrentColorThemeStyle()}>
+        <GlobalStyle />
+        <Component {...pageProps} />
+        <ToastContainer />
+      </ThemeProvider>
+    ) : (
+      <LoadingOverlay loading={!isInitColorTheme}/>
+    )}
+  </FadeInDiv>
   );
 };
 
@@ -74,4 +85,38 @@ const App = ({ Component, pageProps, router }: AppPropsWithLayout) => {
     </Provider>
   );
 };
+
 export default App;
+
+/**
+ * Styles
+ */
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 0.3;
+  }
+  60% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const FadeInDiv = styled.div`
+  animation: ${fadeIn} 800ms ease-in-out forwards;
+
+  ${({ isVisible }: { isVisible: boolean }) => !isVisible && css`
+    opacity: 0;
+  `}
+`;
