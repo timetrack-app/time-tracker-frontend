@@ -1,25 +1,8 @@
-import { ReactNode } from 'react';
-
-import {
-  useForm,
-  UseFormReturn,
-  SubmitHandler,
-  UseFormProps,
-} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { FormProps } from './types';
 
 // Reference:
 // https://github.com/alan2207/bulletproof-react/blob/master/src/components/Form/Form.tsx
-
-export type FormProps<TFormValues> = {
-  onSubmit: SubmitHandler<TFormValues>
-  children: (methods: UseFormReturn<TFormValues>) => ReactNode
-  options?: UseFormProps<TFormValues>
-  className?: string
-  autocomplete?: string
-};
-
-// TODO: styled-components
-// const StyledForm = styled(Form)`...`;
 
 const Form = <
   TFormValues extends Record<string, unknown> = Record<string, unknown>,
