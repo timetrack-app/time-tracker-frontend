@@ -17,3 +17,9 @@ export type UserLoginRequest = {
 export type UserLoginResponse = {
   token: string
 };
+
+export type IsAuthenticatedResponse = {
+  id: number
+  email: string
+  isVerified: boolean
+};

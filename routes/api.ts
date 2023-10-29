@@ -12,6 +12,7 @@ const {
   logout: '/logout',
   endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
   getUser: '/users/{userId}',
+  isAuthenticated: '/auth/is-authenticated',
   // TODO: add all endpoints
 }, apiBaseUrl);
 
