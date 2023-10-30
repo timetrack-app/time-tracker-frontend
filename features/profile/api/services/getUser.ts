@@ -1,5 +1,5 @@
 import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
+import { getApiEndpoint } from '../../../../routes/api';
 import { GetUserResponse } from '../../types';
 
 /**
@@ -10,6 +10,6 @@ import { GetUserResponse } from '../../types';
  * @return {Promise<GetUserResponse>}
  */
 export const getUser = async (authToken: string, userId: number): Promise<GetUserResponse> => {
-  const res = await axiosBase(authToken).get(getApiEndpointFull('getUser', { userId }));
+  const res = await axiosBase(authToken).get(getApiEndpoint('getUser', { userId }));
   return res.data;
 };

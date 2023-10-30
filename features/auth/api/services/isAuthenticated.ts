@@ -1,5 +1,5 @@
 import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
+import { getApiEndpoint } from '../../../../routes/api';
 import { IsAuthenticatedResponse } from '../../types';
 
 /**
@@ -9,7 +9,7 @@ import { IsAuthenticatedResponse } from '../../types';
  * @return {Promise<IsAuthenticatedResponse>}
  */
 export const isAuthenticated = async (authToken: string): Promise<IsAuthenticatedResponse> => {
-  const res = await axiosBase(authToken).get(getApiEndpointFull('isAuthenticated'));
+  const res = await axiosBase(authToken).get(getApiEndpoint('isAuthenticated'));
 
   return res.data;
 };
