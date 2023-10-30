@@ -3,3 +3,9 @@ export type GetUserResponse = {
   email: string
   isVerified: boolean
 };
+
+export type UpdateEmailRequest = {
+  authToken: string
+  userId: number
+  email: string
+};

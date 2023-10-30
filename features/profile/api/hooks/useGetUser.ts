@@ -13,6 +13,6 @@ export const useGetUser = (authToken: string, userId: number, options?: UseQuery
   return useQuery(
     ['user/get', { authToken }],
     () => getUser(authToken, userId),
-    { ...options }
+    { ...options },
   );
 };
