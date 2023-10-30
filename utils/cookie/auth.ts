@@ -17,7 +17,7 @@ export const setUserLoginCookie = (token: string, options?: OptionsType) => {
  * Get user login token (or empty string) from cookie
  *
  * @param {OptionsType} [options]
- * @return {*}  {string}
+ * @return {string}
  */
 export const getUserLoginCookie = (options?: OptionsType): string => (
   getCookie(userLoginCookieName, options) || ''
