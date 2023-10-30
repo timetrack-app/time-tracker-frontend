@@ -13,6 +13,7 @@ const {
   endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
   getUser: '/users/{userId}',
   isAuthenticated: '/auth/is-authenticated',
+  updateEmail: '/users/{userId}/email-update',
   // TODO: add all endpoints
 }, apiBaseUrl);
 

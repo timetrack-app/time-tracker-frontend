@@ -8,6 +8,9 @@ const {
   home: '/',
   signUp: '/signup',
   login: '/login',
+  dashboard: '/dashboard',
+  editEmail: '/dashboard/email',
+  editPassword: '/dashboard/password',
   // TODO: add all page routes
 });
 
