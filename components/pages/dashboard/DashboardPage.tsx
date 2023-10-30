@@ -1,5 +1,6 @@
-import { FaUserAlt } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa';
 import { LuLayoutTemplate } from 'react-icons/lu'
+import { MdPassword } from 'react-icons/md';
 import { useAppSelector } from '../../../stores/hooks';
 import { selectColorTheme } from '../../../stores/slices/colorThemeSlice';
 import { ContentsCard, Content } from '../../../features/dashboard';
@@ -21,7 +22,16 @@ const DashboardPage = () => {
   return (
     <DashboardLayout backButtonHref={getWebRoute('home')}>
       <ContentsCard title='Account' colorThemeName={currentColorThemeName}>
-        <Content title='Edit profile' href='#' icon={<FaUserAlt />} />
+        <Content
+          title='E-mail'
+          href={getWebRoute('editEmail')}
+          icon={<FaEnvelope />}
+        />
+        <Content
+          title='Password'
+          href={getWebRoute('editPassword')}
+          icon={<MdPassword />}
+        />
       </ContentsCard>
 
       <ContentsCard title='Application' colorThemeName={currentColorThemeName}>
