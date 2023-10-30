@@ -9,3 +9,10 @@ export type UpdateEmailRequest = {
   userId: number
   email: string
 };
+
+export type UpdatePasswordRequest = {
+  authToken: string
+  userId: number
+  password: string
+  passwordConfirmation: string
+};
