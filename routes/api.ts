@@ -14,7 +14,7 @@ const {
   getUser: '/users/{userId}',
   isAuthenticated: '/auth/is-authenticated',
   updateEmail: '/users/{userId}/email-update',
-  // TODO: add all endpoints
+  updatePassword: '/users/{userId}/password-update',
 }, apiBaseUrl);
 
 export { getApiEndpoint, getApiEndpointFull };
