@@ -6,6 +6,7 @@ export const initialDefaultTask: Task = {
   displayOrder: 1,
   description: '',
   totalTime: 0,
+  isActive: false,
 };
 
 export const initialDefaultTaskList: TaskList = {

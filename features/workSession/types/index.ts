@@ -21,6 +21,10 @@ export type CreateWorkSessionResponse = {
   workSession: WorkSession;
 };
 
+export type GetLatestWorkSessionResponse = {
+  workSession: WorkSession;
+};
+
 // Related to initial task selection
 
 export type TaskInfoForInitialSelection = {

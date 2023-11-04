@@ -58,20 +58,23 @@ export const useElapsedTimeCalc = () => {
    * @param {Tab[]} tabs
    * @return {number}
    */
-  const calcNonActiveTaskTotalSec = (tabs: Tab[]): number => {
-    if (!tabs.length) return 0;
+  const calcNonActiveTaskTotalSec = useCallback(
+    (tabs: Tab[]): number => {
+      if (!tabs.length) return 0;
 
-    let taskListQueue: TaskList[] = [];
+      let taskListQueue: TaskList[] = [];
 
-    // extract lists from tabs
-    for (let tab of tabs) {
-      if (tab.lists.length) {
-        taskListQueue = taskListQueue.concat(tab.lists);
+      // extract lists from tabs
+      for (let tab of tabs) {
+        if (tab.lists.length) {
+          taskListQueue = taskListQueue.concat(tab.lists);
+        }
       }
-    }
 
-    return sumTaskTotalSec(extractTasksFromlists(taskListQueue), true);
-  };
+      return sumTaskTotalSec(extractTasksFromlists(taskListQueue), true);
+    },
+    [sumTaskTotalSec],
+  );
 
   /**
    * Total seconds of all tasks

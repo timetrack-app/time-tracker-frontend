@@ -13,23 +13,23 @@ export const useInitialTaskInfo = () => {
     });
   const generateTaskInfoArr = useCallback((tabs: Tab[]) => {
     const taskInfoArr: TaskInfoForInitialSelection[] = [];
-    for (let i = 0; i < tabs.length; i++) {
-      const { lists } = tabs[i];
-      for (let j = 0; j < lists.length; j++) {
-        const { tasks } = lists[j];
-        for (let k = 0; k < tasks.length; k++) {
-          const taskInfo: TaskInfoForInitialSelection = {
-            tabIndex: i,
-            listIndex: j,
-            taskIndex: k,
-            taskName: tasks[k].name,
-          };
-          taskInfoArr.push(taskInfo);
+    if (tabs)
+      for (let i = 0; i < tabs.length; i++) {
+        const { lists } = tabs[i];
+        for (let j = 0; j < lists.length; j++) {
+          const { tasks } = lists[j];
+          for (let k = 0; k < tasks.length; k++) {
+            const taskInfo: TaskInfoForInitialSelection = {
+              tabIndex: i,
+              listIndex: j,
+              taskIndex: k,
+              taskName: tasks[k].name,
+            };
+            taskInfoArr.push(taskInfo);
+          }
         }
       }
-    }
     return taskInfoArr;
   }, []);
-
   return { generateTaskInfoArr, selectedTaskInfo, setSelectedTaskInfo };
 };

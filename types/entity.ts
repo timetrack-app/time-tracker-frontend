@@ -37,6 +37,7 @@ export type Task = {
   name: string;
   description: string;
   totalTime: number; // seconds
+  isActive: boolean | undefined;
 };
 
 // Template type

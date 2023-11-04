@@ -20,6 +20,5 @@ export const createWorkSession = async ({
     getApiEndpointFull('createWorkSession', { userId }),
     body,
   );
-  console.log('createWorkSession', res);
   return res.data;
 };

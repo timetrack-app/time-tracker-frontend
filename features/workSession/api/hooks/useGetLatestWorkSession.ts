@@ -1,7 +1,9 @@
 import { UseQueryOptions, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
-import { WorkSession } from '../../../../types/entity';
-import { GetLatestWorkSessionParams } from '../../types';
+import {
+  GetLatestWorkSessionParams,
+  GetLatestWorkSessionResponse,
+} from '../../types';
 import { getLatestWorkSession } from '../services/getLatestWorkSession';
 
 /**
@@ -11,9 +13,9 @@ import { getLatestWorkSession } from '../services/getLatestWorkSession';
  */
 export const useGetLatestWorkSession = (
   query: GetLatestWorkSessionParams,
-  options?: UseQueryOptions<WorkSession, AxiosError>,
+  options?: UseQueryOptions<GetLatestWorkSessionResponse, AxiosError>,
 ) => {
-  return useQuery<WorkSession>(
+  return useQuery<GetLatestWorkSessionResponse>(
     ['latestWorkSession', query],
     () => getLatestWorkSession(query),
     options,

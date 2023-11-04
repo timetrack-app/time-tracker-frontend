@@ -1,7 +1,9 @@
 import { axiosBase } from '../../../../libs/axios';
 import { getApiEndpointFull } from '../../../../routes/api';
-import { WorkSession } from '../../../../types/entity';
-import { GetLatestWorkSessionParams } from '../../types';
+import {
+  GetLatestWorkSessionParams,
+  GetLatestWorkSessionResponse,
+} from '../../types';
 
 /**
  *
@@ -11,16 +13,11 @@ import { GetLatestWorkSessionParams } from '../../types';
  */
 export const getLatestWorkSession = async ({
   userId,
-}: GetLatestWorkSessionParams): Promise<WorkSession> => {
-  console.log('getLatestWorkSession', userId);
-
+}: GetLatestWorkSessionParams): Promise<GetLatestWorkSessionResponse> => {
   try {
     const res = await axiosBase().get(
       getApiEndpointFull('getLatestWorkSession', { userId }),
     );
-    console.log('Response received');
-    console.log(res.data);
-
     return res.data;
   } catch (error) {
     console.error('Error occurred:', error);

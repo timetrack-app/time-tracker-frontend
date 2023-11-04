@@ -11,7 +11,10 @@ import { useCreateWorkSession } from '../../../features/workSession/api/hooks/us
 import SelectInitialTaskModal from '../../../features/workSession/components/elements/modals/SelectInitialTaskModal/SelectInitialTaskModal';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
-import { selectIsWorkSessionActive } from '../../../stores/slices/workSessionSlice';
+import {
+  selectIsWorkSessionActive,
+  updateIsWorkSessionActive,
+} from '../../../stores/slices/workSessionSlice';
 import { updateActiveTask } from '../../../stores/slices/activeTaskSlice';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
 
@@ -19,11 +22,13 @@ import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
 import { useElapsedTimeCalc } from '../../../features/workSession/hooks/utils/useElapsedTimeCalc';
-import { Tab } from '../../../types/entity';
+import { Tab, Task } from '../../../types/entity';
 import { useSelectInitialTaskModal } from '../../../features/workSession/hooks/modal/useSelectInitialTaskModal';
 import { SelectInitialTaskFormValues } from '../../../features/workSession/types';
 import { useGetLatestWorkSession } from '../../../features/workSession/api/hooks/useGetLatestWorkSession';
 import { useInitialTaskInfo } from '../../../features/workSession/hooks/utils/useInitialTaskInfo';
+import { set } from 'react-hook-form';
+import { log } from 'console';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -74,16 +79,11 @@ const HomePage = () => {
   const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
     useCreateWorkSession({
       onSuccess: (data) => {
-        console.log("createWorkSession's onSuccess");
-        console.log(data);
-        console.log('workSession', data.workSession);
-
         const { tabs } = data.workSession;
-
         // attach id to the tabs,list,tasks
-
         setTabs(tabs);
         const { tabIndex, listIndex, taskIndex, taskName } = selectedTaskInfo;
+
         dispatch(
           updateActiveTask({
             tabId: tabs[tabIndex].id,
@@ -95,8 +95,10 @@ const HomePage = () => {
             isTimerRunning: true,
           }),
         );
+        dispatch(updateIsWorkSessionActive(true));
       },
       onError: (err) => {
+        // TODO: handle error
         console.error(err);
       },
     });
@@ -111,9 +113,7 @@ const HomePage = () => {
       // prevent automatic refetching
       enabled: false,
       onSuccess: (data) => {
-        console.log("getLatestWorkSession's onSuccess");
-
-        const { tabs } = data;
+        const { tabs } = data.workSession;
         setTabs(tabs);
       },
       onError: (err) => {
@@ -130,8 +130,30 @@ const HomePage = () => {
       // Get the initial task info with the index
       const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
       setSelectedTaskInfo(initialTaskInfo);
+      const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
+
+      // set the initial task to active
+      const newTabs = [];
+
+      tabs.forEach((tab, i) => {
+        const newTab = { ...tab, lists: [] };
+        tab.lists.forEach((list, j) => {
+          const newList = { ...list, tasks: [] };
+          list.tasks.forEach((task, k) => {
+            if (i === tabIndex && j === listIndex && k === taskIndex) {
+              const activatedTask = { ...task, isActive: true };
+              newList.tasks.push(activatedTask);
+            } else {
+              newList.tasks.push(task);
+            }
+          });
+          newTab.lists.push(newList);
+        });
+        newTabs.push(newTab);
+      });
+
       // API call
-      await createWorkSession({ tabs, userId: fakeUserId });
+      await createWorkSession({ tabs: newTabs, userId: fakeUserId });
       // Close the modal
       onCloseSelectInitialTaskModal();
     },
@@ -143,21 +165,14 @@ const HomePage = () => {
       tabs,
     ],
   );
-  console.log('isWorkSessionActive', isWorkSessionActive);
-
-  console.log('isLoadingCreateWorkSession', isLoadingCreateWorkSession);
-  console.log('isLoadingGetLatestWorkSession', isLoadingGetLatestWorkSession);
 
   // Get the latest work session when the work session is active
+  // TODO : Doesn't works on reload, since isWorkSessionActive is false
   useEffect(() => {
     if (isWorkSessionActive) {
-      console.log("isWorkSessionActive's useEffect");
-
       getLatestWorkSession();
     }
-  }, [isWorkSessionActive]);
-
-  console.log(tabs);
+  }, [getLatestWorkSession, isWorkSessionActive]);
 
   return (
     <>
