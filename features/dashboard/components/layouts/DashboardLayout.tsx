@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import AuthGuard from '../../../../components/layouts/auth/AuthGuard';
 import { FiChevronLeft } from 'react-icons/fi';
 
 const MainContainerDiv = styled.div`
@@ -47,7 +48,9 @@ type Props = {
 };
 
 const DashboardLayout = ({ backButtonHref, children }: Props) => (
-  <MainContainerDiv>
+  <>
+    <AuthGuard />
+    <MainContainerDiv>
     <ContentsContainerDiv>
       <Header>
         <Link href={backButtonHref}>
@@ -59,6 +62,7 @@ const DashboardLayout = ({ backButtonHref, children }: Props) => (
       {children}
     </ContentsContainerDiv>
   </MainContainerDiv>
+  </>
 );
 
 export default DashboardLayout;
