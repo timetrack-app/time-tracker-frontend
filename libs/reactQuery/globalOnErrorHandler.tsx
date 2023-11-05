@@ -21,7 +21,7 @@ const showErrorToast = (message: string|JSX.Element) => {
  */
 export const globalOnErrorHandler = (error: unknown) => {
   if (isAxiosError(error)) {
-    const status = error.response.status;
+    const status = error?.response?.status;
 
     switch (status) {
       case 401:
