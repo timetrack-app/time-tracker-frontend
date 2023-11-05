@@ -7,6 +7,7 @@ import {
   AuthForm,
   AuthFormContentsWrapper,
   useUserLogin,
+  useIsAuthenticated,
 } from '../../../features/auth/index';
 
 import { emailRegExp } from '../../../const/validation/rules/email';
@@ -15,6 +16,9 @@ import {
   emailInvalid,
   passwordRequired,
 } from '../../../const/validation/messages';
+
+import { useAppDispatch } from '../../../stores/hooks';
+import { login } from '../../../stores/slices/authSlice';
 
 import { getWebRouteFull } from '../../../routes/web';
 import { setUserLoginCookie } from '../../../utils/cookie/auth';
@@ -32,8 +36,10 @@ type LoginFormValues = {
  */
 const LoginPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const { isLoading: isUserLoginLoading, mutate: userLogin } = useUserLogin();
+  const {} = useIsAuthenticated();
 
   // TODO: If the user logged in, redirect to main page
 
@@ -48,7 +54,9 @@ const LoginPage = () => {
           showToast('error', 'An error has occurred.');
         },
         onSuccess: (res) => {
-          setUserLoginCookie(res.token);
+          const {id, email, isVerified, authToken } = res;
+          setUserLoginCookie(authToken);
+          dispatch(login({ id, email, isVerified }));
           router.push(getWebRouteFull('home'));
         },
       },

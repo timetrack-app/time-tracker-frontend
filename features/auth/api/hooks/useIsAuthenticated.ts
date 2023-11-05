@@ -10,7 +10,7 @@ import { IsAuthenticatedResponse } from '../../types';
  * @return {*}
  */
 export const useIsAuthenticated = (
-  authToken: string,
+  authToken = '',
   options?: UseQueryOptions<IsAuthenticatedResponse, unknown, IsAuthenticatedResponse>,
 ) => {
   return useQuery<IsAuthenticatedResponse>(
