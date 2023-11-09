@@ -2,6 +2,7 @@ export { default as Timer } from './components/elements/OnGoingTimerArea/Timer/T
 export { default as MainTimer } from './components/elements/OnGoingTimerArea/MainTimer/MainTimer';
 export { default as StartWorkSessionButton } from './components/elements/OnGoingTimerArea/MainTimer/StartWorkSessionButton';
 export { default as SubSection } from './components/elements/OnGoingTimerArea/SubSection/SubSection';
+export { default as SelectInitialTaskModal } from './components/elements/modals/SelectInitialTaskModal/SelectInitialTaskModal';
 export { default as EndWorkSessionConfirmModal } from './components/elements/OnGoingTimerArea/SubSection/EndWorkSessionConfirmModal';
 export { default as OnGoingTimerArea } from './components/elements/OnGoingTimerArea/OnGoingTimerArea';
 export { default as CreateTaskListButton } from './components/elements/TabArea/TabComponent/CreateTaskListButton/CreateTaskListButton';
@@ -12,3 +13,8 @@ export { default as TaskListComponent } from './components/elements/TabArea/TabC
 export { default as TabComponent } from './components/elements/TabArea/TabComponent/TabComponent';
 export { default as TabsArea } from './components/elements/TabArea/TabsArea';
 export { useUpdateActiveTaskTimer } from './hooks/useUpdateActiveTaskTimer';
+export { useRDKUpdateActiveTask } from './hooks/useRDK/useRDKUpdateActiveTask';
+export { useSelectInitialTaskModal } from './hooks/modal/useSelectInitialTaskModal';
+export { useInitialTaskInfo } from './hooks/utils/useInitialTaskInfo';
+export { useGetLatestWorkSession } from './api/hooks/useGetLatestWorkSession';
+export { useCreateWorkSession } from './api/hooks/useCreateWorkSession';

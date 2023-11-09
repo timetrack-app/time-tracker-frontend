@@ -1,13 +1,20 @@
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
-import OnGoingTimerArea from '../../../features/workSession/components/elements/OnGoingTimerArea/OnGoingTimerArea';
-import TabsArea from '../../../features/workSession/components/elements/TabArea/TabsArea';
-import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
-import MobileMenu from '../../elements/common/MobileMenu/MobileMenu';
-import Navbar from '../../elements/Navbar/Navbar';
-import { useCreateWorkSession } from '../../../features/workSession/api/hooks/useCreateWorkSession';
-import SelectInitialTaskModal from '../../../features/workSession/components/elements/modals/SelectInitialTaskModal/SelectInitialTaskModal';
+import {
+  SelectInitialTaskModal,
+  useSelectInitialTaskModal,
+  useRDKUpdateActiveTask,
+  useGetLatestWorkSession,
+  useCreateWorkSession,
+  useInitialTaskInfo,
+} from '../../../features/workSession/index';
+
+import {
+  LoadingOverlay,
+  MobileMenu,
+  Navbar,
+} from '../../elements/common/index';
 
 import { useAppSelector } from '../../../stores/hooks';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
@@ -15,14 +22,10 @@ import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlic
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
-import { useElapsedTimeCalc } from '../../../features/workSession/hooks/utils/useElapsedTimeCalc';
 import { Tab } from '../../../types/entity';
-import { useSelectInitialTaskModal } from '../../../features/workSession/hooks/modal/useSelectInitialTaskModal';
 import { SelectInitialTaskFormValues } from '../../../features/workSession/types';
-import { useGetLatestWorkSession } from '../../../features/workSession/api/hooks/useGetLatestWorkSession';
-import { useInitialTaskInfo } from '../../../features/workSession/hooks/utils/useInitialTaskInfo';
+
 import { showToast } from '../../../libs/react-toastify/toast';
-import { useRDKUpdateActiveTask } from '../../../features/workSession/hooks/useRDK/useRDKUpdateActiveTask';
 
 const MainAreaContainer = styled.div`
   display: flex;
