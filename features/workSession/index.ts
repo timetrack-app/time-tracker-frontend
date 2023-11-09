@@ -16,5 +16,6 @@ export { useUpdateActiveTaskTimer } from './hooks/useUpdateActiveTaskTimer';
 export { useRDKUpdateActiveTask } from './hooks/useRDK/useRDKUpdateActiveTask';
 export { useSelectInitialTaskModal } from './hooks/modal/useSelectInitialTaskModal';
 export { useInitialTaskInfo } from './hooks/utils/useInitialTaskInfo';
+export { useElapsedTimeCalc } from './hooks/utils/useElapsedTimeCalc';
 export { useGetLatestWorkSession } from './api/hooks/useGetLatestWorkSession';
 export { useCreateWorkSession } from './api/hooks/useCreateWorkSession';
