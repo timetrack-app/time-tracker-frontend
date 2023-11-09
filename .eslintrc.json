@@ -76,12 +76,15 @@
       }
     ],
     "no-confusing-arrow": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": "off",
     "operator-linebreak": "off",
     "implicit-arrow-linebreak": "off",
     "@typescript-eslint/indent": "off",
     "react/jsx-wrap-multilines": "off",
     "no-plusplus": "off",
     "function-paren-newline": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "radix": "off"
   }
 }
