@@ -15,6 +15,7 @@ const {
   isAuthenticated: '/auth/is-authenticated',
   updateEmail: '/users/{userId}/email-update',
   updatePassword: '/users/{userId}/password-update',
+  templates: '/users/{userId}/templates'
 }, apiBaseUrl);
 
 export { getApiEndpoint, getApiEndpointFull };

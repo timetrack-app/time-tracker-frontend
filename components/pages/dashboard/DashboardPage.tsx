@@ -35,7 +35,11 @@ const DashboardPage = () => {
       </ContentsCard>
 
       <ContentsCard title='Application' colorThemeName={currentColorThemeName}>
-        <Content title='Templates' href='#' icon={<LuLayoutTemplate />} />
+        <Content
+          title='Templates'
+          href={getWebRoute('templateList')}
+          icon={<LuLayoutTemplate />}
+        />
       </ContentsCard>
     </DashboardLayout>
   );
