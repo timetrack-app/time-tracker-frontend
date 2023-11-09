@@ -34,7 +34,8 @@ const LabelP = styled.p`
 `;
 
 type Props = {
-  className?: string
+  className?: string;
+  onClick: () => void;
 };
 
 /**
@@ -43,21 +44,21 @@ type Props = {
  * @param {Props} { className }
  * @return {JSX.Element}
  */
-const StartWorkSessionButton = ({ className }: Props) => {
+const StartWorkSessionButton = ({ className, onClick }: Props) => {
   const dispatch = useAppDispatch();
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
-  const startWorkSession = () => {
-    // TODO: Call start work session API
+  // const startWorkSession = () => {
+  //   // TODO: Call start work session API
 
-    dispatch(updateIsWorkSessionActive(true));
-  }
+  //   dispatch(updateIsWorkSessionActive(true));
+  // };
 
   return (
     <Button
       type="button"
       colorThemeName={currentColorThemeName}
-      onClick={startWorkSession}
+      onClick={onClick}
       className={className}
     >
       <LabelP>START SESSION</LabelP>

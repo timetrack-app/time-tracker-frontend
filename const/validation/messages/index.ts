@@ -6,9 +6,13 @@ export const emailInvalid = 'Please enter a valid email';
 
 export const passwordLength = 'Password must be 6-20 characters';
 export const passwordNumber = 'Password must contain at least one number';
-export const passwordUppercase = 'Password must have at least one uppercase letter';
-export const passwordLowercase = 'Password must have at least one lowercase letter';
+export const passwordUppercase =
+  'Password must have at least one uppercase letter';
+export const passwordLowercase =
+  'Password must have at least one lowercase letter';
 export const passwordRequired = 'Password is required.';
 
 export const passwordConfirmationMismatch = 'Passwords do not match';
 export const passwordConfirmationRequired = 'Password confirmation is required';
+
+export const taskNameRequired = 'Task name is required';

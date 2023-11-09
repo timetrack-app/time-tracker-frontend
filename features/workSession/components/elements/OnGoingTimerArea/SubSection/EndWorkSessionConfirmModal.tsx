@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { IoClose } from 'react-icons/io5';
 
 import ButtonPrimary from '../../../../../../components/elements/common/Button/ButtonPrimary';
 import ButtonDanger from '../../../../../../components/elements/common/Button/ButtonDanger';
@@ -7,18 +6,18 @@ import Modal from '../../../../../../components/elements/common/Modal/Modal';
 
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
-const HeaderDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5em 0.8em 0;
-  font-size: 1.5em;
-`;
+// const HeaderDiv = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   justify-content: flex-end;
+//   padding: 0.5em 0.8em 0;
+//   font-size: 1.5em;
+// `;
 
-const CloseButton = styled(IoClose)`
-  cursor: pointer;
-`
+// const CloseButton = styled(IoClose)`
+//   cursor: pointer;
+// `;
 
 const BodyDiv = styled.div`
   width: 70vw;
@@ -52,9 +51,9 @@ const ButtonWrapper = styled.div`
 `;
 
 type Props = {
-  isOpen: boolean
-  closeModal: () => void
-  handleYesButtonOnClick: () => void
+  isOpen: boolean;
+  closeModal: () => void;
+  handleYesButtonOnClick: () => void;
 };
 
 /**
@@ -63,11 +62,15 @@ type Props = {
  * @param {Props} { isOpen, closeModal }
  * @return {JSX.Element}
  */
-const EndWorkSessionConfirmModal = ({ isOpen, closeModal, handleYesButtonOnClick }: Props) => (
+const EndWorkSessionConfirmModal = ({
+  isOpen,
+  closeModal,
+  handleYesButtonOnClick,
+}: Props) => (
   <Modal isOpen={isOpen} onClose={closeModal}>
-    <HeaderDiv>
+    {/* <HeaderDiv>
       <CloseButton onClick={closeModal} />
-    </HeaderDiv>
+    </HeaderDiv> */}
     <BodyDiv>
       <MessageP>Are you sure you want to finish this work session?</MessageP>
       <ButtonContainerDiv>

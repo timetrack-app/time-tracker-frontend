@@ -8,7 +8,7 @@ const initialState: SelectedTabState = {
   id: null,
   name: '',
   displayOrder: null,
-  taskLists: []
+  lists: [],
 };
 
 const selectedTabSlice = createSlice({
@@ -19,15 +19,13 @@ const selectedTabSlice = createSlice({
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.displayOrder = action.payload.displayOrder;
-      state.taskLists = action.payload.taskLists;
+      state.lists = action.payload.lists;
     },
   },
 });
 
 export const selectCurrentSelectedTab = (state: RootState) => state.selectedTab;
 
-export const {
-  updateSelectedTab,
-} = selectedTabSlice.actions;
+export const { updateSelectedTab } = selectedTabSlice.actions;
 
 export default selectedTabSlice.reducer;

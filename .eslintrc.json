@@ -38,6 +38,7 @@
         "unnamedComponents": "arrow-function"
       }
     ],
+    "arrow-body-style": "off",
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
     "no-param-reassign": [
@@ -47,6 +48,8 @@
         "ignorePropertyModificationsFor": ["state"]
       }
     ],
+    "@typescript-eslint/no-shadow": "off",
+    "no-restricted-syntax": "off",
     "@typescript-eslint/ban-types": "off",
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
@@ -73,9 +76,15 @@
       }
     ],
     "no-confusing-arrow": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": "off",
     "operator-linebreak": "off",
     "implicit-arrow-linebreak": "off",
     "@typescript-eslint/indent": "off",
     "react/jsx-wrap-multilines": "off",
+    "no-plusplus": "off",
+    "function-paren-newline": "off",
+    "object-curly-newline": "off",
+    "radix": "off"
   }
 }

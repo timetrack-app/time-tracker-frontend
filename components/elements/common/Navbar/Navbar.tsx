@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { breakPoint } from '../../../const/styles/breakPoint';
+import { breakPoint } from '../../../../const/styles/breakPoint';
 
 // Import your dummy SVG for the apps icon here
 // import AppsIcon from './dummy.svg';
