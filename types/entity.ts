@@ -12,6 +12,10 @@ export type WorkSession = {
   startAt: string; // Timestamp
   endAt: string; // Timestamp
   tabs: Tab[];
+  activeTask: Task;
+  activeList: TaskList;
+  activeTab: Tab;
+  user: User;
 };
 
 // Tab type
@@ -28,6 +32,7 @@ export type TaskList = {
   name: string;
   displayOrder: number;
   tasks: Task[];
+  tabId: number;
 };
 
 // Task type
@@ -38,6 +43,7 @@ export type Task = {
   description: string;
   totalTime: number; // seconds
   isActive: boolean | undefined;
+  listId: number;
 };
 
 // Template type

@@ -1,16 +1,9 @@
-import { useCallback, useState } from 'react';
-import { initialDefaultTask } from '../../../../const/initialTabsState';
+import { useCallback } from 'react';
+
 import { TaskInfoForInitialSelection } from '../../types';
 import { Tab } from '../../../../types/entity';
 
 export const useInitialTaskInfo = () => {
-  const [selectedTaskInfo, setSelectedTaskInfo] =
-    useState<TaskInfoForInitialSelection>({
-      tabIndex: 0,
-      listIndex: 0,
-      taskIndex: 0,
-      taskName: initialDefaultTask.name,
-    });
   const generateTaskInfoArr = useCallback((tabs: Tab[]) => {
     const taskInfoArr: TaskInfoForInitialSelection[] = [];
     if (tabs)
@@ -31,5 +24,35 @@ export const useInitialTaskInfo = () => {
       }
     return taskInfoArr;
   }, []);
-  return { generateTaskInfoArr, selectedTaskInfo, setSelectedTaskInfo };
+
+  const newTabsWithInitialTaskActivated = useCallback(
+    (
+      tabs: Tab[],
+      tabIndex: number,
+      listIndex: number,
+      taskIndex: number,
+    ): Tab[] => {
+      const newTabs = [];
+      tabs.forEach((tab, i) => {
+        const newTab = { ...tab, lists: [] };
+        tab.lists.forEach((list, j) => {
+          const newList = { ...list, tasks: [] };
+          list.tasks.forEach((task, k) => {
+            if (i === tabIndex && j === listIndex && k === taskIndex) {
+              const activatedTask = { ...task, isActive: true };
+              newList.tasks.push(activatedTask);
+            } else {
+              newList.tasks.push(task);
+            }
+          });
+          newTab.lists.push(newList);
+        });
+        newTabs.push(newTab);
+      });
+      return newTabs;
+    },
+    [],
+  );
+
+  return { generateTaskInfoArr, newTabsWithInitialTaskActivated };
 };
