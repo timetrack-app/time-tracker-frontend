@@ -12,7 +12,7 @@ export { default as TaskListName } from './components/elements/TabArea/TabCompon
 export { default as TaskListComponent } from './components/elements/TabArea/TabComponent/TaskListComponent/TaskListComponent';
 export { default as TabComponent } from './components/elements/TabArea/TabComponent/TabComponent';
 export { default as TabsArea } from './components/elements/TabArea/TabsArea';
-export { useUpdateActiveTaskTimer } from './hooks/useUpdateActiveTaskTimer';
+export { useUpdateActiveTaskTimer } from './hooks/timerCount/useUpdateActiveTaskTimer';
 export { useRDKUpdateActiveTask } from './hooks/useRDK/useRDKUpdateActiveTask';
 export { useSelectInitialTaskModal } from './hooks/modal/useSelectInitialTaskModal';
 export { useInitialTaskInfo } from './hooks/utils/useInitialTaskInfo';

@@ -37,3 +37,9 @@ export type TaskInfoForInitialSelection = {
 export type SelectInitialTaskFormValues = {
   taskInfoIndex: number;
 };
+
+// Type for the timer count data to store in localStorage
+export type LocalStoredTimerCountData = {
+  taskId: string;
+  startedDate: string;
+};
