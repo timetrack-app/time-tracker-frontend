@@ -13,3 +13,4 @@ export { default as TabComponent } from './components/elements/TabArea/TabCompon
 export { default as TabsArea } from './components/elements/TabArea/TabsArea';
 export { useUpdateActiveTaskTimer } from './hooks/useUpdateActiveTaskTimer';
 export { useGetTemplates } from './api/hooks/useGetTemplates';
+export * from './types'

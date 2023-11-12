@@ -33,4 +33,6 @@ type Template = {
 
 export type GetTemplatesResponse = {
   templates: Template[]
+  total: number
+  hasMore: boolean
 };

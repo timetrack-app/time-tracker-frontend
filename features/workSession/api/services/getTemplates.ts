@@ -9,7 +9,18 @@ import { GetTemplatesResponse } from '../../types';
  * @param {number} userId
  * @return {Promise<GetTemplatesResponse>}
  */
-export const getTemplates = async (authToken: string, userId: number): Promise<GetTemplatesResponse> => {
-  const res = await axiosBase(authToken).get(getApiEndpoint('templates', { userId }));
+export const getTemplates = async (
+  authToken: string,
+  userId: number,
+  page?: number,
+  limit?: number,
+): Promise<GetTemplatesResponse> => {
+  const res = await axiosBase(authToken)
+    .get(getApiEndpoint(
+      'templates',
+      { userId },
+      { page: String(page), limit: String(limit) }
+    ));
+
   return res.data;
 };
