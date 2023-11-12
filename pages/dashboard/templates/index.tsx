@@ -1,4 +1,4 @@
-import TemplateListPage from '../../../components/pages/dashboard/TemplateListPage';
+import TemplateListPage from '../../../components/pages/dashboard/TemplateListPage/TemplateListPage';
 
 const Templates = () => <TemplateListPage />
 

@@ -72,7 +72,6 @@ const EditPasswordPage = () => {
         >
           {({ register, formState, watch }) => (
             <>
-              {console.log('e:',formState.errors)}
               <div>
                 <PasswordInput
                   registration={register('password', {
