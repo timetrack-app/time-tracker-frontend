@@ -7,15 +7,16 @@ const {
   getPath: getApiEndpoint,
   getFullPath: getApiEndpointFull,
 } = pathManager({
-  register: '/register',
-  login: '/login/{id}/{name}',
-  logout: '/logout',
+  register: '/auth/register',
+  login: '/auth/login',
+  logout: '/auth/logout',
   endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
   getUser: '/users/{userId}',
   isAuthenticated: '/auth/is-authenticated',
   updateEmail: '/users/{userId}/email-update',
   updatePassword: '/users/{userId}/password-update',
-  templates: '/users/{userId}/templates'
+  templates: '/users/{userId}/templates',
+  template: '/users/{userId}/templates/{templateId}',
 }, apiBaseUrl);
 
 export { getApiEndpoint, getApiEndpointFull };
