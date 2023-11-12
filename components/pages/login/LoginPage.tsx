@@ -21,7 +21,7 @@ import { useAppDispatch } from '../../../stores/hooks';
 import { login } from '../../../stores/slices/authSlice';
 
 import { getWebRouteFull } from '../../../routes/web';
-import { setUserLoginCookie } from '../../../utils/cookie/auth';
+import { getUserLoginCookie, setUserLoginCookie } from '../../../utils/cookie/auth';
 import { showToast } from '../../../libs/react-toastify/toast';
 
 type LoginFormValues = {
@@ -39,7 +39,16 @@ const LoginPage = () => {
   const dispatch = useAppDispatch();
 
   const { isLoading: isUserLoginLoading, mutate: userLogin } = useUserLogin();
-  const {} = useIsAuthenticated();
+
+  useIsAuthenticated(getUserLoginCookie(), {
+    onSuccess: () => {
+      router.push(getWebRouteFull('home'));
+    },
+    // This empty onError call back is needed to prevent global 401 error handling.
+    onError: () => {
+      /* Do nothing */
+    },
+  });
 
   // TODO: If the user logged in, redirect to main page
 
