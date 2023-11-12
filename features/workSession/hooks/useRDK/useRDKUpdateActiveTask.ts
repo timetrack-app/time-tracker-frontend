@@ -19,7 +19,6 @@ export const useRDKUpdateActiveTask = () => {
           isTimerRunning: true,
         }),
       );
-
       dispatch(updateIsWorkSessionActive(true));
     },
     [dispatch],

@@ -5,6 +5,7 @@ import {
   updateElapsedSeconds,
 } from '../../../../stores/slices/activeTaskSlice';
 import { useLocalStoredTimerCountData } from './useLocalStoredTimerCountData';
+import { selectWorkSessionState } from '../../../../stores/slices/workSessionSlice';
 
 /**
  * Custom hook for updating elapsedSeconds of the activeTask
@@ -12,16 +13,15 @@ import { useLocalStoredTimerCountData } from './useLocalStoredTimerCountData';
  */
 export const useUpdateActiveTaskTimer = () => {
   const dispatch = useAppDispatch();
-  const { isTimerRunning, id, elapsedSeconds } =
-    useAppSelector(selectActiveTask);
-
+  const { id, elapsedSeconds } = useAppSelector(selectActiveTask);
+  const { isWorkSessionActive } = useAppSelector(selectWorkSessionState);
   const { getLocalStoredTimerCount, setLocalStoredTimerCount } =
     useLocalStoredTimerCountData();
 
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (isTimerRunning) {
+    if (isWorkSessionActive) {
       intervalIdRef.current = setInterval(() => {
         const localStoredTimerCountData = getLocalStoredTimerCount();
         // when there's no data in local storage or the data is not for the current task
@@ -51,7 +51,7 @@ export const useUpdateActiveTaskTimer = () => {
     elapsedSeconds,
     getLocalStoredTimerCount,
     id,
-    isTimerRunning,
+    isWorkSessionActive,
     setLocalStoredTimerCount,
   ]);
 };
