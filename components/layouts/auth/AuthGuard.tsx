@@ -1,22 +1,30 @@
 import { useIsAuthenticated } from '../../../features/auth/api/hooks/useIsAuthenticated';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { useAppDispatch } from '../../../stores/hooks';
-import { logout } from '../../../stores/slices/authSlice';
+import { login, logout } from '../../../stores/slices/authSlice';
+import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
 
+/**
+ * Check if the token is expired or not (to check if the user logged in)
+ *
+ *
+ */
 const AuthGuard = () => {
   const dispatch = useAppDispatch();
-  // const authToken = getUserLoginCookie();
 
-  // TODO: tmpToken. remove later
-  const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY5OTEzMzI4MiwiZXhwIjoxNjk5MjE5NjgyfQ.I-TZIJRPqtxVex3jqa960CbvAywlSyzbPI4RYPXe1_4';
+  const authToken = getUserLoginCookie();
 
-  useIsAuthenticated(authToken, {
+  const { isLoading } = useIsAuthenticated(authToken, {
+    onSuccess(user) {
+      const { id, email, isVerified } = user;
+      dispatch(login({ id, email, isVerified }));
+    },
     onError: () => {
       dispatch(logout);
     },
   });
 
-  return null;
+  return <LoadingOverlay loading={isLoading} />
 };
 
 export default AuthGuard;
