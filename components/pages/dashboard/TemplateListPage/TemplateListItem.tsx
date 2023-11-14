@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { getWebRoute } from '../../../../routes/web';
 
 const TemplateLi = styled.li`
   padding: 1em 0.5em;
@@ -63,8 +64,7 @@ const TemplateListItem = ({ templateId, name, deleteAction }: TemplateListItemPr
       </DeleteButton>
     </ListTopDiv>
     <ListBottomDiv>
-      {/* TODO: link to detail page */}
-      <Link href="#">
+      <Link href={getWebRoute('templateDetail', { templateId })}>
         <DetailLinkP>Detail</DetailLinkP>
       </Link>
     </ListBottomDiv>

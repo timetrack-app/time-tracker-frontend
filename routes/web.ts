@@ -12,7 +12,7 @@ const {
   editEmail: '/dashboard/email',
   editPassword: '/dashboard/password',
   templateList: '/dashboard/templates',
-  template: '/dashboard/templates/{templateId}',
+  templateDetail: '/dashboard/templates/{templateId}',
   // TODO: add all page routes
 });
 
