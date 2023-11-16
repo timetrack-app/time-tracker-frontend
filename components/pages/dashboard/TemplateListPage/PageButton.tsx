@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-import { IconType } from 'react-icons';
 import { ReactNode } from 'react';
+import styled from 'styled-components';
 
 const Button = styled.button`
   appearance: none;

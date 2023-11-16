@@ -1,22 +1,20 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import LoadingOverlay from '../../../elements/common/LoadingOverlay/LoadingOverlay';
 import { DashboardLayout } from '../../../../features/dashboard';
-import { useGetTemplates } from '../../../../features/workSession';
+import { useGetTemplates, getTemplatesQueryKey } from '../../../../features/workSession';
+import { useDeleteTemplate } from '../../../../features/dashboard';
 import TemplateListItem from './TemplateListItem';
 import PageButton from './PageButton';
 import { MainContainer } from '../styles/sharedStyles';
 import { getWebRoute } from '../../../../routes/web';
 import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
 import { selectLoggedInUser } from '../../../../stores/slices/authSlice';
+import { changePage, selectCurrentPage } from '../../../../stores/slices/dashboardTemplatePaginationSlice';
 import { getUserLoginCookie } from '../../../../utils/cookie/auth';
-import { useDeleteTemplate } from '../../../../features/dashboard/api/hooks/useDeleteTemplate';
 import { useAnyTrue } from '../../../../hooks/useAnyTrue';
 import { showToast } from '../../../../libs/react-toastify/toast';
 import { queryClient } from '../../../../libs/reactQuery/reactQuery';
-import { getTemplatesQueryKey } from '../../../../features/workSession/api/hooks/useGetTemplates';
-import { changePage, selectCurrentPage } from '../../../../stores/slices/dashboardTemplatePaginationSlice';
 
 const NextPrevContainerDiv = styled.div`
   display: flex;

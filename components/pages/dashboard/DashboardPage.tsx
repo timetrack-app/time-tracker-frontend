@@ -15,10 +15,6 @@ import DashboardLayout from '../../../features/dashboard/components/layouts/Dash
 const DashboardPage = () => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
-  // TODO: user info edit form page
-  // TODO: template list page(with delete button)
-  // TODO: template detail page(with delete button)
-
   return (
     <DashboardLayout backButtonHref={getWebRoute('home')}>
       <ContentsCard title='Account' colorThemeName={currentColorThemeName}>
