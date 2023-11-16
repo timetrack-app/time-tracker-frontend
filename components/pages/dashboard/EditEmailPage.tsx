@@ -1,8 +1,6 @@
-import styled from 'styled-components';
 import { SubmitHandler } from 'react-hook-form';
 import { DashboardLayout }  from '../../../features/dashboard';
-import ProfileForm from '../../../features/dashboard/components/elements/ProfileForm';
-import { useIsAuthenticated } from '../../../features/auth/api/hooks/useIsAuthenticated';
+import { ProfileForm } from '../../../features/dashboard';
 import { useUpdateEmail } from '../../../features/profile';
 import { TextInput } from '../../elements/ReactHookForm';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
@@ -13,29 +11,16 @@ import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { emailRegExp } from '../../../const/validation/rules/email';
 import { emailRequired, emailInvalid } from '../../../const/validation/messages';
 import { getWebRoute } from '../../../routes/web';
+import { useAppSelector } from '../../../stores/hooks';
+import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 
 type EmailEditFormValues = {
   email: string
 };
 
 const EditEmailPage = () => {
-  // TODO: remove later
-  const tmpToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY5OTEzMzI4MiwiZXhwIjoxNjk5MjE5NjgyfQ.I-TZIJRPqtxVex3jqa960CbvAywlSyzbPI4RYPXe1_4';
-
   const authToken = getUserLoginCookie();
-
-  // const {
-  //   data: user,
-  //   isLoading: isCheckingAuth,
-  //   isError: isAuthError,
-  // } = useIsAuthenticated(authToken, {
-  // });
-
-  const {
-    data: user,
-    isLoading: isCheckingAuth,
-    isError: isAuthError,
-  } = useIsAuthenticated(tmpToken);
+  const user = useAppSelector(selectLoggedInUser);
 
   const {
     isLoading: isUpdatingEmail,
@@ -57,7 +42,6 @@ const EditEmailPage = () => {
   };
 
   const isLoading = useAnyTrue([
-    isCheckingAuth,
     isUpdatingEmail,
   ]);
 
