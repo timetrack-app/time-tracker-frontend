@@ -8,7 +8,7 @@ import TemplateListItem from './TemplateListItem';
 import PageButton from './PageButton';
 import { MainContainer } from '../styles/sharedStyles';
 import { getWebRoute } from '../../../../routes/web';
-import { useAppSelector } from '../../../../stores/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../stores/hooks';
 import { selectLoggedInUser } from '../../../../stores/slices/authSlice';
 import { getUserLoginCookie } from '../../../../utils/cookie/auth';
 import { useDeleteTemplate } from '../../../../features/dashboard/api/hooks/useDeleteTemplate';
@@ -16,6 +16,7 @@ import { useAnyTrue } from '../../../../hooks/useAnyTrue';
 import { showToast } from '../../../../libs/react-toastify/toast';
 import { queryClient } from '../../../../libs/reactQuery/reactQuery';
 import { getTemplatesQueryKey } from '../../../../features/workSession/api/hooks/useGetTemplates';
+import { changePage, selectCurrentPage } from '../../../../stores/slices/dashboardTemplatePaginationSlice';
 
 const NextPrevContainerDiv = styled.div`
   display: flex;
@@ -24,10 +25,19 @@ const NextPrevContainerDiv = styled.div`
 `;
 
 const TemplateListPage = () => {
-  const user = useAppSelector(selectLoggedInUser);
   const authToken = getUserLoginCookie();
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectLoggedInUser);
+  const currentPage = useAppSelector(selectCurrentPage);
   const limitInPage = 5;
+
+  const goNextPage = (hasMore: boolean) => {
+    dispatch(changePage(hasMore ? currentPage + 1 : currentPage));
+  };
+
+  const backToPreviousPage = () => {
+    dispatch(changePage(Math.max(currentPage - 1, 1)));
+  };
 
   const {
     data,
@@ -89,17 +99,13 @@ const TemplateListPage = () => {
         </ul>
         <NextPrevContainerDiv>
           <PageButton
-            onClick={
-              () => setCurrentPage((old) => Math.max(old - 1, 0))
-            }
+            onClick={backToPreviousPage}
             disabled={currentPage === 1}
           >
             <FiChevronLeft />
           </PageButton>
           <PageButton
-            onClick={() => {
-              setCurrentPage((old) => (data?.hasMore ? old + 1 : old))
-            }}
+            onClick={() => goNextPage(data.hasMore)}
             disabled={isPreviousData || !data?.hasMore}
           >
             <FiChevronRight />

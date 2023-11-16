@@ -12,5 +12,5 @@ export { default as TaskListComponent } from './components/elements/TabArea/TabC
 export { default as TabComponent } from './components/elements/TabArea/TabComponent/TabComponent';
 export { default as TabsArea } from './components/elements/TabArea/TabsArea';
 export { useUpdateActiveTaskTimer } from './hooks/useUpdateActiveTaskTimer';
-export { useGetTemplates } from './api/hooks/useGetTemplates';
+export { useGetTemplates, getTemplatesQueryKey } from './api/hooks/useGetTemplates';
 export * from './types'
