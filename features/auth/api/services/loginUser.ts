@@ -1,5 +1,5 @@
 import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
+import { getApiEndpoint } from '../../../../routes/api';
 import { UserLoginRequest, UserLoginResponse } from '../../types';
 
 /**
@@ -9,7 +9,7 @@ import { UserLoginRequest, UserLoginResponse } from '../../types';
  * @return {*}  {Promise<UserLoginResponse>}
  */
 export const userLogin = async (values: UserLoginRequest): Promise<UserLoginResponse> => {
-  const res = await axiosBase().post(getApiEndpointFull('login'), values);
+  const res = await axiosBase().post(getApiEndpoint('login'), values);
 
   return res.data;
 };

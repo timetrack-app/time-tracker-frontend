@@ -1,5 +1,5 @@
 import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
+import { getApiEndpoint } from '../../../../routes/api';
 import { UserRegistrationRequest } from '../../types';
 
 /**
@@ -11,7 +11,7 @@ import { UserRegistrationRequest } from '../../types';
 export const registerUser = async (
   values: UserRegistrationRequest,
 ): Promise<void> => {
-  const res = await axiosBase().post(getApiEndpointFull('register'), values);
+  const res = await axiosBase().post(getApiEndpoint('register'), values);
 
   return res.data;
 };
