@@ -1,0 +1,1 @@
+export const pageItemLimitInTemplateList = 5;

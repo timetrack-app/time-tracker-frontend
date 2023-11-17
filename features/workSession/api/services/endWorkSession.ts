@@ -1,5 +1,5 @@
 import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
+import { getApiEndpoint } from '../../../../routes/api';
 import { EndWorkSessionParams } from '../../types';
 
 /**
@@ -11,6 +11,6 @@ import { EndWorkSessionParams } from '../../types';
 export const endWorkSession = async (
   { userId, workSessionId }: EndWorkSessionParams,
 ): Promise<void> => {
-  const res = await axiosBase().put(getApiEndpointFull('endWorkSession', { userId, workSessionId }));
+  const res = await axiosBase().put(getApiEndpoint('endWorkSession', { userId, workSessionId }));
   return res.data;
 };

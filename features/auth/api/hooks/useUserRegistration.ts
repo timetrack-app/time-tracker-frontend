@@ -7,7 +7,7 @@ import { UserRegistrationRequest } from '../../types';
  *
  */
 export const useUserRegistration = (
-  options?: UseMutationOptions<void, UserRegistrationRequest, undefined>,
+  options?: UseMutationOptions<void, unknown, UserRegistrationRequest, unknown>,
 ) => (
   useMutation((values: UserRegistrationRequest) => registerUser(values), { ...options })
 );

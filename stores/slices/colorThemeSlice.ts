@@ -8,16 +8,21 @@ import { defaultColorThemeName } from '../../const/colorTheme';
 
 type ColorThemeState = {
   theme: ColorThemeName
+  isInit: boolean
 };
 
 const initialState: ColorThemeState = {
   theme: defaultColorThemeName,
+  isInit: false,
 };
 
 const colorThemeSlice = createSlice({
   name: 'colorTheme',
   initialState,
   reducers: {
+    init: (state, action: PayloadAction<boolean>) => {
+      state.isInit = action.payload;
+    },
     updateColorTheme: (state, action: PayloadAction<ColorThemeName>) => {
       state.theme = action.payload;
     },
@@ -26,9 +31,11 @@ const colorThemeSlice = createSlice({
 
 // selectors
 export const selectColorTheme = (state: RootState) => state.colorTheme.theme;
+export const selectIsInit = (state: RootState) => state.colorTheme.isInit;
 
 // actions
 export const {
+  init,
   updateColorTheme,
 } = colorThemeSlice.actions;
 
