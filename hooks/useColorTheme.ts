@@ -4,7 +4,7 @@ import { defaultColorThemeName } from '../const/colorTheme';
 import { getColorThemeCookie, setColorThemeCookie } from '../utils/cookie/colorTheme';
 
 import { useAppDispatch, useAppSelector } from '../stores/hooks';
-import { selectColorTheme, updateColorTheme } from '../stores/slices/colorThemeSlice';
+import { init, selectColorTheme, updateColorTheme } from '../stores/slices/colorThemeSlice';
 
 import { themeNameStyleMap } from '../config/styles/colorThemes';
 
@@ -36,12 +36,13 @@ export const useColorTheme = () => {
   const initColorTheme = useCallback(() => {
     const currentColorThemeCookie = getColorThemeCookie();
 
-    if (!currentColorThemeCookie || !isColorThemeName(currentColorThemeCookie)) {
-      setColorTheme(defaultColorThemeName);
-      return;
-    }
+    const noCookieOrInvalidThemeName = !currentColorThemeCookie || !isColorThemeName(currentColorThemeCookie);
 
-    dispatch(updateColorTheme(currentColorThemeCookie));
+    noCookieOrInvalidThemeName
+      ? setColorTheme(defaultColorThemeName)
+      : dispatch(updateColorTheme(currentColorThemeCookie));
+
+    dispatch(init(true));
   }, [dispatch, setColorTheme]);
 
   /**

@@ -8,6 +8,11 @@ const {
   home: '/',
   signUp: '/signup',
   login: '/login',
+  dashboard: '/dashboard',
+  editEmail: '/dashboard/email',
+  editPassword: '/dashboard/password',
+  templateList: '/dashboard/templates',
+  templateDetail: '/dashboard/templates/{templateId}',
   // TODO: add all page routes
 });
 
