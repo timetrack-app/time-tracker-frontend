@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
 type WorkSessionState = {
-  isActive: boolean
+  workSessionId: number;
+  isWorkSessionActive: boolean;
 };
 
 const initialState: WorkSessionState = {
-  isActive: false,
+  workSessionId: null,
+  isWorkSessionActive: false,
 };
 
 const workSessionSlice = createSlice({
@@ -15,17 +17,20 @@ const workSessionSlice = createSlice({
   initialState,
   reducers: {
     updateIsWorkSessionActive: (state, action: PayloadAction<boolean>) => {
-      state.isActive = action.payload;
+      state.isWorkSessionActive = action.payload;
+    },
+    updateWorkSessionId: (state, action: PayloadAction<number>) => {
+      state.workSessionId = action.payload;
     },
   },
 });
 
-// selectors
-export const selectIsWorkSessionActive = (state: RootState) => state.workSession.isActive;
+// selector
+export const selectWorkSessionState = (state: RootState): WorkSessionState =>
+  state.workSession;
 
 // actions
-export const {
-  updateIsWorkSessionActive,
-} = workSessionSlice.actions;
+export const { updateIsWorkSessionActive, updateWorkSessionId } =
+  workSessionSlice.actions;
 
 export default workSessionSlice.reducer;

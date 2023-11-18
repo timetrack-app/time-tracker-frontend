@@ -29,6 +29,7 @@ import { Tab } from '../../../types/entity';
 import { SelectInitialTaskFormValues } from '../../../features/workSession/types';
 
 import { showToast } from '../../../libs/react-toastify/toast';
+import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -54,6 +55,8 @@ const HomePage = () => {
 
   // RDK related
   const { handleUpdateActiveTask } = useRDKUpdateActiveTask();
+  const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
+    useRDKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
   // temporary solution
   const fakeUserId = 1;
@@ -74,10 +77,12 @@ const HomePage = () => {
   const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
     useCreateWorkSession({
       onSuccess: (data) => {
-        const { tabs, activeTab, activeList, activeTask } = data.workSession;
-        // attach id to the tabs,list,tasks
-        setTabs(tabs);
+        const { id, tabs, activeTab, activeList, activeTask } =
+          data.workSession;
+        handleUpdateWorkSessionId(id);
+        handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTask(activeTab, activeList, activeTask);
+        setTabs(tabs);
       },
       onError: (err) => {
         console.error(err);
@@ -85,16 +90,16 @@ const HomePage = () => {
       },
     });
 
-  const {
-    refetch: getLatestWorkSession,
-    isLoading: isLoadingGetLatestWorkSession,
-  } = useGetLatestWorkSession(
+  const { isLoading: isLoadingGetLatestWorkSession } = useGetLatestWorkSession(
     { userId: fakeUserId },
     {
       onSuccess: (data) => {
-        const { tabs, activeTab, activeList, activeTask } = data.workSession;
-        setTabs(tabs);
+        const { id, tabs, activeTab, activeList, activeTask } =
+          data.workSession;
+        handleUpdateWorkSessionId(id);
+        handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTask(activeTab, activeList, activeTask);
+        setTabs(tabs);
       },
       onError: (err) => {
         console.error(err);

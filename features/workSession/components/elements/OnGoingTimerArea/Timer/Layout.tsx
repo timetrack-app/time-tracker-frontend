@@ -13,7 +13,6 @@ export const baseStyle = css<{ colorThemeName: ColorThemeName }>`
   align-items: center;
   justify-content: center;
   gap: 1.2em;
-  box-shadow: ${({ colorThemeName, theme }) => (colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none')};
 `;
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
@@ -21,9 +20,9 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
 `;
 
 type Props = {
-  colorThemeName: ColorThemeName
-  className?: string
-  children?: ReactNode
+  colorThemeName: ColorThemeName;
+  className?: string;
+  children?: ReactNode;
 };
 
 const Layout = ({ colorThemeName, className, children }: Props) => (

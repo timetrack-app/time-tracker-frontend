@@ -7,14 +7,25 @@ import EndWorkSessionConfirmModal from './EndWorkSessionConfirmModal';
 import { useEndWorkSession } from '../../../../api/hooks/useEndWorkSession';
 
 import { useAppDispatch, useAppSelector } from '../../../../../../stores/hooks';
-import { updateIsWorkSessionActive } from '../../../../../../stores/slices/workSessionSlice';
+import {
+  selectWorkSessionState,
+  updateIsWorkSessionActive,
+} from '../../../../../../stores/slices/workSessionSlice';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
 import { ColorThemeName } from '../../../../../../types/colorTheme';
 
 import { secondsToHHMMSS } from '../../../../../../utils/timer';
-import { white, coralRed, roseMadder, tartanRed, gray90 } from '../../../../../../const/styles/colors';
+import {
+  white,
+  coralRed,
+  roseMadder,
+  tartanRed,
+  gray90,
+} from '../../../../../../const/styles/colors';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import { selectCurrentSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
+import { close } from 'inspector';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   display: none;
@@ -29,8 +40,10 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
     border-radius: 40px;
     padding: 2em;
     background-color: ${({ theme }) => theme.colors.componentBackground};
-    box-shadow: ${({ colorThemeName, theme }) =>
-      colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+    /* box-shadow: ${({ colorThemeName, theme }) =>
+      colorThemeName === 'light'
+        ? `0 5px 6px 0 ${theme.colors.border}`
+        : 'none'}; */
   }
 `;
 
@@ -93,7 +106,6 @@ const ButtonTextP = styled.p`
 
 type SubSectionProps = {
   totalSeconds: number;
-  selectedTabName: string;
   totalSecondsOfSelectedTab: number;
 };
 
@@ -104,12 +116,15 @@ type SubSectionProps = {
 
 const SubSection = ({
   totalSeconds,
-  selectedTabName,
+  // selectedTabName,
   totalSecondsOfSelectedTab,
 }: SubSectionProps) => {
   const dispatch = useAppDispatch();
 
+  const { name: selectedTabName } = useAppSelector(selectCurrentSelectedTab);
+  const { workSessionId } = useAppSelector(selectWorkSessionState);
   const currentColorTheme = useAppSelector(selectColorTheme);
+
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const { mutate: endWorkSession } = useEndWorkSession();
@@ -120,16 +135,17 @@ const SubSection = ({
 
   const handleEndWorkSession = async () => {
     // TODO: get user id
-    // TODO: get work session id
     // TODO: need an API that returns logged in user
+    // Temporary solution
     const userId = 1;
-    const workSessionId = 1;
+
     await endWorkSession(
       { userId, workSessionId },
       {
         onError: () => {},
         onSuccess: () => {
           dispatch(updateIsWorkSessionActive(false));
+          closeModal();
         },
       },
     );

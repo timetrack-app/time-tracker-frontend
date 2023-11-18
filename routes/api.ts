@@ -9,6 +9,8 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       register: '/auth/register',
       login: '/auth/login',
       logout: '/auth/logout',
+      createWorkSession: '/users/{userId}/work-sessions',
+      getLatestWorkSession: '/users/{userId}/work-sessions/latest',
       endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
       getUser: '/users/{userId}',
       isAuthenticated: '/auth/is-authenticated',

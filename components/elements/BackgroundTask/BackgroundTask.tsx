@@ -7,10 +7,10 @@ import { useUpdateActiveTaskTimer } from '../../../features/workSession';
  */
 const BackgroundTask = (): null => {
   // update active task timer
+  // useUpdateActiveTaskTimer();
   useUpdateActiveTaskTimer();
 
   return null;
 };
 
 export default BackgroundTask;
-

@@ -1,7 +1,10 @@
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import DotButton, { useDotButton } from './DotButton';
+import Timer from '../Timer/Timer';
+import MainTimer from '../MainTimer/MainTimer';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectCurrentSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
 
 // https://www.embla-carousel.com/
 // Used the generator in the official doc of Embla
@@ -62,7 +65,7 @@ const EmblaDots = styled.div`
   align-items: center;
 `;
 
-const EmblaDotContainer = styled.div<{isSelected: boolean}>`
+const EmblaDotContainer = styled.div<{ isSelected: boolean }>`
   width: 2rem;
   height: 2rem;
   display: flex;
@@ -72,7 +75,8 @@ const EmblaDotContainer = styled.div<{isSelected: boolean}>`
   /* margin-right: 0.75rem;
   margin-left: 0.75rem; */
   &:after {
-    background-color: ${(props) =>  props.isSelected ? props.theme.colors.text : props.theme.colors.border};
+    background-color: ${(props) =>
+      props.isSelected ? props.theme.colors.text : props.theme.colors.border};
     border-radius: 50%;
     width: 20%;
     height: 20%;
@@ -80,23 +84,50 @@ const EmblaDotContainer = styled.div<{isSelected: boolean}>`
   }
 `;
 
+// type Props = {
+//   slides: { [key: string]: ReactNode }
+//   options?: EmblaOptionsType
+// };
 type Props = {
-  slides: { [key: string]: ReactNode }
-  options?: EmblaOptionsType
+  totalTimeSec: number;
+  totalTimeSecInSelectedTab: number;
+  onClickStartSession: () => void;
 };
 
-const TimerCarousel = ({ slides, options }: Props) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(emblaApi);
+//  https://www.embla-carousel.com/api/options/
+const carouselOptions: EmblaOptionsType = {
+  align: 'start',
+  containScroll: 'trimSnaps',
+};
+
+const TimerCarousel = ({
+  totalTimeSec,
+  totalTimeSecInSelectedTab,
+  onClickStartSession,
+}: Props) => {
+  const { name: selectedTabName } = useAppSelector(selectCurrentSelectedTab);
+  const [emblaRef, emblaApi] = useEmblaCarousel(carouselOptions);
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
+
+  const slides = {
+    // TODO: Fix current timer later...
+    current: <MainTimer onClickStartSession={onClickStartSession} />,
+    total: <Timer title="Total Time" elapsedSeconds={totalTimeSec} />,
+    totalInTab: (
+      <Timer
+        title={`${selectedTabName} Total Time`}
+        elapsedSeconds={totalTimeSecInSelectedTab}
+      />
+    ),
+  };
 
   return (
     <Embla>
       <EmblaViewport ref={emblaRef}>
         <EmblaContainer>
-        {Object.entries(slides).map(([key, SlideComponent]) => (
-            <EmblaSlide key={key}>
-              {SlideComponent}
-            </EmblaSlide>
+          {Object.entries(slides).map(([key, SlideComponent]) => (
+            <EmblaSlide key={key}>{SlideComponent}</EmblaSlide>
           ))}
         </EmblaContainer>
       </EmblaViewport>

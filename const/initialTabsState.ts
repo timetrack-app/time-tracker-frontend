@@ -7,6 +7,7 @@ export const initialDefaultTask: Task = {
   description: '',
   totalTime: 0,
   isActive: false,
+  listId: 1,
 };
 
 export const initialDefaultTaskList: TaskList = {
@@ -14,7 +15,9 @@ export const initialDefaultTaskList: TaskList = {
   name: 'Untitled',
   displayOrder: 1,
   tasks: [initialDefaultTask],
+  tabId: 1,
 };
+
 //  TODO : Consider where to place this initial tabs state
 export const initialTabs: Tab[] = [
   {

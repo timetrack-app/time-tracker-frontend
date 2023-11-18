@@ -23,8 +23,10 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   padding: 24px;
   border-radius: 40px;
   background-color: ${({ theme }) => theme.colors.componentBackground};
-  box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+  /* box-shadow: ${({ colorThemeName, theme }) =>
+    colorThemeName === 'light'
+      ? `0 5px 6px 0 ${theme.colors.border}`
+      : 'none'}; */
 
   @media ${breakPoint.tablet} {
     // 100% - (width of OnGoingTimerArea + flex gap)
