@@ -30,6 +30,8 @@ import { SelectInitialTaskFormValues } from '../../../features/workSession/types
 
 import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
+import { selectLoggedInUser } from '../../../stores/slices/authSlice';
+import { useAnyTrue } from '../../../hooks/useAnyTrue';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -50,7 +52,17 @@ const MainAreaContainer = styled.div`
   }
 `;
 
+/**
+ * Main page with:
+ * main timer, sub section(with timer), tabs, lists, tasks
+ *
+ * A user can start a work session, add tabs, lists and tasks
+ *
+ * @return {JSX.Element}
+ */
 const HomePage = () => {
+  const user = useAppSelector(selectLoggedInUser);
+
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
   // RDK related
@@ -58,8 +70,6 @@ const HomePage = () => {
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
     useRDKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
-  // temporary solution
-  const fakeUserId = 1;
 
   // Utility hooks
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
@@ -91,7 +101,7 @@ const HomePage = () => {
     });
 
   const { isLoading: isLoadingGetLatestWorkSession } = useGetLatestWorkSession(
-    { userId: fakeUserId },
+    { userId: user?.id },
     {
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
@@ -124,7 +134,7 @@ const HomePage = () => {
         taskIndex,
       );
       // API call
-      await createWorkSession({ tabs: newTabs, userId: fakeUserId });
+      await createWorkSession({ tabs: newTabs, userId: user?.id });
       // Close the modal
       onCloseSelectInitialTaskModal();
     },
@@ -134,14 +144,18 @@ const HomePage = () => {
       onCloseSelectInitialTaskModal,
       selectableTaskInfos,
       tabs,
+      user?.id,
     ],
   );
 
+  const isLoading = useAnyTrue([
+    isLoadingCreateWorkSession,
+    isLoadingGetLatestWorkSession,
+  ]);
+
   return (
     <>
-      <LoadingOverlay
-        loading={isLoadingCreateWorkSession || isLoadingGetLatestWorkSession}
-      />
+      <LoadingOverlay loading={isLoading} />
       <Navbar />
       <MobileMenu />
       <SelectInitialTaskModal
