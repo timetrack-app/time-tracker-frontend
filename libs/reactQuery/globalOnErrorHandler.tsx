@@ -9,7 +9,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const showErrorToast = (message: string|JSX.Element) => {
+const showErrorToast = (message: string | JSX.Element) => {
   showToast('error', message);
 };
 
@@ -26,12 +26,15 @@ export const globalOnErrorHandler = (error: unknown) => {
     switch (status) {
       case 401:
         showErrorToast(
-          <Container>Your session has expired.<br />Please log in again.</Container>
+          <Container>
+            Your session has expired.
+            <br />
+            Please log in again.
+          </Container>,
         );
         return;
       default:
         showErrorToast('An error has occurred.');
-        return;
     }
   }
 };

@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
-import { BsFillTrashFill } from 'react-icons/bs'
+import { BsFillTrashFill } from 'react-icons/bs';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
-import { DashboardLayout } from '../../../features/dashboard';
-import { useGetTemplate } from '../../../features/dashboard';
-import { useDeleteTemplate } from '../../../features/dashboard';
+import { DashboardLayout, useGetTemplate, useDeleteTemplate } from '../../../features/dashboard';
 import { getTemplatesQueryKey } from '../../../features/workSession';
 import { MainContainer } from './styles/sharedStyles';
 import { showToast } from '../../../libs/react-toastify/toast';
@@ -43,7 +41,6 @@ const TabContentsContainerDiv = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
-
 const TabNameH2 = styled.h2`
   margin-bottom: 1em;
 `;
@@ -67,8 +64,8 @@ const TemplateDetailPage = ({ templateId }: Props) => {
     data: template,
     isLoading: isTemplateLoading,
   } = useGetTemplate(
-    { authToken, userId: user?.id, templateId, },
-    { enabled: !!user, }
+    { authToken, userId: user?.id, templateId },
+    { enabled: !!user },
   );
 
   const {
@@ -79,10 +76,10 @@ const TemplateDetailPage = ({ templateId }: Props) => {
   const handleDelete = async () => {
     await deleteTemplate({ authToken, userId: user.id, templateId }, {
       onError: () => {
-        showToast('error', 'Failed to delete a template.', { autoClose: 1200, });
+        showToast('error', 'Failed to delete a template.', { autoClose: 1200 });
       },
       onSuccess: () => {
-        showToast('success', 'The template has been deleted.', { autoClose: 1200, });
+        showToast('success', 'The template has been deleted.', { autoClose: 1200 });
 
         // invalidate the cache to fetch the latest template data
         queryClient.invalidateQueries({
@@ -93,7 +90,7 @@ const TemplateDetailPage = ({ templateId }: Props) => {
           ),
         });
 
-        toast.onChange(toastItem => {
+        toast.onChange((toastItem) => {
           if (toastItem.status === 'removed') {
             router.push(getWebRoute('templateList'));
           }
@@ -118,15 +115,15 @@ const TemplateDetailPage = ({ templateId }: Props) => {
           </DeleteButton>
         </HeaderDiv>
         <div>
-          {template?.tabs.map(tab =>
+          {template?.tabs.map((tab) =>
             <TabContentsContainerDiv key={tab.id}>
               <TabNameH2>{tab.name}</TabNameH2>
               <ul>
-                {tab.lists.map(list =>
+                {tab.lists.map((list) =>
                   <ListNameLi key={list.id}>{list.name}</ListNameLi>
                 )}
               </ul>
-            </TabContentsContainerDiv>
+            </TabContentsContainerDiv>,
           )}
         </div>
       </MainContainer>

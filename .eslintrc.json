@@ -80,6 +80,7 @@
     "function-paren-newline": "off",
     "object-curly-newline": "off",
     "radix": "off",
-    "@typescript-eslint/no-unused-expressions": "off"
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/comma-dangle": "off"
   }
 }
