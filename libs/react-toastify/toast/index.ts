@@ -4,6 +4,8 @@ import { defaultToastOptions } from '../../../config/reactToastify';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning' | 'default';
 
+export const autoCloseMilliSec = 1200;
+
 /**
  * Display toast
  *
