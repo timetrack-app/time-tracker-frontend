@@ -3,12 +3,7 @@ import { SubmitHandler } from 'react-hook-form';
 import { TextInput } from '../../elements/ReactHookForm';
 import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
-import {
-  AuthForm,
-  AuthFormContentsWrapper,
-  useUserLogin,
-  useIsAuthenticated,
-} from '../../../features/auth/index';
+import { AuthForm, AuthFormContentsWrapper, useUserLogin } from '../../../features/auth/index';
 
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
@@ -22,7 +17,7 @@ import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
 import { login, selectLoggedInUser } from '../../../stores/slices/authSlice';
 
 import { getWebRouteFull } from '../../../routes/web';
-import { getUserLoginCookie, setUserLoginCookie } from '../../../utils/cookie/auth';
+import { setUserLoginCookie } from '../../../utils/cookie/auth';
 import { showToast } from '../../../libs/react-toastify/toast';
 import { isValidLengthPassword } from '../../../utils/validation';
 
@@ -45,28 +40,23 @@ const LoginPage = () => {
 
   const { isLoading: isUserLoginLoading, mutate: userLogin } = useUserLogin();
 
-  useIsAuthenticated(getUserLoginCookie(), {
-    onSuccess: () => {
-      router.push(getWebRouteFull('home'));
-    },
-    // This empty onError call back is needed to prevent global 401 error handling.
-    onError: () => {
-      /* Do nothing */
-    },
-  });
-
-  const onSubmit: SubmitHandler<LoginFormValues> = async ({
-    email,
-    password,
-  }) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async ({ email, password }) => {
     await userLogin(
       { email, password },
       {
         onError: () => {
-          showToast('error', 'An error has occurred.');
+          showToast(
+            'error',
+            <>
+              Login failed.
+              <br />
+              Please check details and try again.
+            </>
+          );
         },
         onSuccess: (res) => {
           const { id, email, isVerified, authToken } = res;
+          // set auth token to cookie, set user info to global state, then redirect to home
           setUserLoginCookie(authToken);
           dispatch(login({ id, email, isVerified }));
           router.push(getWebRouteFull('home'));
@@ -74,6 +64,11 @@ const LoginPage = () => {
       },
     );
   };
+
+  // redirect to home page if the user is already logged in
+  if (user) {
+    router.push(getWebRouteFull('home'));
+  }
 
   return (
     <>

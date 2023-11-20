@@ -5,11 +5,9 @@ import { AuthFormLayout } from '../features/auth/index';
 /**
  * User login form
  *
- * @return {*} JSX.Element
+ * @return {JSX.Element}
  */
-const Login = () => (<LoginPage />);
-
-// TODO: where to check auth?(because login form appears before auth checking has done)
+const Login = () => <LoginPage />;
 
 Login.getLayout = (page: React.ReactElement) => (
   <ProtectedRoute>
