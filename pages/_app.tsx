@@ -2,7 +2,7 @@ import { useEffect, ReactElement, ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NextPage } from 'next';
-import { Router } from 'next/router';
+// import { Router } from 'next/router';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 import styled, { ThemeProvider, css, keyframes } from 'styled-components';
@@ -65,7 +65,7 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
-  router: Router // Error if this property doesn't exist
+  // router: Router // Error if this property doesn't exist
 };
 
 /**

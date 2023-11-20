@@ -1,6 +1,9 @@
+import Router from 'next/router'; // https://github.com/vercel/next.js/discussions/17046
+import { toast } from 'react-toastify';
 import { isAxiosError } from 'axios';
 import styled from 'styled-components';
 import { showToast } from '../react-toastify/toast';
+import { getWebRoute } from '../../routes/web';
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +35,13 @@ export const globalOnErrorHandler = (error: unknown) => {
             Please log in again.
           </Container>,
         );
+
+        toast.onChange((toastItem) => {
+          if (toastItem.status === 'removed') {
+            Router.push(getWebRoute('login'));
+          }
+        });
+
         return;
       default:
         showErrorToast('An error has occurred.');
