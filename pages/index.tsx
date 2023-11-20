@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 import HomePage from '../components/pages/home/HomePage';
-import BaseProtectedRouteLayout from '../components/layouts/BaseProtectRouteLayout';
+import ProtectedRoute from '../components/layouts/ProtectRoute';
 
 const Home = () => <HomePage />;
 
 Home.getLayout = (page: ReactElement) => (
-  <BaseProtectedRouteLayout>{page}</BaseProtectedRouteLayout>
+  <ProtectedRoute>{page}</ProtectedRoute>
 );
 
 export default Home;

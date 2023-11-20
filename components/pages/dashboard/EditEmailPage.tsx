@@ -8,7 +8,7 @@ import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { showToast } from '../../../libs/react-toastify/toast';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { emailRegExp } from '../../../const/validation/rules/email';
-import { emailRequired, emailInvalid } from '../../../const/validation/messages';
+import { emailRequiredMsg, emailInvalidMsg } from '../../../const/validation/messages';
 import { getWebRoute } from '../../../routes/web';
 import { useAppSelector } from '../../../stores/hooks';
 import { selectLoggedInUser } from '../../../stores/slices/authSlice';
@@ -65,10 +65,10 @@ const EditEmailPage = () => {
                   type="text"
                   placeholder="example@example.com"
                   registration={register('email', {
-                    required: emailRequired,
+                    required: emailRequiredMsg,
                     pattern: {
                       value: emailRegExp,
-                      message: emailInvalid,
+                      message: emailInvalidMsg,
                     },
                   })}
                   error={formState.errors.email}

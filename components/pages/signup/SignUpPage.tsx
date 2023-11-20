@@ -11,11 +11,11 @@ import {
 
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
-  emailRequired,
-  emailInvalid,
-  passwordRequired,
-  passwordConfirmationRequired,
-  passwordConfirmationMismatch,
+  emailRequiredMsg,
+  emailInvalidMsg,
+  passwordRequiredMsg,
+  passwordConfirmationRequiredMsg,
+  passwordConfirmationMismatchMsg,
 } from '../../../const/validation/messages';
 
 import { showToast } from '../../../libs/react-toastify/toast';
@@ -71,10 +71,10 @@ const SignUpPage = () => {
               placeholder="example@example.com"
               label="E-mail"
               registration={register('email', {
-                required: emailRequired,
+                required: emailRequiredMsg,
                 pattern: {
                   value: emailRegExp,
-                  message: emailInvalid,
+                  message: emailInvalidMsg,
                 },
               })}
               error={formState.errors.email}
@@ -84,7 +84,7 @@ const SignUpPage = () => {
               type="password"
               label="Password"
               registration={register('password', {
-                required: passwordRequired,
+                required: passwordRequiredMsg,
               })}
               error={formState.errors.password}
             />
@@ -93,10 +93,10 @@ const SignUpPage = () => {
               type="password"
               label="Confirm Password"
               registration={register('passwordConfirmation', {
-                required: passwordConfirmationRequired,
+                required: passwordConfirmationRequiredMsg,
                 validate: (value) =>
                   value === getValues('password') ||
-                  passwordConfirmationMismatch,
+                  passwordConfirmationMismatchMsg,
               })}
               error={formState.errors.passwordConfirmation}
             />
