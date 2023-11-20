@@ -4,6 +4,7 @@ import { TextInput } from '../../elements/ReactHookForm';
 import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
 import { AuthForm, AuthFormContentsWrapper, useUserLogin } from '../../../features/auth/index';
+import LoginFailedToastContents from './LoginFailedToastContents';
 
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
@@ -45,14 +46,7 @@ const LoginPage = () => {
       { email, password },
       {
         onError: () => {
-          showToast(
-            'error',
-            <>
-              Login failed.
-              <br />
-              Please check details and try again.
-            </>
-          );
+          showToast('error', <LoginFailedToastContents />);
         },
         onSuccess: (res) => {
           const { id, email, isVerified, authToken } = res;

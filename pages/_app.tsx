@@ -48,6 +48,8 @@ const fadeIn = keyframes`
 `;
 
 const FadeInDiv = styled.div`
+  width: 100%;
+  /* min-height: 100vh; */
   animation: ${fadeIn} 800ms ease-in-out forwards;
 
   ${({ isVisible }: { isVisible: boolean }) => !isVisible && css`

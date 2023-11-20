@@ -1,4 +1,3 @@
-import ProtectedRoute from '../components/layouts/ProtectRoute';
 import LoginPage from '../components/pages/login/LoginPage';
 import { AuthFormLayout } from '../features/auth/index';
 
@@ -10,9 +9,7 @@ import { AuthFormLayout } from '../features/auth/index';
 const Login = () => <LoginPage />;
 
 Login.getLayout = (page: React.ReactElement) => (
-  <ProtectedRoute>
-    <AuthFormLayout>{page}</AuthFormLayout>
-  </ProtectedRoute>
+  <AuthFormLayout>{page}</AuthFormLayout>
 );
 
 export default Login;

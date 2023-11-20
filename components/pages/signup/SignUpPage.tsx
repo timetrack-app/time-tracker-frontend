@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 
 import { TextInput } from '../../elements/ReactHookForm';
@@ -8,6 +9,7 @@ import {
   AuthFormContentsWrapper,
   useUserRegistration,
 } from '../../../features/auth';
+import SignUpFailedToastContents from './SignUpFailedToastContents';
 
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
@@ -16,9 +18,14 @@ import {
   passwordRequiredMsg,
   passwordConfirmationRequiredMsg,
   passwordConfirmationMismatchMsg,
+  invalidPasswordLengthMsg,
 } from '../../../const/validation/messages';
 
 import { showToast } from '../../../libs/react-toastify/toast';
+import { isValidLengthPassword } from '../../../utils/validation';
+import { useAppSelector } from '../../../stores/hooks';
+import { selectLoggedInUser } from '../../../stores/slices/authSlice';
+import { getWebRoute } from '../../../routes/web';
 
 type SignUpFormValues = {
   email: string;
@@ -27,11 +34,16 @@ type SignUpFormValues = {
 };
 
 const SignUpPage = () => {
+  const router = useRouter();
+
+  const user = useAppSelector(selectLoggedInUser);
+
+  if (user) {
+    router.push(getWebRoute('home'));
+  }
+
   const { isLoading: isUserRegistrationLoading, mutate: registerUser } =
     useUserRegistration();
-
-  // TODO: If the user logged in, redirect to main page
-  // TODO: do this in the layout component
 
   const onSubmit: SubmitHandler<SignUpFormValues> = async ({
     email,
@@ -41,18 +53,18 @@ const SignUpPage = () => {
       { email, password },
       {
         onError: () => {
-          showToast('error', 'An error has occurred.');
+          showToast('error', <SignUpFailedToastContents />);
         },
         onSuccess: () => {
-          showToast('success', 'Verification email sent! Please check.');
+          showToast('success', 'Verification email sent! Please check your inbox.');
         },
       },
     );
   };
 
   // TODO: emailVerification->ok->login
-
-  // TODO: Set the same password validation as the backend
+  // TODO: send email complete page(now toast but not good)
+  // TODO: email verification page(You have verified your email, Home button)(call verify API then login and redirect, need UI for failure)
 
   return (
     <>
@@ -85,6 +97,9 @@ const SignUpPage = () => {
               label="Password"
               registration={register('password', {
                 required: passwordRequiredMsg,
+                validate: (val: string) => {
+                  if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
+                },
               })}
               error={formState.errors.password}
             />
