@@ -19,7 +19,7 @@ const WrapperDiv = styled.div`
   }
 `;
 
-const Container = styled.div<{isOpen: boolean}>`
+const Container = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -56,7 +56,7 @@ const ContentItemDiv = styled.div`
   padding: 0.5em;
 `;
 
-const ButtonWrapper = styled.button<{colorThemeName: ColorThemeName; isOpen: boolean;}>`
+const ButtonWrapper = styled.button<{ colorThemeName: ColorThemeName; isOpen: boolean; }>`
   position: absolute;
   top: 16px;
   right: 10px;
@@ -71,6 +71,8 @@ const ButtonWrapper = styled.button<{colorThemeName: ColorThemeName; isOpen: boo
   cursor: pointer;
   z-index: 1100;
 `;
+
+// TODO: Add correct menu items to MobileMenu
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -93,7 +95,7 @@ const MobileMenu = () => {
   }, [isBelowBreakPoint]);
 
   useEffect(() => {
-    const body = document.body;
+    const { body } = document;
 
     // disable scrolling when the menu is open, re-enable scrolling when the menu is closed
     isOpen
@@ -124,7 +126,8 @@ const MobileMenu = () => {
         {isOpen ? <IoClose /> : <IoMenu />}
       </ButtonWrapper>
       <Container isOpen={isOpen} onClick={closeMenu}>
-        {/* e.stopPropagation() is necessary to avoid close the menu when the menu items are clicked */}
+        {/* e.stopPropagation() is necessary
+        to avoid close the menu when the menu items are clicked */}
         <ContentsContainer onClick={(e) => e.stopPropagation()}>
           {Object.keys(menuItems).map((label) => (
             <ContentItemDiv key={label}>

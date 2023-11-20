@@ -76,10 +76,10 @@ const TemplateDetailPage = ({ templateId }: Props) => {
   const handleDelete = async () => {
     await deleteTemplate({ authToken, userId: user.id, templateId }, {
       onError: () => {
-        showToast('error', 'Failed to delete a template.', { autoClose: 1200 });
+        showToast('error', 'Failed to delete a template.');
       },
       onSuccess: () => {
-        showToast('success', 'The template has been deleted.', { autoClose: 1200 });
+        showToast('success', 'The template has been deleted.');
 
         // invalidate the cache to fetch the latest template data
         queryClient.invalidateQueries({

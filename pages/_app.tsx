@@ -21,7 +21,6 @@ import BackgroundTask from '../components/elements/BackgroundTask/BackgroundTask
 
 import { useColorTheme } from '../hooks/useColorTheme';
 import LoadingOverlay from '../components/elements/common/LoadingOverlay/LoadingOverlay';
-import { autoCloseMilliSec } from '../libs/react-toastify/toast';
 
 /**
  * Styles
@@ -88,7 +87,7 @@ const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout
         <ThemeProvider theme={getCurrentColorThemeStyle()}>
           <GlobalStyle />
           <Component {...pageProps} />
-          <ToastContainer autoClose={autoCloseMilliSec} />
+          <ToastContainer />
         </ThemeProvider>
       ) : (
         <LoadingOverlay loading={!isInitColorTheme} />

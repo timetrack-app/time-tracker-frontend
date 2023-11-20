@@ -72,52 +72,44 @@ const LoginPage = () => {
 
   return (
     <>
-      {
-        user
-          ? (
-              <>
-                <LoadingOverlay loading={isUserLoginLoading} />
-                <AuthForm<LoginFormValues> onSubmit={onSubmit}>
-                  {({ register, formState }) => (
-                    <AuthFormContentsWrapper
-                      button={
-                        <ButtonPrimary type="submit">
-                          <p>Login</p>
-                        </ButtonPrimary>
-                      }
-                    >
-                      <TextInput
-                        type="text"
-                        placeholder="example@example.com"
-                        label="E-mail"
-                        registration={register('email', {
-                          required: emailRequiredMsg,
-                          pattern: {
-                            value: emailRegExp,
-                            message: emailInvalidMsg,
-                          },
-                        })}
-                        error={formState.errors.email}
-                      />
+      <LoadingOverlay loading={isUserLoginLoading} />
+      <AuthForm<LoginFormValues> onSubmit={onSubmit}>
+        {({ register, formState }) => (
+          <AuthFormContentsWrapper
+            button={
+              <ButtonPrimary type="submit">
+                <p>Login</p>
+              </ButtonPrimary>
+            }
+          >
+            <TextInput
+              type="text"
+              placeholder="example@example.com"
+              label="E-mail"
+              registration={register('email', {
+                required: emailRequiredMsg,
+                pattern: {
+                  value: emailRegExp,
+                  message: emailInvalidMsg,
+                },
+              })}
+              error={formState.errors.email}
+            />
 
-                      <TextInput
-                        type="password"
-                        label="Password"
-                        registration={register('password', {
-                          required: passwordRequiredMsg,
-                          validate: (val: string) => {
-                            if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
-                          },
-                        })}
-                        error={formState.errors.password}
-                      />
-                    </AuthFormContentsWrapper>
-                  )}
-                </AuthForm>
-              </>
-            )
-            : <></>
-      }
+            <TextInput
+              type="password"
+              label="Password"
+              registration={register('password', {
+                required: passwordRequiredMsg,
+                validate: (val: string) => {
+                  if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
+                },
+              })}
+              error={formState.errors.password}
+            />
+          </AuthFormContentsWrapper>
+        )}
+      </AuthForm>
     </>
   );
 };
