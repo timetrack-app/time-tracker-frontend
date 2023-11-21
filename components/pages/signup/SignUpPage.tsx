@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -26,6 +27,7 @@ import { isValidLengthPassword } from '../../../utils/validation';
 import { useAppSelector } from '../../../stores/hooks';
 import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { getWebRoute } from '../../../routes/web';
+import SignUpCompletePage from './SignUpCompletePage';
 
 type SignUpFormValues = {
   email: string;
@@ -36,8 +38,10 @@ type SignUpFormValues = {
 const SignUpPage = () => {
   const router = useRouter();
 
-  const user = useAppSelector(selectLoggedInUser);
+  const [isComplete, setIsComplete] = useState<boolean>(false);
 
+  const user = useAppSelector(selectLoggedInUser);
+  // redirect if the user is already have an account and logged in
   if (user) {
     router.push(getWebRoute('home'));
   }
@@ -56,68 +60,74 @@ const SignUpPage = () => {
           showToast('error', <SignUpFailedToastContents />);
         },
         onSuccess: () => {
-          showToast('success', 'Verification email sent! Please check your inbox.');
+          // show complete page
+          setIsComplete(true);
         },
       },
     );
   };
 
   // TODO: emailVerification->ok->login
-  // TODO: send email complete page(now toast but not good)
-  // TODO: email verification page(You have verified your email, Home button)(call verify API then login and redirect, need UI for failure)
+  // TODO: email verification complete page(verify -> done -> show complete component)
+  // (You have verified your email, Home button)
+  // (call verify API then login and redirect, need UI for failure)
 
   return (
     <>
       <LoadingOverlay loading={isUserRegistrationLoading} />
-      <AuthForm<SignUpFormValues> onSubmit={onSubmit}>
-        {({ register, formState, getValues }) => (
-          <AuthFormContentsWrapper
-            button={
-              <ButtonPrimary type="submit">
-                <p>Sign Up</p>
-              </ButtonPrimary>
-            }
-          >
-            <TextInput
-              type="text"
-              placeholder="example@example.com"
-              label="E-mail"
-              registration={register('email', {
-                required: emailRequiredMsg,
-                pattern: {
-                  value: emailRegExp,
-                  message: emailInvalidMsg,
-                },
-              })}
-              error={formState.errors.email}
-            />
+      {
+        isComplete
+          ? <SignUpCompletePage />
+          : <AuthForm<SignUpFormValues> onSubmit={onSubmit}>
+              {({ register, formState, getValues }) => (
+                <AuthFormContentsWrapper
+                  button={
+                    <ButtonPrimary type="submit">
+                      <p>Sign Up</p>
+                    </ButtonPrimary>
+                  }
+                >
+                  <TextInput
+                    type="text"
+                    placeholder="example@example.com"
+                    label="E-mail"
+                    registration={register('email', {
+                      required: emailRequiredMsg,
+                      pattern: {
+                        value: emailRegExp,
+                        message: emailInvalidMsg,
+                      },
+                    })}
+                    error={formState.errors.email}
+                  />
 
-            <TextInput
-              type="password"
-              label="Password"
-              registration={register('password', {
-                required: passwordRequiredMsg,
-                validate: (val: string) => {
-                  if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
-                },
-              })}
-              error={formState.errors.password}
-            />
+                  <TextInput
+                    type="password"
+                    label="Password"
+                    registration={register('password', {
+                      required: passwordRequiredMsg,
+                      validate: (val: string) => {
+                        if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
+                      },
+                    })}
+                    error={formState.errors.password}
+                  />
 
-            <TextInput
-              type="password"
-              label="Confirm Password"
-              registration={register('passwordConfirmation', {
-                required: passwordConfirmationRequiredMsg,
-                validate: (value) =>
-                  value === getValues('password') ||
-                  passwordConfirmationMismatchMsg,
-              })}
-              error={formState.errors.passwordConfirmation}
-            />
-          </AuthFormContentsWrapper>
-        )}
-      </AuthForm>
+                  <TextInput
+                    type="password"
+                    label="Confirm Password"
+                    registration={register('passwordConfirmation', {
+                      required: passwordConfirmationRequiredMsg,
+                      validate: (value) =>
+                        value === getValues('password') ||
+                        passwordConfirmationMismatchMsg,
+                    })}
+                    error={formState.errors.passwordConfirmation}
+                  />
+                </AuthFormContentsWrapper>
+              )}
+            </AuthForm>
+      }
     </>
   );
 };
