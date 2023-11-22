@@ -16,11 +16,11 @@ export { useUpdateActiveTaskTimer } from './hooks/timerCount/useUpdateActiveTask
 export {
   useGetTemplates,
   getTemplatesQueryKey,
-} from './api/hooks/useGetTemplates';
+} from './api/hooks/template/useGetTemplates';
 export * from './types';
 export { useRDKUpdateActiveTask } from './hooks/useRDK/useRDKUpdateActiveTask';
 export { useSelectInitialTaskModal } from './hooks/modal/useSelectInitialTaskModal';
 export { useInitialTaskInfo } from './hooks/utils/useInitialTaskInfo';
 export { useElapsedTimeCalc } from './hooks/utils/useElapsedTimeCalc';
-export { useGetLatestWorkSession } from './api/hooks/useGetLatestWorkSession';
-export { useCreateWorkSession } from './api/hooks/useCreateWorkSession';
+export { useGetLatestWorkSession } from './api/hooks/workSession/useGetLatestWorkSession';
+export { useCreateWorkSession } from './api/hooks/workSession/useCreateWorkSession';

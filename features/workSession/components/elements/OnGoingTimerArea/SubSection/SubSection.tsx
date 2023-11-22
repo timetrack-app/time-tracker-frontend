@@ -4,7 +4,7 @@ import Button from '../../../../../../components/elements/common/Button/Button';
 import { useModal } from '../../../../../../components/elements/common/Modal/Modal';
 import EndWorkSessionConfirmModal from './EndWorkSessionConfirmModal';
 
-import { useEndWorkSession } from '../../../../api/hooks/useEndWorkSession';
+import { useEndWorkSession } from '../../../../api/hooks/workSession/useEndWorkSession';
 
 import { useAppDispatch, useAppSelector } from '../../../../../../stores/hooks';
 import {

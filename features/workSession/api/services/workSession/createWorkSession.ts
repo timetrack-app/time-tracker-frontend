@@ -1,9 +1,9 @@
-import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
+import { axiosBase } from '../../../../../libs/axios';
+import { getApiEndpointFull } from '../../../../../routes/api';
 import {
   CreateWorkSessionParams,
   CreateWorkSessionResponse,
-} from '../../types';
+} from '../../../types';
 
 /**
  *

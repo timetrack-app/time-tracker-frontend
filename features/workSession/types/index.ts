@@ -71,6 +71,16 @@ export type GetTemplatesResponse = {
   total: number;
   hasMore: boolean;
 };
+// Related to Tab
+export type CreateTabParams = {
+  workSessionId: number;
+  name: string;
+  displayOrder: number;
+};
+
+export type CreateTabResponse = {
+  newTab: Tab;
+};
 
 // Type for the timer count data to store in localStorage
 export type LocalStoredTimerCountData = {

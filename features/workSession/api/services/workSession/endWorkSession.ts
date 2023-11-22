@@ -1,6 +1,6 @@
-import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpointFull } from '../../../../routes/api';
-import { EndWorkSessionParams } from '../../types';
+import { axiosBase } from '../../../../../libs/axios';
+import { getApiEndpointFull } from '../../../../../routes/api';
+import { EndWorkSessionParams } from '../../../types';
 
 /**
  *

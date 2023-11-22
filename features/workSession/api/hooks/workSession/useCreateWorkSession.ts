@@ -1,9 +1,9 @@
 import { UseMutationOptions, useMutation } from 'react-query';
-import { createWorkSession } from '../services/createWorkSession';
+import { createWorkSession } from '../../services/workSession/createWorkSession';
 import {
   CreateWorkSessionParams,
   CreateWorkSessionResponse,
-} from '../../types';
+} from '../../../types';
 
 /**
  * Custom hook for create a work session

@@ -1,10 +1,14 @@
 import { useQuery, UseQueryOptions } from 'react-query';
-import { getTemplates } from '../services/getTemplates';
-import { GetTemplatesResponse } from '../../types';
+import { getTemplates } from '../../services/template/getTemplates';
+import { GetTemplatesResponse } from '../../../types';
 
-export const getTemplatesQueryKey = (authToken: string, page?: number, limit?: number) => {
+export const getTemplatesQueryKey = (
+  authToken: string,
+  page?: number,
+  limit?: number,
+) => {
   return ['get/templates', { authToken, page, limit }];
-}
+};
 
 /**
  * Custom hook for getting a list of template
@@ -19,7 +23,11 @@ export const useGetTemplates = (
   userId: number,
   page?: number,
   limit?: number,
-  options?: UseQueryOptions<GetTemplatesResponse, unknown, GetTemplatesResponse>
+  options?: UseQueryOptions<
+    GetTemplatesResponse,
+    unknown,
+    GetTemplatesResponse
+  >,
 ) => {
   return useQuery(
     getTemplatesQueryKey(authToken, page, limit),

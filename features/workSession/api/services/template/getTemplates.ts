@@ -1,6 +1,6 @@
-import { axiosBase } from '../../../../libs/axios';
-import { getApiEndpoint } from '../../../../routes/api';
-import { GetTemplatesResponse } from '../../types';
+import { axiosBase } from '../../../../../libs/axios';
+import { getApiEndpoint } from '../../../../../routes/api';
+import { GetTemplatesResponse } from '../../../types';
 
 /**
  * Get a list of template
@@ -15,12 +15,13 @@ export const getTemplates = async (
   page?: number,
   limit?: number,
 ): Promise<GetTemplatesResponse> => {
-  const res = await axiosBase(authToken)
-    .get(getApiEndpoint(
+  const res = await axiosBase(authToken).get(
+    getApiEndpoint(
       'templates',
       { userId },
-      { page: String(page), limit: String(limit) }
-    ));
+      { page: String(page), limit: String(limit) },
+    ),
+  );
 
   return res.data;
 };

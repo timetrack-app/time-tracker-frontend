@@ -3,8 +3,8 @@ import { AxiosError } from 'axios';
 import {
   GetLatestWorkSessionParams,
   GetLatestWorkSessionResponse,
-} from '../../types';
-import { getLatestWorkSession } from '../services/getLatestWorkSession';
+} from '../../../types';
+import { getLatestWorkSession } from '../../services/workSession/getLatestWorkSession';
 
 /**
  * Custom hook for getting the latest work session

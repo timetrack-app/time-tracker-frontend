@@ -11,13 +11,9 @@ import {
   useElapsedTimeCalc,
   OnGoingTimerArea,
   TabsArea,
-} from '../../../features/workSession/index';
+} from '../../../features/workSession';
 
-import {
-  LoadingOverlay,
-  MobileMenu,
-  Navbar,
-} from '../../elements/common/index';
+import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
 
 import { useAppSelector } from '../../../stores/hooks';
 import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
