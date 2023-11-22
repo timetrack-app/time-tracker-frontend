@@ -15,17 +15,25 @@ import {
 
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
 
-import { useAppSelector } from '../../../stores/hooks';
-import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
+import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
+import {
+  selectCurrentSelectedTab,
+  updateSelectedTab,
+} from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
 import { Tab } from '../../../types/entity';
-import { SelectInitialTaskFormValues } from '../../../features/workSession/types';
+import {
+  CreateTabParams,
+  SelectInitialTaskFormValues,
+} from '../../../features/workSession/types';
 
 import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
+import { useCreateTab } from '../../../features/workSession/api/hooks/tab/useCreateTab';
+import { selectWorkSessionState } from '../../../stores/slices/workSessionSlice';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -54,6 +62,11 @@ const HomePage = () => {
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
     useRDKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
+  const { workSessionId, isWorkSessionActive } = useAppSelector(
+    selectWorkSessionState,
+  );
+
+  const dispatch = useAppDispatch();
   // temporary solution
   const fakeUserId = 1;
 
@@ -103,6 +116,17 @@ const HomePage = () => {
     },
   );
 
+  const { mutate: createTab, isLoading: isLoadingCreateTab } = useCreateTab({
+    onSuccess: (data) => {
+      const { newTab } = data;
+      setTabs((tabs) => [...tabs, newTab]);
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on starting a session.');
+    },
+  });
+
   const selectableTaskInfos = generateTaskInfoArr(tabs);
 
   // data post & close the modal.
@@ -133,6 +157,27 @@ const HomePage = () => {
     ],
   );
 
+  // on creating a new tab
+  const handleCreateNewTab = async () => {
+    if (isWorkSessionActive) {
+      const createTabParams: CreateTabParams = {
+        workSessionId,
+        name: 'New tab',
+        displayOrder: tabs.length + 1,
+      };
+      await createTab(createTabParams);
+    } else {
+      const newTab: Tab = {
+        id: tabs[tabs.length - 1].id + 1,
+        name: 'New tab',
+        displayOrder: tabs.length + 1,
+        lists: [],
+      };
+      setTabs((tabs) => [...tabs, newTab]);
+      dispatch(updateSelectedTab(newTab));
+    }
+  };
+
   return (
     <>
       <LoadingOverlay
@@ -155,7 +200,7 @@ const HomePage = () => {
           )}
           onClickStartSession={onOpenSelectInitialTaskModal}
         />
-        <TabsArea tabs={tabs} />
+        <TabsArea tabs={tabs} handleCreateNewTab={handleCreateNewTab} />
       </MainAreaContainer>
     </>
   );

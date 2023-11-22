@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab } from '../../../../../../types/entity';
-import TabSelector, { TabSelectorProps } from './TabSelector/TabSelector';
+import TabSelector from './TabSelector/TabSelector';
 import PlusCircleButton from './PlusCircleButton/PlusCircleButton';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
@@ -26,7 +26,7 @@ const ContainerDiv = styled.div`
   max-width: 100%;
 
   @media ${breakPoint.tablet} {
-  };
+  }
 `;
 
 const FirstTabSelector = styled(TabSelector)`
@@ -39,9 +39,8 @@ const TabSelectors = ({
   handleSelectTab,
   onClickPlusCircleButton,
 }: TabSelectorsProps) => {
-  const getTabComponent = (idx: number) => (
-    idx === 0 ? FirstTabSelector : TabSelector
-  );
+  const getTabComponent = (idx: number) =>
+    idx === 0 ? FirstTabSelector : TabSelector;
 
   return (
     <ContainerDiv>

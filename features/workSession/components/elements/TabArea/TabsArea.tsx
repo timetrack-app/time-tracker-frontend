@@ -78,9 +78,10 @@ const TabComponentWrapper = styled.div`
 
 type TabsAreaProps = {
   tabs: Tab[];
+  handleCreateNewTab: () => void;
 };
 
-const TabsArea = ({ tabs }: TabsAreaProps) => {
+const TabsArea = ({ tabs, handleCreateNewTab }: TabsAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
   const dispatch = useAppDispatch();
@@ -90,9 +91,6 @@ const TabsArea = ({ tabs }: TabsAreaProps) => {
   const handleSelectTab = (tab: Tab) => {
     dispatch(updateSelectedTab(tab));
   };
-
-  // on creating a new tab
-  const handleCreateNewTab = () => {};
 
   useEffect(() => {
     if (tabs.length) dispatch(updateSelectedTab(tabs[0]));
