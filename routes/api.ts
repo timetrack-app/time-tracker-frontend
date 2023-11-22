@@ -22,7 +22,7 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       templates: '/users/{userId}/templates',
       template: '/users/{userId}/templates/{templateId}',
       // tab related
-      createTab: '/users/{userId}/tabs',
+      createTab: '/work-sessions/{workSessionId}/tabs',
     },
     apiBaseUrl,
   );
