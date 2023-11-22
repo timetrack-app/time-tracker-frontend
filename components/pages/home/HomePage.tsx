@@ -99,12 +99,18 @@ const HomePage = () => {
       },
     });
 
-  const { isLoading: isLoadingGetLatestWorkSession } = useGetLatestWorkSession(
+  const {
+    refetch: getLatestWorkSession,
+    isLoading: isLoadingGetLatestWorkSession,
+  } = useGetLatestWorkSession(
     { userId: fakeUserId },
     {
+      // enabled: false,
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
           data.workSession;
+        console.log('data', data);
+
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTask(activeTab, activeList, activeTask);
@@ -116,10 +122,9 @@ const HomePage = () => {
     },
   );
 
-  const { mutate: createTab, isLoading: isLoadingCreateTab } = useCreateTab({
-    onSuccess: (data) => {
-      const { newTab } = data;
-      setTabs((tabs) => [...tabs, newTab]);
+  const { mutate: createTab } = useCreateTab({
+    onSuccess: () => {
+      getLatestWorkSession();
     },
     onError: (err) => {
       console.error(err);
