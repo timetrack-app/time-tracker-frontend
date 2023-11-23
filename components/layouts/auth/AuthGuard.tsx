@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useIsAuthenticated } from '../../../features/auth/api/hooks/useIsAuthenticated';
-import { getUserLoginCookie } from '../../../utils/cookie/auth';
+import { getUserLoginCookie, removeUserLoginCookie } from '../../../utils/cookie/auth';
 import { useAppDispatch } from '../../../stores/hooks';
 import { login, logout } from '../../../stores/slices/authSlice';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
@@ -26,6 +26,7 @@ const AuthGuard = () => {
     },
     onError: () => {
       dispatch(logout);
+      removeUserLoginCookie();
       router.push(getWebRoute('login'));
     },
   });

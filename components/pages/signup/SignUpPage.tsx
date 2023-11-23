@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 
@@ -38,16 +37,17 @@ type SignUpFormValues = {
 const SignUpPage = () => {
   const router = useRouter();
 
-  const [isComplete, setIsComplete] = useState<boolean>(false);
-
   const user = useAppSelector(selectLoggedInUser);
   // redirect if the user is already have an account and logged in
   if (user) {
     router.push(getWebRoute('home'));
   }
 
-  const { isLoading: isUserRegistrationLoading, mutate: registerUser } =
-    useUserRegistration();
+  const {
+    isLoading: isUserRegistrationLoading,
+    mutate: registerUser,
+    isSuccess: isRegistrationSuccess,
+  } = useUserRegistration();
 
   const onSubmit: SubmitHandler<SignUpFormValues> = async ({
     email,
@@ -59,24 +59,15 @@ const SignUpPage = () => {
         onError: () => {
           showToast('error', <SignUpFailedToastContents />);
         },
-        onSuccess: () => {
-          // show complete page
-          setIsComplete(true);
-        },
       },
     );
   };
-
-  // TODO: emailVerification->ok->login
-  // TODO: email verification complete page(verify -> done -> show complete component)
-  // (You have verified your email, Home button)
-  // (call verify API then login and redirect, need UI for failure)
 
   return (
     <>
       <LoadingOverlay loading={isUserRegistrationLoading} />
       {
-        isComplete
+        isRegistrationSuccess
           ? <SignUpCompletePage />
           : <AuthForm<SignUpFormValues> onSubmit={onSubmit}>
               {({ register, formState, getValues }) => (

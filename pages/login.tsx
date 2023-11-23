@@ -1,3 +1,4 @@
+import AuthGuard from '../components/layouts/auth/AuthGuard';
 import LoginPage from '../components/pages/login/LoginPage';
 import { AuthFormLayout } from '../features/auth/index';
 
@@ -9,7 +10,10 @@ import { AuthFormLayout } from '../features/auth/index';
 const Login = () => <LoginPage />;
 
 Login.getLayout = (page: React.ReactElement) => (
-  <AuthFormLayout>{page}</AuthFormLayout>
+  <>
+    <AuthGuard />
+    <AuthFormLayout>{page}</AuthFormLayout>
+  </>
 );
 
 export default Login;
