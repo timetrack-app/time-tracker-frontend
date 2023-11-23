@@ -26,3 +26,7 @@ export type IsAuthenticatedResponse = {
   email: string
   isVerified: boolean
 };
+
+export type EmailVerificationResponse = {
+  token: string
+};

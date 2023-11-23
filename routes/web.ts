@@ -1,3 +1,5 @@
+// https://github.com/koyablue/path-kanri
+
 import pathManager from 'path-kanri';
 
 // Paths of pages
