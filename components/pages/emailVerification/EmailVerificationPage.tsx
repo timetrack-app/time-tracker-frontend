@@ -1,13 +1,21 @@
 import { useRouter } from 'next/router';
 import { useEmailVerification, useIsAuthenticated } from '../../../features/auth';
-import { login } from '../../../stores/slices/authSlice';
 import { LoadingOverlay } from '../../elements/common';
 import Verified from './Verified';
 import Unverified from './Unverified';
 import { useAppDispatch } from '../../../stores/hooks';
+import { login } from '../../../stores/slices/authSlice';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { showToast } from '../../../libs/react-toastify/toast';
+import { setUserLoginCookie } from '../../../utils/cookie/auth';
 
+/**
+ * Verify the user's email address
+ * verified: show the success view and login
+ * unverified: show the failed view
+ *
+ * @return {JSX.Element}
+ */
 const EmailVerificationPage = () => {
   const router = useRouter();
   const { token } = router.query;
@@ -27,7 +35,6 @@ const EmailVerificationPage = () => {
   );
 
   const {
-    // data: loggedInUser,
     isLoading: isLoadingLoggedInUser,
   } = useIsAuthenticated(
     verificationRes?.token,
@@ -37,18 +44,11 @@ const EmailVerificationPage = () => {
         showToast('error', 'Failed to login.');
       },
       onSuccess: (loggedInUser) => {
+        setUserLoginCookie(verificationRes?.token);
         dispatch(login(loggedInUser));
       },
     }
   );
-
-  // TODO: need to fix backend code(link in the email)
-
-  // TODO: GET: verify (token from parameter) (loading view)
-  // http://localhost:4000/auth/email-verification?token=dfa24156aa78d8546c5875a64adc3cf090d6c94b8b09145fedf57e8dac5256e2
-
-  // TODO: success -> success view(another component)
-  // TODO: fail -> failed view(another component)
 
   const isLoading = useAnyTrue([
     isVerifying,

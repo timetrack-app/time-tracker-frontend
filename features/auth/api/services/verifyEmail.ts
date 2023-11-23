@@ -9,6 +9,6 @@ import { EmailVerificationResponse } from '../../types/index';
  * @return {Promise<EmailVerificationResponse>}
  */
 export const verifyEmail = async (token: string): Promise<EmailVerificationResponse> => {
-  const res = await axiosBase().get(getApiEndpoint('emailVerification', {}, { token }));
+  const res = await axiosBase().get(`${getApiEndpoint('emailVerification')}?token=${token}`);
   return res.data;
 };
