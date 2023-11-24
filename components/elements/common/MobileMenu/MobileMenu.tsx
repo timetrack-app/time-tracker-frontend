@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { IoMenu, IoClose } from 'react-icons/io5';
 
@@ -12,6 +13,8 @@ import { useAppSelector } from '../../../../stores/hooks';
 import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
 import { ColorThemeName } from '../../../../types/colorTheme';
+import { getWebRoute } from '../../../../routes/web';
+import { useUserLogout } from '../../../../features/auth/api/hooks/useUserLogout';
 
 const WrapperDiv = styled.div`
   @media ${breakPoint.tablet} {
@@ -72,12 +75,21 @@ const ButtonWrapper = styled.button<{ colorThemeName: ColorThemeName; isOpen: bo
   z-index: 1100;
 `;
 
-// TODO: Add correct menu items to MobileMenu
+const MenuItemButton = styled.button`
+  appearance: none;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.componentBackground};
+  cursor: pointer;
+  font-size: 1em;
+  color: ${({ theme }) => theme.colors.text};
+`;
 
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isBelowBreakPoint] = useWindowResize();
   const currentColorTheme = useAppSelector(selectColorTheme);
+  const { mutate: logout } = useUserLogout();
+  const router = useRouter();
+  const [isBelowBreakPoint] = useWindowResize();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -85,6 +97,11 @@ const MobileMenu = () => {
 
   const closeMenu = () => {
     setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push(getWebRoute('login'));
   };
 
   // close menu when the screen size goes bigger than the breakpoint
@@ -108,12 +125,9 @@ const MobileMenu = () => {
     };
   }, [isOpen]);
 
-  // TODO: temporary values
   const menuItems = {
-    'label1': '#',
-    'label2': '#',
-    'label3': '#',
-    'label4': '#',
+    Home: getWebRoute('home'),
+    Dashboard: getWebRoute('dashboard'),
   };
 
   return (
@@ -136,6 +150,9 @@ const MobileMenu = () => {
               </Link>
             </ContentItemDiv>
           ))}
+          <ContentItemDiv>
+            <MenuItemButton onClick={handleLogout}>Logout</MenuItemButton>
+          </ContentItemDiv>
         </ContentsContainer>
       </Container>
     </WrapperDiv>

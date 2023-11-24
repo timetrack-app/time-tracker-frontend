@@ -15,7 +15,6 @@ const {
   editPassword: '/dashboard/password',
   templateList: '/dashboard/templates',
   templateDetail: '/dashboard/templates/{templateId}',
-  // TODO: add all page routes
 });
 
 export { getWebRoute, getWebRouteFull };

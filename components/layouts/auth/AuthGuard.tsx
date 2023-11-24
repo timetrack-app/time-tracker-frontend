@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import { useIsAuthenticated } from '../../../features/auth/api/hooks/useIsAuthenticated';
-import { getUserLoginCookie, removeUserLoginCookie } from '../../../utils/cookie/auth';
+import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { useAppDispatch } from '../../../stores/hooks';
-import { login, logout } from '../../../stores/slices/authSlice';
+import { login } from '../../../stores/slices/authSlice';
+import { useUserLogout } from '../../../features/auth/api/hooks/useUserLogout';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
 import { getWebRoute } from '../../../routes/web';
 
@@ -19,14 +20,15 @@ const AuthGuard = () => {
 
   const authToken = getUserLoginCookie();
 
+  const { mutate: logout } = useUserLogout();
+
   const { isLoading } = useIsAuthenticated(authToken, {
     onSuccess(user) {
       const { id, email, isVerified } = user;
       dispatch(login({ id, email, isVerified }));
     },
     onError: () => {
-      dispatch(logout);
-      removeUserLoginCookie();
+      logout();
       router.push(getWebRoute('login'));
     },
   });
