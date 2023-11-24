@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import {
@@ -30,6 +31,10 @@ import { SelectInitialTaskFormValues } from '../../../features/workSession/types
 
 import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
+import { selectLoggedInUser } from '../../../stores/slices/authSlice';
+import { useAnyTrue } from '../../../hooks/useAnyTrue';
+import { getUserLoginCookie } from '../../../utils/cookie/auth';
+import { getWebRoute } from '../../../routes/web';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -50,7 +55,22 @@ const MainAreaContainer = styled.div`
   }
 `;
 
+/**
+ * Main page with:
+ * main timer, sub section(with timer), tabs, lists, tasks
+ *
+ * A user can start a work session, add tabs, lists and tasks
+ *
+ * @return {JSX.Element}
+ */
 const HomePage = () => {
+  const router = useRouter();
+
+  const user = useAppSelector(selectLoggedInUser);
+  if (!user) router.push(getWebRoute('login'));
+
+  const authToken = getUserLoginCookie();
+
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
   // RDK related
@@ -58,8 +78,6 @@ const HomePage = () => {
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
     useRDKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
-  // temporary solution
-  const fakeUserId = 1;
 
   // Utility hooks
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
@@ -91,8 +109,9 @@ const HomePage = () => {
     });
 
   const { isLoading: isLoadingGetLatestWorkSession } = useGetLatestWorkSession(
-    { userId: fakeUserId },
+    { authToken, userId: user?.id },
     {
+      enabled: user !== undefined,
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
           data.workSession;
@@ -124,7 +143,7 @@ const HomePage = () => {
         taskIndex,
       );
       // API call
-      await createWorkSession({ tabs: newTabs, userId: fakeUserId });
+      await createWorkSession({ authToken, tabs: newTabs, userId: user?.id });
       // Close the modal
       onCloseSelectInitialTaskModal();
     },
@@ -134,14 +153,18 @@ const HomePage = () => {
       onCloseSelectInitialTaskModal,
       selectableTaskInfos,
       tabs,
+      user?.id,
     ],
   );
 
+  const isLoading = useAnyTrue([
+    isLoadingCreateWorkSession,
+    isLoadingGetLatestWorkSession,
+  ]);
+
   return (
     <>
-      <LoadingOverlay
-        loading={isLoadingCreateWorkSession || isLoadingGetLatestWorkSession}
-      />
+      <LoadingOverlay loading={isLoading} />
       <Navbar />
       <MobileMenu />
       <SelectInitialTaskModal

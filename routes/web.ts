@@ -1,3 +1,5 @@
+// https://github.com/koyablue/path-kanri
+
 import pathManager from 'path-kanri';
 
 // Paths of pages
@@ -13,7 +15,6 @@ const {
   editPassword: '/dashboard/password',
   templateList: '/dashboard/templates',
   templateDetail: '/dashboard/templates/{templateId}',
-  // TODO: add all page routes
 });
 
 export { getWebRoute, getWebRouteFull };

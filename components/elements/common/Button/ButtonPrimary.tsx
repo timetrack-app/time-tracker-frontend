@@ -11,11 +11,10 @@ import {
   exquisiteEmerald,
 } from '../../../../const/styles/colors';
 import { ColorThemeName } from '../../../../types/colorTheme';
-import { useColorTheme } from '../../../../hooks/useColorTheme';
 
-const StyledButton = styled(Button)<{colorThemeName: ColorThemeName}>`
+const StyledButton = styled(Button)<{ colorThemeName: ColorThemeName }>`
   &:hover {
-    background-color: ${({colorThemeName}) => {
+    background-color: ${({ colorThemeName }) => {
       switch (colorThemeName) {
         case 'light':
           return mintFlash;
@@ -28,7 +27,7 @@ const StyledButton = styled(Button)<{colorThemeName: ColorThemeName}>`
   }
 
   &:active {
-    box-shadow: ${({colorThemeName}) => {
+    box-shadow: ${({ colorThemeName }) => {
       switch (colorThemeName) {
         case 'light':
           return `0 0 0 1px ${vegetation} inset`;
@@ -38,7 +37,7 @@ const StyledButton = styled(Button)<{colorThemeName: ColorThemeName}>`
           return `0 0 0 1px ${vegetation} inset`;
       }
     }};
-    background-color: ${({colorThemeName}) => {
+    background-color: ${({ colorThemeName }) => {
       switch (colorThemeName) {
         case 'light':
           return mintFlash;
@@ -48,7 +47,7 @@ const StyledButton = styled(Button)<{colorThemeName: ColorThemeName}>`
           return mintFlash;
       }
     }};
-    border-color: ${({colorThemeName}) => {
+    border-color: ${({ colorThemeName }) => {
       switch (colorThemeName) {
         case 'light':
           return mintFlash;
@@ -64,7 +63,9 @@ const StyledButton = styled(Button)<{colorThemeName: ColorThemeName}>`
 const ButtonPrimary = (props: ButtonProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
-  const colorThemes: { [key in ColorThemeName]: { color: string; backgroundColor: string; borderColor: string; } } = {
+  const colorThemes: {
+    [key in ColorThemeName]: { color: string; backgroundColor: string; borderColor: string; }
+  } = {
     light: {
       color: vegetation,
       backgroundColor: softPetals,
@@ -88,6 +89,6 @@ const ButtonPrimary = (props: ButtonProps) => {
       {...props}
     />
   );
-}
+};
 
 export default ButtonPrimary;

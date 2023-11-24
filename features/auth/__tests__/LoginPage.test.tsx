@@ -9,7 +9,7 @@ import {
 import LoginPage from '../../../components/pages/login/LoginPage';
 import { lightTheme } from '../../../config/styles/colorThemes';
 import { getWebRoute } from '../../../routes/web';
-import { emailRequired, passwordRequired } from '../../../const/validation/messages';
+import { emailRequiredMsg, passwordRequiredMsg } from '../../../const/validation/messages';
 import { showToast } from '../../../libs/react-toastify/toast';
 
 import { render } from '../../../utils/test/test-utils';
@@ -128,7 +128,7 @@ describe('Login Component', () => {
 
         await act(async () => {});
 
-        expect(screen.getByText(emailRequired)).toBeInTheDocument();
-        expect(screen.getByText(passwordRequired)).toBeInTheDocument();
+        expect(screen.getByText(emailRequiredMsg)).toBeInTheDocument();
+        expect(screen.getByText(passwordRequiredMsg)).toBeInTheDocument();
   })
 });

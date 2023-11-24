@@ -1,3 +1,5 @@
+// https://github.com/koyablue/path-kanri
+
 import pathManager from 'path-kanri';
 
 import { apiBaseUrl } from '../const/api';
@@ -7,6 +9,7 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
   pathManager(
     {
       register: '/auth/register',
+      emailVerification: '/auth/email-verification',
       login: '/auth/login',
       logout: '/auth/logout',
       createWorkSession: '/users/{userId}/work-sessions',

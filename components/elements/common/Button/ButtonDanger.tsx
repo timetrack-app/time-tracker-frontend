@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import Button, { ButtonProps } from './Button';
 
-import { coralRed, petalBloom, roseMadder, tartanRed, translucentUnicorn } from '../../../../const/styles/colors';
+import { coralRed, petalBloom, roseMadder, translucentUnicorn } from '../../../../const/styles/colors';
 
 const StyledButton = styled(Button)`
   border: 1px solid ${coralRed};

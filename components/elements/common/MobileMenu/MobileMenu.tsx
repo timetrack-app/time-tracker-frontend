@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { IoMenu, IoClose } from 'react-icons/io5';
 
@@ -12,6 +13,8 @@ import { useAppSelector } from '../../../../stores/hooks';
 import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
 import { ColorThemeName } from '../../../../types/colorTheme';
+import { getWebRoute } from '../../../../routes/web';
+import { useUserLogout } from '../../../../features/auth/api/hooks/useUserLogout';
 
 const WrapperDiv = styled.div`
   @media ${breakPoint.tablet} {
@@ -19,7 +22,7 @@ const WrapperDiv = styled.div`
   }
 `;
 
-const Container = styled.div<{isOpen: boolean}>`
+const Container = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -56,7 +59,7 @@ const ContentItemDiv = styled.div`
   padding: 0.5em;
 `;
 
-const ButtonWrapper = styled.button<{colorThemeName: ColorThemeName; isOpen: boolean;}>`
+const ButtonWrapper = styled.button<{ colorThemeName: ColorThemeName; isOpen: boolean; }>`
   position: absolute;
   top: 16px;
   right: 10px;
@@ -72,10 +75,21 @@ const ButtonWrapper = styled.button<{colorThemeName: ColorThemeName; isOpen: boo
   z-index: 1100;
 `;
 
+const MenuItemButton = styled.button`
+  appearance: none;
+  border: none;
+  background-color: ${({ theme }) => theme.colors.componentBackground};
+  cursor: pointer;
+  font-size: 1em;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
 const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isBelowBreakPoint] = useWindowResize();
   const currentColorTheme = useAppSelector(selectColorTheme);
+  const { mutate: logout } = useUserLogout();
+  const router = useRouter();
+  const [isBelowBreakPoint] = useWindowResize();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -83,6 +97,11 @@ const MobileMenu = () => {
 
   const closeMenu = () => {
     setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    router.push(getWebRoute('login'));
   };
 
   // close menu when the screen size goes bigger than the breakpoint
@@ -93,7 +112,7 @@ const MobileMenu = () => {
   }, [isBelowBreakPoint]);
 
   useEffect(() => {
-    const body = document.body;
+    const { body } = document;
 
     // disable scrolling when the menu is open, re-enable scrolling when the menu is closed
     isOpen
@@ -106,12 +125,9 @@ const MobileMenu = () => {
     };
   }, [isOpen]);
 
-  // TODO: temporary values
   const menuItems = {
-    'label1': '#',
-    'label2': '#',
-    'label3': '#',
-    'label4': '#',
+    Home: getWebRoute('home'),
+    Dashboard: getWebRoute('dashboard'),
   };
 
   return (
@@ -124,7 +140,8 @@ const MobileMenu = () => {
         {isOpen ? <IoClose /> : <IoMenu />}
       </ButtonWrapper>
       <Container isOpen={isOpen} onClick={closeMenu}>
-        {/* e.stopPropagation() is necessary to avoid close the menu when the menu items are clicked */}
+        {/* e.stopPropagation() is necessary
+        to avoid close the menu when the menu items are clicked */}
         <ContentsContainer onClick={(e) => e.stopPropagation()}>
           {Object.keys(menuItems).map((label) => (
             <ContentItemDiv key={label}>
@@ -133,6 +150,9 @@ const MobileMenu = () => {
               </Link>
             </ContentItemDiv>
           ))}
+          <ContentItemDiv>
+            <MenuItemButton onClick={handleLogout}>Logout</MenuItemButton>
+          </ContentItemDiv>
         </ContentsContainer>
       </Container>
     </WrapperDiv>

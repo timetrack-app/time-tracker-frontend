@@ -36,7 +36,8 @@ export const useColorTheme = () => {
   const initColorTheme = useCallback(() => {
     const currentColorThemeCookie = getColorThemeCookie();
 
-    const noCookieOrInvalidThemeName = !currentColorThemeCookie || !isColorThemeName(currentColorThemeCookie);
+    const noCookieOrInvalidThemeName =
+      !currentColorThemeCookie || !isColorThemeName(currentColorThemeCookie);
 
     noCookieOrInvalidThemeName
       ? setColorTheme(defaultColorThemeName)

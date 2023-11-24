@@ -1,11 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import AuthGuard from '../../../../components/layouts/auth/AuthGuard';
 import { FiChevronLeft } from 'react-icons/fi';
-
-const MainContainerDiv = styled.div`
-`;
 
 const ContentsContainerDiv = styled.div`
   display: flex;
@@ -47,10 +43,13 @@ type Props = {
   children?: ReactNode
 };
 
+// Cannot use this for PageComponent.getLayout pattern
+// because the theme becomes undefined in SSR
+// The template of this project is from styled-components example in official repo
+// but theme is undefined in Layout components somehow.
+// Tried to solve this problem but I couldn't.
 const DashboardLayout = ({ backButtonHref, children }: Props) => (
-  <>
-    <AuthGuard />
-    <MainContainerDiv>
+  <div>
     <ContentsContainerDiv>
       <Header>
         <Link href={backButtonHref}>
@@ -61,8 +60,7 @@ const DashboardLayout = ({ backButtonHref, children }: Props) => (
       </Header>
       {children}
     </ContentsContainerDiv>
-  </MainContainerDiv>
-  </>
+  </div>
 );
 
 export default DashboardLayout;

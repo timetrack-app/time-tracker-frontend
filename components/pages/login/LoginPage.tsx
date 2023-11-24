@@ -3,26 +3,24 @@ import { SubmitHandler } from 'react-hook-form';
 import { TextInput } from '../../elements/ReactHookForm';
 import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
-import {
-  AuthForm,
-  AuthFormContentsWrapper,
-  useUserLogin,
-  useIsAuthenticated,
-} from '../../../features/auth/index';
+import { AuthForm, AuthFormContentsWrapper, useUserLogin } from '../../../features/auth/index';
+import LoginFailedToastContents from './LoginFailedToastContents';
 
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
-  emailRequired,
-  emailInvalid,
-  passwordRequired,
+  emailRequiredMsg,
+  emailInvalidMsg,
+  passwordRequiredMsg,
+  invalidPasswordLengthMsg,
 } from '../../../const/validation/messages';
 
-import { useAppDispatch } from '../../../stores/hooks';
-import { login } from '../../../stores/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
+import { login, selectLoggedInUser } from '../../../stores/slices/authSlice';
 
 import { getWebRouteFull } from '../../../routes/web';
-import { getUserLoginCookie, setUserLoginCookie } from '../../../utils/cookie/auth';
+import { setUserLoginCookie } from '../../../utils/cookie/auth';
 import { showToast } from '../../../libs/react-toastify/toast';
+import { isValidLengthPassword } from '../../../utils/validation';
 
 type LoginFormValues = {
   email: string;
@@ -32,38 +30,27 @@ type LoginFormValues = {
 /**
  * User login form
  *
- * @return {*} JSX.Element
+ * @return {JSX.Element}
  */
 const LoginPage = () => {
   const router = useRouter();
+
   const dispatch = useAppDispatch();
+
+  const user = useAppSelector(selectLoggedInUser);
 
   const { isLoading: isUserLoginLoading, mutate: userLogin } = useUserLogin();
 
-  useIsAuthenticated(getUserLoginCookie(), {
-    onSuccess: () => {
-      router.push(getWebRouteFull('home'));
-    },
-    // This empty onError call back is needed to prevent global 401 error handling.
-    onError: () => {
-      /* Do nothing */
-    },
-  });
-
-  // TODO: If the user logged in, redirect to main page
-
-  const onSubmit: SubmitHandler<LoginFormValues> = async ({
-    email,
-    password,
-  }) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async ({ email, password }) => {
     await userLogin(
       { email, password },
       {
         onError: () => {
-          showToast('error', 'An error has occurred.');
+          showToast('error', <LoginFailedToastContents />);
         },
         onSuccess: (res) => {
-          const {id, email, isVerified, authToken } = res;
+          const { id, email, isVerified, authToken } = res;
+          // set auth token to cookie, set user info to global state, then redirect to home
           setUserLoginCookie(authToken);
           dispatch(login({ id, email, isVerified }));
           router.push(getWebRouteFull('home'));
@@ -72,7 +59,10 @@ const LoginPage = () => {
     );
   };
 
-  // TODO: Set the same password validation as the backend
+  // redirect to home page if the user is already logged in
+  if (user) {
+    router.push(getWebRouteFull('home'));
+  }
 
   return (
     <>
@@ -91,10 +81,10 @@ const LoginPage = () => {
               placeholder="example@example.com"
               label="E-mail"
               registration={register('email', {
-                required: emailRequired,
+                required: emailRequiredMsg,
                 pattern: {
                   value: emailRegExp,
-                  message: emailInvalid,
+                  message: emailInvalidMsg,
                 },
               })}
               error={formState.errors.email}
@@ -104,7 +94,10 @@ const LoginPage = () => {
               type="password"
               label="Password"
               registration={register('password', {
-                required: passwordRequired,
+                required: passwordRequiredMsg,
+                validate: (val: string) => {
+                  if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
+                },
               })}
               error={formState.errors.password}
             />

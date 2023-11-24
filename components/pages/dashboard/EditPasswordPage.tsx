@@ -5,12 +5,11 @@ import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay'
 import { DashboardLayout, ProfileForm, PasswordInput } from '../../../features/dashboard';
 import { useUpdatePassword } from '../../../features/profile';
 
-import { passwordMaxLen, passwordMinLen } from '../../../const/validation/rules/password';
 import {
-  invalidPasswordLength,
-  passwordConfirmationMismatch,
-  passwordConfirmationRequired,
-  passwordRequired,
+  invalidPasswordLengthMsg,
+  passwordConfirmationMismatchMsg,
+  passwordConfirmationRequiredMsg,
+  passwordRequiredMsg,
 } from '../../../const/validation/messages';
 
 import { useAppSelector } from '../../../stores/hooks';
@@ -21,6 +20,7 @@ import { MainContainer, ButtonWrapper, SubmitButton } from './styles/sharedStyle
 import { getWebRoute } from '../../../routes/web';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { showToast } from '../../../libs/react-toastify/toast';
+import { isValidLengthPassword } from '../../../utils/validation';
 
 type PasswordEditFormValues = {
   password: string
@@ -75,14 +75,9 @@ const EditPasswordPage = () => {
               <div>
                 <PasswordInput
                   registration={register('password', {
-                    required: passwordRequired,
+                    required: passwordRequiredMsg,
                     validate: (val: string) => {
-                      if (val.length < passwordMinLen || val.length > passwordMaxLen) {
-                        return invalidPasswordLength;
-                      }
-                      if (watch('password') != val) {
-                        return "Your passwords do no match";
-                      }
+                      if (!isValidLengthPassword(val)) return invalidPasswordLengthMsg;
                     },
                   })}
                   error={formState.errors.password}
@@ -91,10 +86,10 @@ const EditPasswordPage = () => {
                 />
                 <PasswordInput
                   registration={register('passwordConfirmation', {
-                    required: passwordConfirmationRequired,
+                    required: passwordConfirmationRequiredMsg,
                     validate: (val: string) => {
                       if (watch('password') !== val) {
-                        return passwordConfirmationMismatch;
+                        return passwordConfirmationMismatchMsg;
                       }
                     },
                   })}

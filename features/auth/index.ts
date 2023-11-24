@@ -4,3 +4,4 @@ export { default as AuthFormContentsWrapper } from './components/elements/AuthFo
 export * from './api/hooks/useUserRegistration';
 export * from './api/hooks/useUserLogin';
 export * from './api/hooks/useIsAuthenticated';
+export * from './api/hooks/useEmailVerification';

@@ -3,7 +3,7 @@ import {
   useCallback,
   useEffect,
   useState
-} from 'react'
+} from 'react';
 import { EmblaCarouselType } from 'embla-carousel-react';
 
 // https://www.embla-carousel.com/

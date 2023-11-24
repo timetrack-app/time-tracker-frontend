@@ -1,5 +1,5 @@
 import { FaEnvelope } from 'react-icons/fa';
-import { LuLayoutTemplate } from 'react-icons/lu'
+import { LuLayoutTemplate } from 'react-icons/lu';
 import { MdPassword } from 'react-icons/md';
 import { useAppSelector } from '../../../stores/hooks';
 import { selectColorTheme } from '../../../stores/slices/colorThemeSlice';
@@ -17,22 +17,22 @@ const DashboardPage = () => {
 
   return (
     <DashboardLayout backButtonHref={getWebRoute('home')}>
-      <ContentsCard title='Account' colorThemeName={currentColorThemeName}>
+      <ContentsCard title="Account" colorThemeName={currentColorThemeName}>
         <Content
-          title='E-mail'
+          title="E-mail"
           href={getWebRoute('editEmail')}
           icon={<FaEnvelope />}
         />
         <Content
-          title='Password'
+          title="Password"
           href={getWebRoute('editPassword')}
           icon={<MdPassword />}
         />
       </ContentsCard>
 
-      <ContentsCard title='Application' colorThemeName={currentColorThemeName}>
+      <ContentsCard title="Application" colorThemeName={currentColorThemeName}>
         <Content
-          title='Templates'
+          title="Templates"
           href={getWebRoute('templateList')}
           icon={<LuLayoutTemplate />}
         />
