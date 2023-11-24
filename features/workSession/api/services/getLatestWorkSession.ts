@@ -12,10 +12,11 @@ import {
  * @return {*}  {Promise<void>}
  */
 export const getLatestWorkSession = async ({
+  authToken,
   userId,
 }: GetLatestWorkSessionParams): Promise<GetLatestWorkSessionResponse> => {
   try {
-    const res = await axiosBase().get(
+    const res = await axiosBase(authToken).get(
       getApiEndpointFull('getLatestWorkSession', { userId }),
     );
     return res.data;

@@ -7,11 +7,13 @@ export type EndWorkSessionParams = {
 };
 
 export type CreateWorkSessionParams = {
+  authToken: string
   userId: number;
   tabs: Tab[];
 };
 
 export type GetLatestWorkSessionParams = {
+  authToken: string
   userId: number;
 };
 

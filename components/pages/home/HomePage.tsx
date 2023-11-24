@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import {
@@ -32,6 +33,8 @@ import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
 import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
+import { getUserLoginCookie } from '../../../utils/cookie/auth';
+import { getWebRoute } from '../../../routes/web';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -61,7 +64,12 @@ const MainAreaContainer = styled.div`
  * @return {JSX.Element}
  */
 const HomePage = () => {
+  const router = useRouter();
+
   const user = useAppSelector(selectLoggedInUser);
+  if (!user) router.push(getWebRoute('login'));
+
+  const authToken = getUserLoginCookie();
 
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
@@ -101,8 +109,9 @@ const HomePage = () => {
     });
 
   const { isLoading: isLoadingGetLatestWorkSession } = useGetLatestWorkSession(
-    { userId: user?.id },
+    { authToken, userId: user?.id },
     {
+      enabled: user !== undefined,
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
           data.workSession;
@@ -134,7 +143,7 @@ const HomePage = () => {
         taskIndex,
       );
       // API call
-      await createWorkSession({ tabs: newTabs, userId: user?.id });
+      await createWorkSession({ authToken, tabs: newTabs, userId: user?.id });
       // Close the modal
       onCloseSelectInitialTaskModal();
     },
