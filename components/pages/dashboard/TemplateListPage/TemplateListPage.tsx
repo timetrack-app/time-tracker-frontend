@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import LoadingOverlay from '../../../elements/common/LoadingOverlay/LoadingOverlay';
-import { DashboardLayout } from '../../../../features/dashboard';
+import { DashboardLayout, useDeleteTemplate } from '../../../../features/dashboard';
 import { useGetTemplates, getTemplatesQueryKey } from '../../../../features/workSession';
-import { useDeleteTemplate } from '../../../../features/dashboard';
 import TemplateListItem from './TemplateListItem';
 import PageButton from './PageButton';
 import { MainContainer } from '../styles/sharedStyles';
@@ -86,7 +85,7 @@ const TemplateListPage = () => {
       <MainContainer>
         <h1>Templates</h1>
         <ul>
-          {data?.templates.map(template =>
+          {data?.templates.map((template) =>
             <TemplateListItem
               key={template.id}
               templateId={template.id}
