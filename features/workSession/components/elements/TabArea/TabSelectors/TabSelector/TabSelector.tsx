@@ -7,14 +7,12 @@ import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeS
 
 export type TabSelectorProps = {
   tab: Tab;
-  isSelected: boolean;
   handleSelectTab: (tab: Tab) => void;
   className?: string;
 };
 
 const ContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
-  isSelected: boolean;
 }>`
   width: 7em;
   height: 1.8em;
@@ -26,19 +24,19 @@ const ContainerDiv = styled.div<{
   padding: 0.5em;
   cursor: pointer;
   border: 1px solid
-    ${({ theme, colorThemeName, isSelected }) => {
+    ${({ theme, colorThemeName }) => {
       if (colorThemeName === 'dark') {
-        return isSelected ? theme.colors.text : theme.colors.border;
+        return theme.colors.border;
       }
 
-      return isSelected ? theme.colors.info : theme.colors.border;
+      return theme.colors.border;
     }};
-  background: ${({ theme, colorThemeName, isSelected }) => {
-    if (colorThemeName ==='dark') {
-      return isSelected ? theme.colors.info : theme.colors.componentBackground;
+  background: ${({ theme, colorThemeName }) => {
+    if (colorThemeName === 'dark') {
+      return theme.colors.componentBackground;
     }
 
-    return isSelected ? theme.colors.infoBg : theme.colors.componentBackground;
+    return theme.colors.componentBackground;
   }};
   box-shadow: ${({ colorThemeName, theme }) =>
     colorThemeName === 'light' ? `0 3px 6px 0 ${theme.colors.border}` : 'none'};
@@ -46,33 +44,24 @@ const ContainerDiv = styled.div<{
 
 const TabNameP = styled.p<{
   colorThemeName: ColorThemeName;
-  isSelected: boolean;
 }>`
-  color: ${({ theme, colorThemeName, isSelected }) => {
+  color: ${({ theme, colorThemeName }) => {
     if (colorThemeName === 'dark') return theme.colors.text;
 
-    return isSelected ? theme.colors.info : theme.colors.border;
+    return theme.colors.border;
   }};
   font-size: 1.25em;
 `;
 
-const TabSelector = ({
-  tab,
-  isSelected,
-  handleSelectTab,
-  className,
-}: TabSelectorProps) => {
+const TabSelector = ({ tab, handleSelectTab, className }: TabSelectorProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
   return (
     <ContainerDiv
       colorThemeName={currentColorThemeName}
-      isSelected={isSelected}
       onClick={() => handleSelectTab(tab)}
       className={className}
     >
-      <TabNameP colorThemeName={currentColorThemeName} isSelected={isSelected}>
-        {tab.name}
-      </TabNameP>
+      <TabNameP colorThemeName={currentColorThemeName}>{tab.name}</TabNameP>
     </ContainerDiv>
   );
 };

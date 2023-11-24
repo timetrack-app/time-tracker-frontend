@@ -4,6 +4,7 @@ import { Tab } from '../../../../../../types/entity';
 import TabSelector from './TabSelector/TabSelector';
 import PlusCircleButton from './PlusCircleButton/PlusCircleButton';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import EditableTabSelector from './EditableTabSelector/EditableTabSelector';
 
 type TabSelectorsProps = {
   tabs: Tab[];
@@ -24,13 +25,11 @@ const ContainerDiv = styled.div`
 
   width: 100%;
   max-width: 100%;
+  /* Replated first tab spacing left logic with this */
+  margin-left: 1em;
 
   @media ${breakPoint.tablet} {
   }
-`;
-
-const FirstTabSelector = styled(TabSelector)`
-  margin-left: 1em;
 `;
 
 const TabSelectors = ({
@@ -39,19 +38,15 @@ const TabSelectors = ({
   handleSelectTab,
   onClickPlusCircleButton,
 }: TabSelectorsProps) => {
-  const getTabComponent = (idx: number) =>
-    idx === 0 ? FirstTabSelector : TabSelector;
-
   return (
     <ContainerDiv>
-      {tabs.map((tab, idx) => {
-        const TabSelectorComponent = getTabComponent(idx);
-
+      {tabs.map((tab) => {
+        const isSelected = tab.id === selectedTabId;
+        if (isSelected) return <EditableTabSelector key={tab.id} tab={tab} />;
         return (
-          <TabSelectorComponent
+          <TabSelector
             key={tab.id}
             tab={tab}
-            isSelected={tab.id === selectedTabId}
             handleSelectTab={handleSelectTab}
           />
         );

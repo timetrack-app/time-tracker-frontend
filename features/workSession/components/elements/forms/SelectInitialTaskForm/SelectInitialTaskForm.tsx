@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-
-import Form, {
+import {
+  Form,
   FormProps,
-} from '../../../../../../../components/elements/ReactHookForm/Form';
+} from '../../../../../../components/elements/ReactHookForm';
 
 const StyledForm = styled(Form)`
   width: 100%;

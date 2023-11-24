@@ -15,4 +15,6 @@ export const passwordRequired = 'Password is required.';
 export const passwordConfirmationMismatch = 'Passwords do not match';
 export const passwordConfirmationRequired = 'Password confirmation is required';
 
+export const tabRenameRequired = 'Tab name has to be at least 1 character long';
+
 export const taskNameRequired = 'Task name is required';

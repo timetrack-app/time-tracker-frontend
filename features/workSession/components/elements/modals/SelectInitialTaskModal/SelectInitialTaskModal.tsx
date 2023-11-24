@@ -5,7 +5,7 @@ import Modal from '../../../../../../components/elements/common/Modal/Modal';
 
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 import { SelectInput } from '../../../../../../components/elements/ReactHookForm/SelectInput';
-import SelectInitialTaskForm from '../../forms/SelectInitialTaskForm/SelectInitialTaskForm/SelectInitialTaskForm';
+import SelectInitialTaskForm from '../../forms/SelectInitialTaskForm/SelectInitialTaskForm';
 import SelectInitialTaskFormContentsWrapper from '../../forms/SelectInitialTaskForm/SelectInitialTaskFormContentWrapper/SelectInitialTaskFormContentWrapper';
 
 import {
