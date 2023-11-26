@@ -14,6 +14,7 @@ import {
 } from '../../../../../../../../components/elements/common';
 
 type RenameTabPopoverProps = {
+  editableTabSelectorPosition: DOMRect;
   currentTabName: string;
   isOpen: boolean;
   onSubmit: (newName: string) => void;
@@ -24,6 +25,18 @@ type RenameTabFormValues = {
   tabName: string;
 };
 
+const ContainerDiv = styled.div<{ editableTabSelectorPosition: DOMRect }>`
+  position: absolute;
+  /* TODO : more accurate z-index */
+  z-index: 9999;
+  top: ${({ editableTabSelectorPosition }) =>
+    editableTabSelectorPosition.top + 28}px;
+  left: ${({ editableTabSelectorPosition }) =>
+    // TODO : Find better way to calculate left position
+    editableTabSelectorPosition.left + 80}px;
+`;
+
+// TODO : Make styling better
 const PopoverContainer = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
@@ -38,6 +51,7 @@ const PopoverContainer = styled.div<{
 `;
 
 const RenameTabPopover = ({
+  editableTabSelectorPosition,
   currentTabName,
   isOpen,
   onSubmit,
@@ -50,39 +64,41 @@ const RenameTabPopover = ({
   };
 
   return isOpen ? (
-    <PopoverContainer colorThemeName={currentColorThemeName}>
-      <RenameTabForm<RenameTabFormValues>
-        onSubmit={(values) => {
-          onSubmit(values.tabName);
-        }}
-        options={{ defaultValues }}
-      >
-        {({ register, formState }) => (
-          <RenameTabFormContentsWrapper
-            submitButton={
-              <ButtonPrimary type="submit">
-                <p>Sign Up</p>
-              </ButtonPrimary>
-            }
-            discardButton={
-              <ButtonSecondary onClick={onDiscard}>
-                <p>Discard</p>
-              </ButtonSecondary>
-            }
-          >
-            <TextInput
-              type="text"
-              placeholder={currentTabName}
-              label=""
-              registration={register('tabName', {
-                required: tabRenameRequired,
-              })}
-              error={formState.errors.tabName}
-            />
-          </RenameTabFormContentsWrapper>
-        )}
-      </RenameTabForm>
-    </PopoverContainer>
+    <ContainerDiv editableTabSelectorPosition={editableTabSelectorPosition}>
+      <PopoverContainer colorThemeName={currentColorThemeName}>
+        <RenameTabForm<RenameTabFormValues>
+          onSubmit={(values) => {
+            onSubmit(values.tabName);
+          }}
+          options={{ defaultValues }}
+        >
+          {({ register, formState }) => (
+            <RenameTabFormContentsWrapper
+              submitButton={
+                <ButtonPrimary type="submit">
+                  <p>Rename</p>
+                </ButtonPrimary>
+              }
+              discardButton={
+                <ButtonSecondary onClick={onDiscard}>
+                  <p>Discard</p>
+                </ButtonSecondary>
+              }
+            >
+              <TextInput
+                type="text"
+                placeholder={currentTabName}
+                label=""
+                registration={register('tabName', {
+                  required: tabRenameRequired,
+                })}
+                error={formState.errors.tabName}
+              />
+            </RenameTabFormContentsWrapper>
+          )}
+        </RenameTabForm>
+      </PopoverContainer>
+    </ContainerDiv>
   ) : null;
 };
 

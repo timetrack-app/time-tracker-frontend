@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Tab } from '../../../../../../../types/entity';
 import { ColorThemeName } from '../../../../../../../types/colorTheme';
 import { useAppSelector } from '../../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
-import EditTabMenuBar from './EditTabMenuBar/EditTabMenuBar';
-import RenameTabPopover from './RenameTabPopover/RenameTabPopover';
 
 export type TabSelectorProps = {
   tab: Tab;
   className?: string;
+  isOpenMenubar: boolean;
+  toggleMenuBar: (rect: DOMRect) => void;
 };
 
-const ContainerDiv = styled.div<{
+// Selector Container
+const SelectorContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
   width: 7em;
@@ -64,53 +65,32 @@ const IconButton = styled.button<{}>`
   cursor: pointer;
 `;
 
-const EditableTabSelector = ({ tab, className }: TabSelectorProps) => {
-  const [isMenuBarOpen, setIsMenuBarOpen] = useState(false);
-  const [isRenamePopoverOpen, setIsRenamePopoverOpen] = useState(false);
+const EditableTabSelector = ({
+  tab,
+  className,
+  isOpenMenubar,
+  toggleMenuBar,
+}: TabSelectorProps) => {
+  const editableTabSelectorRef = useRef(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
-  const toggleMenuBar = () => {
-    setIsMenuBarOpen(!isMenuBarOpen);
-  };
-  const onRename = () => {
-    setIsMenuBarOpen(false);
-    setIsRenamePopoverOpen(true);
-  };
-
-  const onDelete = () => {
-    alert('delete');
-  };
-
-  const onSubmitRename = (newTabName: string) => {
-    alert(newTabName);
-  };
-
-  const onDiscardRename = () => {
-    setIsRenamePopoverOpen(false);
+  const handleToggleMenuBar = () => {
+    if (!editableTabSelectorRef.current) return;
+    const rect: DOMRect =
+      editableTabSelectorRef.current.getBoundingClientRect();
+    toggleMenuBar(rect);
   };
   return (
-    <>
-      <ContainerDiv
-        colorThemeName={currentColorThemeName}
-        className={className}
-      >
-        <TabNameP colorThemeName={currentColorThemeName}>{tab.name}</TabNameP>
-        <IconButton onClick={toggleMenuBar}>
-          {isMenuBarOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
-        </IconButton>
-      </ContainerDiv>
-      <EditTabMenuBar
-        isOpen={isMenuBarOpen}
-        onRename={onRename}
-        onDelete={onDelete}
-      />
-      <RenameTabPopover
-        currentTabName={tab.name}
-        isOpen={isRenamePopoverOpen}
-        onSubmit={onSubmitRename}
-        onDiscard={onDiscardRename}
-      />
-    </>
+    <SelectorContainerDiv
+      colorThemeName={currentColorThemeName}
+      className={className}
+      ref={editableTabSelectorRef}
+    >
+      <TabNameP colorThemeName={currentColorThemeName}>{tab.name}</TabNameP>
+      <IconButton onClick={handleToggleMenuBar}>
+        {isOpenMenubar ? <IoIosArrowUp /> : <IoIosArrowDown />}
+      </IconButton>
+    </SelectorContainerDiv>
   );
 };
 

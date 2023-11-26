@@ -1,46 +1,55 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useAppSelector } from '../../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../../stores/slices/colorThemeSlice';
-import { ColorThemeName } from '../../../../../../../../types/colorTheme';
 
 type MenuBarProps = {
+  editableTabSelectorPosition: DOMRect;
   isOpen: boolean;
   onRename: () => void;
   onDelete: () => void;
 };
 
-const MenuBarContainer = styled.div<{
-  colorThemeName: ColorThemeName;
-}>`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1em;
+const ContainerDiv = styled.div<{ editableTabSelectorPosition: DOMRect }>`
+  position: absolute;
+  z-index: 9999;
+  top: ${({ editableTabSelectorPosition }) =>
+    editableTabSelectorPosition.top + 28}px;
+  left: ${({ editableTabSelectorPosition }) =>
+    // TODO : Find better way to calculate left position
+    editableTabSelectorPosition.left + 80}px;
 `;
 
-const MenuButton = styled.button<{
-  colorThemeName: ColorThemeName;
-}>`
+// TODO : Make styling better
+
+const MenuBarContainer = styled.div<{}>`
+  background: ${({ theme }) => theme.colors.componentBackground};
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const MenuButton = styled.button<{}>`
   cursor: pointer;
   background: none;
   border: none;
-  color: ${({ theme, colorThemeName }) =>
-    colorThemeName === 'dark' ? theme.colors.text : theme.colors.info};
+  color: ${({ theme }) => theme.colors.text};
   margin-right: 1em;
 `;
 
-const EditTabMenuBar = ({ isOpen, onRename, onDelete }: MenuBarProps) => {
-  const currentColorThemeName = useAppSelector(selectColorTheme);
-
+const EditTabMenuBar = ({
+  editableTabSelectorPosition,
+  isOpen,
+  onRename,
+  onDelete,
+}: MenuBarProps) => {
   return isOpen ? (
-    <MenuBarContainer colorThemeName={currentColorThemeName}>
-      <MenuButton colorThemeName={currentColorThemeName} onClick={onRename}>
-        Rename
-      </MenuButton>
-      <MenuButton colorThemeName={currentColorThemeName} onClick={onDelete}>
-        Delete
-      </MenuButton>
-    </MenuBarContainer>
+    <ContainerDiv editableTabSelectorPosition={editableTabSelectorPosition}>
+      <MenuBarContainer>
+        <MenuButton onClick={onRename}>Rename</MenuButton>
+        <MenuButton onClick={onDelete}>Delete</MenuButton>
+      </MenuBarContainer>
+    </ContainerDiv>
   ) : null;
 };
 

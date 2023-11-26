@@ -9,8 +9,11 @@ import EditableTabSelector from './EditableTabSelector/EditableTabSelector';
 type TabSelectorsProps = {
   tabs: Tab[];
   selectedTabId: number;
+  isOpenMenubar: boolean;
   handleSelectTab: (tab: Tab) => void;
   onClickPlusCircleButton: () => void;
+
+  toggleMenuBar: (rect: DOMRect) => void;
 };
 
 const ContainerDiv = styled.div`
@@ -35,14 +38,24 @@ const ContainerDiv = styled.div`
 const TabSelectors = ({
   tabs,
   selectedTabId,
+  isOpenMenubar,
   handleSelectTab,
   onClickPlusCircleButton,
+  toggleMenuBar,
 }: TabSelectorsProps) => {
   return (
     <ContainerDiv>
       {tabs.map((tab) => {
         const isSelected = tab.id === selectedTabId;
-        if (isSelected) return <EditableTabSelector key={tab.id} tab={tab} />;
+        if (isSelected)
+          return (
+            <EditableTabSelector
+              key={tab.id}
+              tab={tab}
+              isOpenMenubar={isOpenMenubar}
+              toggleMenuBar={toggleMenuBar}
+            />
+          );
         return (
           <TabSelector
             key={tab.id}
