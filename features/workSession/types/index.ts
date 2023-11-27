@@ -15,6 +15,18 @@ export type GetLatestWorkSessionParams = {
   userId: number;
 };
 
+export type CreateTabParams = {
+  workSessionId: number;
+  name: string;
+  displayOrder: number;
+};
+
+export type UpdateTabParams = {
+  workSessionId: number;
+  tabId: number;
+  attr: Partial<Tab>;
+};
+
 // API Responses
 export type CreateWorkSessionResponse = {
   isUnfinished: boolean;
@@ -23,6 +35,14 @@ export type CreateWorkSessionResponse = {
 
 export type GetLatestWorkSessionResponse = {
   workSession: WorkSession;
+};
+
+export type CreateTabResponse = {
+  newTab: Tab;
+};
+
+export type UpdateTabResponse = {
+  updatedTab: Tab;
 };
 
 // Related to initial task selection
@@ -70,16 +90,6 @@ export type GetTemplatesResponse = {
   templates: Template[];
   total: number;
   hasMore: boolean;
-};
-// Related to Tab
-export type CreateTabParams = {
-  workSessionId: number;
-  name: string;
-  displayOrder: number;
-};
-
-export type CreateTabResponse = {
-  newTab: Tab;
 };
 
 // Type for the timer count data to store in localStorage

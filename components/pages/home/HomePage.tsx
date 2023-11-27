@@ -109,7 +109,6 @@ const HomePage = () => {
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
           data.workSession;
-        console.log('data', data);
 
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
@@ -205,7 +204,12 @@ const HomePage = () => {
           )}
           onClickStartSession={onOpenSelectInitialTaskModal}
         />
-        <TabsArea tabs={tabs} handleCreateNewTab={handleCreateNewTab} />
+        <TabsArea
+          tabs={tabs}
+          setTabs={setTabs}
+          getLatestWorkSession={getLatestWorkSession}
+          handleCreateNewTab={handleCreateNewTab}
+        />
       </MainAreaContainer>
     </>
   );
