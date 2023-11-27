@@ -28,6 +28,11 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       createTab: '/work-sessions/{workSessionId}/tabs',
       updateTab: '/work-sessions/{workSessionId}/tabs/{tabId}',
       deleteTab: '/work-sessions/{workSessionId}/tabs/{tabId}',
+
+      // list related
+      createList: '/work-sessions/{workSessionId}/{tabId}/lists',
+      updateList: '/work-sessions/{workSessionId}/{tabId}/lists/{listId}',
+      deleteList: '/work-sessions/{workSessionId}/{tabId}/lists/{listId}',
     },
     apiBaseUrl,
   );
