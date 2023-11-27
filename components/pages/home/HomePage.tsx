@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -11,6 +11,8 @@ import {
   useElapsedTimeCalc,
   OnGoingTimerArea,
   TabsArea,
+  DeleteTabConfirmModal,
+  useDeleteTabConfirmModal,
 } from '../../../features/workSession';
 
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
@@ -83,6 +85,12 @@ const HomePage = () => {
     onOpenSelectInitialTaskModal,
     onCloseSelectInitialTaskModal,
   } = useSelectInitialTaskModal();
+
+  const {
+    isOpenDeleteTabConfirmModal,
+    onOpenDeleteTabConfirmModal,
+    onCloseDeleteTabConfirmModal,
+  } = useDeleteTabConfirmModal();
 
   // API call related
   const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
@@ -256,6 +264,11 @@ const HomePage = () => {
         onClose={onCloseSelectInitialTaskModal}
         startWorkSession={startWorkSession}
       />
+      <DeleteTabConfirmModal
+        isOpen={isOpenDeleteTabConfirmModal}
+        onCloseModal={onCloseDeleteTabConfirmModal}
+        handleYesButtonOnClick={onDeleteTab}
+      />
       <MainAreaContainer>
         <OnGoingTimerArea
           totalTimeSec={calcTotalTimeSec(tabs)}
@@ -268,7 +281,7 @@ const HomePage = () => {
         <TabsArea
           tabs={tabs}
           onRenameTab={onRenameTab}
-          onDeleteTab={onDeleteTab}
+          onDeleteTab={onOpenDeleteTabConfirmModal}
           handleCreateNewTab={handleCreateNewTab}
         />
       </MainAreaContainer>

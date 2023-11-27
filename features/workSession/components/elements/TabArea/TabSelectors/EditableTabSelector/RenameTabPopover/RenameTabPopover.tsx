@@ -28,7 +28,7 @@ type RenameTabFormValues = {
 const ContainerDiv = styled.div<{ editableTabSelectorPosition: DOMRect }>`
   position: absolute;
   /* TODO : more accurate z-index */
-  z-index: 9999;
+  z-index: 999;
   top: ${({ editableTabSelectorPosition }) =>
     editableTabSelectorPosition.top + 28}px;
   left: ${({ editableTabSelectorPosition }) =>
