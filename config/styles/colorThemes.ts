@@ -17,8 +17,6 @@ import {
   carbon,
 } from '../../const/styles/colors';
 
-export const defaultColorThemeName: ColorThemeName = 'light';
-
 export const lightTheme: ColorThemeStyle = {
   colors: {
     text: dryadBark,
@@ -51,5 +49,7 @@ export const themeNameStyleMap: { [key in ColorThemeName]: ColorThemeStyle } = {
   light: lightTheme,
   dark: darkTheme,
 };
+
+export const defaultColorThemeName: ColorThemeName = 'light';
 
 export const defaultColorThemeStyle = themeNameStyleMap[defaultColorThemeName];

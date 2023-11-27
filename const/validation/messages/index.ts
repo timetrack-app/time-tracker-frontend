@@ -3,18 +3,20 @@
 
 import { passwordMinLen, passwordMaxLen } from '../rules/password';
 
-export const emailRequired = 'Email is required';
-export const emailInvalid = 'Please enter a valid email';
+// email
+export const emailRequiredMsg = 'Email is required';
+export const emailInvalidMsg = 'Please enter a valid email';
 
-export const invalidPasswordLength = `Password must be ${passwordMinLen}-${passwordMaxLen} characters`;
-// export const passwordNumber = 'Password must contain at least one number';
-// export const passwordUppercase = 'Password must have at least one uppercase letter';
-// export const passwordLowercase = 'Password must have at least one lowercase letter';
-export const passwordRequired = 'Password is required.';
+// password
+export const invalidPasswordLengthMsg = `Password must be ${passwordMinLen}-${passwordMaxLen} characters`;
+export const passwordRequiredMsg = 'Password is required.';
 
-export const passwordConfirmationMismatch = 'Passwords do not match';
-export const passwordConfirmationRequired = 'Password confirmation is required';
+// password confirmation
+export const passwordConfirmationMismatchMsg = 'Passwords do not match';
+export const passwordConfirmationRequiredMsg =
+  'Password confirmation is required';
 
 export const tabRenameRequired = 'Tab name has to be at least 1 character long';
 
-export const taskNameRequired = 'Task name is required';
+// others
+export const taskNameRequiredMsg = 'Task name is required';

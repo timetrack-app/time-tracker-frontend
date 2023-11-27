@@ -12,11 +12,12 @@ import {
  * @return {*}  {Promise<void>}
  */
 export const createWorkSession = async ({
+  authToken,
   userId,
   tabs,
 }: CreateWorkSessionParams): Promise<CreateWorkSessionResponse> => {
   const body = { tabs };
-  const res = await axiosBase().post(
+  const res = await axiosBase(authToken).post(
     getApiEndpointFull('createWorkSession', { userId }),
     body,
   );

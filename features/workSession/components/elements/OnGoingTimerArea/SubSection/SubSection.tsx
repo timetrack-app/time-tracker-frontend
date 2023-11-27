@@ -25,7 +25,6 @@ import {
 } from '../../../../../../const/styles/colors';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 import { selectCurrentSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
-import { close } from 'inspector';
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   display: none;

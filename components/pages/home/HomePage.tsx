@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import {
@@ -34,6 +35,10 @@ import {
 
 import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
+import { selectLoggedInUser } from '../../../stores/slices/authSlice';
+import { useAnyTrue } from '../../../hooks/useAnyTrue';
+import { getUserLoginCookie } from '../../../utils/cookie/auth';
+import { getWebRoute } from '../../../routes/web';
 import { useCreateTab } from '../../../features/workSession/api/hooks/tab/useCreateTab';
 import { selectWorkSessionState } from '../../../stores/slices/workSessionSlice';
 import { useUpdateTab } from '../../../features/workSession/api/hooks/tab/useUpdateTab';
@@ -58,7 +63,22 @@ const MainAreaContainer = styled.div`
   }
 `;
 
+/**
+ * Main page with:
+ * main timer, sub section(with timer), tabs, lists, tasks
+ *
+ * A user can start a work session, add tabs, lists and tasks
+ *
+ * @return {JSX.Element}
+ */
 const HomePage = () => {
+  const router = useRouter();
+
+  const user = useAppSelector(selectLoggedInUser);
+  if (!user) router.push(getWebRoute('login'));
+
+  const authToken = getUserLoginCookie();
+
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
   // RDK related
@@ -71,8 +91,6 @@ const HomePage = () => {
   );
 
   const dispatch = useAppDispatch();
-  // temporary solution
-  const fakeUserId = 1;
 
   // Utility hooks
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
@@ -113,8 +131,9 @@ const HomePage = () => {
     refetch: getLatestWorkSession,
     isLoading: isLoadingGetLatestWorkSession,
   } = useGetLatestWorkSession(
-    { userId: fakeUserId },
+    { authToken, userId: user?.id },
     {
+      enabled: user !== undefined,
       // enabled: false,
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
@@ -253,9 +272,7 @@ const HomePage = () => {
 
   return (
     <>
-      <LoadingOverlay
-        loading={isLoadingCreateWorkSession || isLoadingGetLatestWorkSession}
-      />
+      <LoadingOverlay loading={isLoading} />
       <Navbar />
       <MobileMenu />
       <SelectInitialTaskModal

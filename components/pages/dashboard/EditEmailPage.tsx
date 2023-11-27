@@ -1,6 +1,5 @@
 import { SubmitHandler } from 'react-hook-form';
-import { DashboardLayout }  from '../../../features/dashboard';
-import { ProfileForm } from '../../../features/dashboard';
+import { DashboardLayout, ProfileForm } from '../../../features/dashboard';
 import { useUpdateEmail } from '../../../features/profile';
 import { TextInput } from '../../elements/ReactHookForm';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
@@ -9,7 +8,7 @@ import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { showToast } from '../../../libs/react-toastify/toast';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { emailRegExp } from '../../../const/validation/rules/email';
-import { emailRequired, emailInvalid } from '../../../const/validation/messages';
+import { emailRequiredMsg, emailInvalidMsg } from '../../../const/validation/messages';
 import { getWebRoute } from '../../../routes/web';
 import { useAppSelector } from '../../../stores/hooks';
 import { selectLoggedInUser } from '../../../stores/slices/authSlice';
@@ -24,20 +23,20 @@ const EditEmailPage = () => {
 
   const {
     isLoading: isUpdatingEmail,
-    mutate: updateEmail
+    mutate: updateEmail,
   } = useUpdateEmail();
 
   const submitHandler: SubmitHandler<EmailEditFormValues> = async ({ email }) => {
     await updateEmail(
-      { authToken, userId: user.id, email, },
+      { authToken, userId: user.id, email },
       {
         onError: () => {
           showToast('error', 'Failed to update your email address.');
         },
         onSuccess: () => {
-          showToast('success', 'Verification sent! Please check your new email to confirm.')
+          showToast('success', 'Verification sent! Please check your new email to confirm.');
         },
-      }
+      },
     );
   };
 
@@ -66,17 +65,17 @@ const EditEmailPage = () => {
                   type="text"
                   placeholder="example@example.com"
                   registration={register('email', {
-                    required: emailRequired,
+                    required: emailRequiredMsg,
                     pattern: {
                       value: emailRegExp,
-                      message: emailInvalid,
+                      message: emailInvalidMsg,
                     },
                   })}
                   error={formState.errors.email}
                 />
               </div>
               <ButtonWrapper>
-                <SubmitButton type='submit'>
+                <SubmitButton type="submit">
                   Save
                 </SubmitButton>
               </ButtonWrapper>
