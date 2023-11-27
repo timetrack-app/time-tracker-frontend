@@ -268,6 +268,7 @@ const HomePage = () => {
         return newTabs;
       });
     }
+    onCloseDeleteTabConfirmModal();
   };
 
   const isLoading = useAnyTrue([
