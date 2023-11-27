@@ -196,7 +196,7 @@ const HomePage = () => {
       taskIndex,
     );
     // API call
-    await createWorkSession({ tabs: newTabs, userId: fakeUserId });
+    await createWorkSession({ authToken, tabs: newTabs, userId: user?.id });
     // Close the modal
     onCloseSelectInitialTaskModal();
   };
@@ -269,6 +269,11 @@ const HomePage = () => {
       });
     }
   };
+
+  const isLoading = useAnyTrue([
+    isLoadingCreateWorkSession,
+    isLoadingGetLatestWorkSession,
+  ]);
 
   return (
     <>
