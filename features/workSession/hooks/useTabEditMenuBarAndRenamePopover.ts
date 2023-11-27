@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export const useHandleUpdateTab = () => {
+export const useTabEditMenuBarAndRenamePopover = () => {
   const [isOpenMenubar, setIsOpenMenubar] = useState(false);
   const [isOpenRenamePopover, setIsOpenRenamePopover] = useState(false);
   const [editableTabSelectorPosition, setEditableTabSelectorPosition] =

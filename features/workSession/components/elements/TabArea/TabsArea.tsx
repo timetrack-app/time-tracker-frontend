@@ -16,7 +16,7 @@ import TabComponent from './TabComponent/TabComponent';
 import { breakPoint } from '../../../../../const/styles/breakPoint';
 import EditTabMenuBar from './TabSelectors/EditableTabSelector/EditTabMenuBar/EditTabMenuBar';
 import RenameTabPopover from './TabSelectors/EditableTabSelector/RenameTabPopover/RenameTabPopover';
-import { useHandleUpdateTab } from '../../../hooks/useHandleUpdateTab';
+import { useTabEditMenuBarAndRenamePopover } from '../../../hooks/useTabEditMenuBarAndRenamePopover';
 
 type TabsAreaProps = {
   tabs: Tab[];
@@ -107,7 +107,7 @@ const TabsArea = ({
     onOpenRenamePopover,
     onCloseRenamePopover,
     onCloseMenuBarAndRenamePopover,
-  } = useHandleUpdateTab();
+  } = useTabEditMenuBarAndRenamePopover();
 
   // on selecting a tab
   const handleSelectTab = (tab: Tab) => {

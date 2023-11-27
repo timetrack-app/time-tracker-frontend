@@ -1,3 +1,4 @@
+import { useTabEditMenuBarAndRenamePopover } from './hooks/useTabEditMenuBarAndRenamePopover';
 export { default as Timer } from './components/elements/OnGoingTimerArea/Timer/Timer';
 export { default as MainTimer } from './components/elements/OnGoingTimerArea/MainTimer/MainTimer';
 export { default as StartWorkSessionButton } from './components/elements/OnGoingTimerArea/MainTimer/StartWorkSessionButton';
@@ -13,6 +14,7 @@ export { default as TaskListName } from './components/elements/TabArea/TabCompon
 export { default as TaskListComponent } from './components/elements/TabArea/TabComponent/TaskListComponent/TaskListComponent';
 export { default as TabComponent } from './components/elements/TabArea/TabComponent/TabComponent';
 export { default as TabsArea } from './components/elements/TabArea/TabsArea';
+export { useTabEditMenuBarAndRenamePopover } from './hooks/useTabEditMenuBarAndRenamePopover';
 export { useUpdateActiveTaskTimer } from './hooks/timerCount/useUpdateActiveTaskTimer';
 export {
   useGetTemplates,
