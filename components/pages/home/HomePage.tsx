@@ -34,6 +34,8 @@ import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
 import { useCreateTab } from '../../../features/workSession/api/hooks/tab/useCreateTab';
 import { selectWorkSessionState } from '../../../stores/slices/workSessionSlice';
+import { useUpdateTab } from '../../../features/workSession/api/hooks/tab/useUpdateTab';
+import { useDeleteTab } from '../../../features/workSession/api/hooks/tab/useDeleteTab';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -131,35 +133,46 @@ const HomePage = () => {
     },
   });
 
+  const { mutate: updateTab } = useUpdateTab({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating tab');
+    },
+  });
+
+  const { mutate: deleteTab } = useDeleteTab({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating tab');
+    },
+  });
+
   const selectableTaskInfos = generateTaskInfoArr(tabs);
 
   // data post & close the modal.
-  const startWorkSession = useCallback(
-    async (values: SelectInitialTaskFormValues) => {
-      // Get the initial task info with the index
-      const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
-      const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
+  const startWorkSession = async (values: SelectInitialTaskFormValues) => {
+    // Get the initial task info with the index
+    const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
+    const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
 
-      // create new tab array with the initial task to be active
-      const newTabs = newTabsWithInitialTaskActivated(
-        tabs,
-        tabIndex,
-        listIndex,
-        taskIndex,
-      );
-      // API call
-      await createWorkSession({ tabs: newTabs, userId: fakeUserId });
-      // Close the modal
-      onCloseSelectInitialTaskModal();
-    },
-    [
-      createWorkSession,
-      newTabsWithInitialTaskActivated,
-      onCloseSelectInitialTaskModal,
-      selectableTaskInfos,
+    // create new tab array with the initial task to be active
+    const newTabs = newTabsWithInitialTaskActivated(
       tabs,
-    ],
-  );
+      tabIndex,
+      listIndex,
+      taskIndex,
+    );
+    // API call
+    await createWorkSession({ tabs: newTabs, userId: fakeUserId });
+    // Close the modal
+    onCloseSelectInitialTaskModal();
+  };
 
   // on creating a new tab
   const handleCreateNewTab = async () => {
@@ -179,6 +192,54 @@ const HomePage = () => {
       };
       setTabs((tabs) => [...tabs, newTab]);
       dispatch(updateSelectedTab(newTab));
+    }
+  };
+
+  // on renaming a tab
+  const onRenameTab = async (newTabName: string) => {
+    if (isWorkSessionActive) {
+      await updateTab({
+        workSessionId,
+        tabId: selectedTab.id,
+        attr: { name: newTabName },
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetIndex = prevTabs.findIndex(
+          (tab) => tab.id === selectedTab.id,
+        );
+        prevTabs.forEach((tab, index) => {
+          if (index === targetIndex) {
+            newTabs.push({ ...tab, name: newTabName });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const onDeleteTab = async () => {
+    if (isWorkSessionActive) {
+      await deleteTab({
+        workSessionId,
+        tabId: selectedTab.id,
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetIndex = prevTabs.findIndex(
+          (tab) => tab.id === selectedTab.id,
+        );
+        prevTabs.forEach((tab, index) => {
+          if (index !== targetIndex) {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
     }
   };
 
@@ -206,8 +267,8 @@ const HomePage = () => {
         />
         <TabsArea
           tabs={tabs}
-          setTabs={setTabs}
-          getLatestWorkSession={getLatestWorkSession}
+          onRenameTab={onRenameTab}
+          onDeleteTab={onDeleteTab}
           handleCreateNewTab={handleCreateNewTab}
         />
       </MainAreaContainer>

@@ -1,11 +1,6 @@
-import { useEffect, memo, Dispatch, SetStateAction } from 'react';
+import { useEffect, memo } from 'react';
 import styled from 'styled-components';
 
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-} from 'react-query';
 import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
 import {
@@ -22,18 +17,12 @@ import { breakPoint } from '../../../../../const/styles/breakPoint';
 import EditTabMenuBar from './TabSelectors/EditableTabSelector/EditTabMenuBar/EditTabMenuBar';
 import RenameTabPopover from './TabSelectors/EditableTabSelector/RenameTabPopover/RenameTabPopover';
 import { useHandleUpdateTab } from '../../../hooks/useHandleUpdateTab';
-import { GetLatestWorkSessionResponse } from '../../../types';
-import { selectWorkSessionState } from '../../../../../stores/slices/workSessionSlice';
-import { useUpdateTab } from '../../../api/hooks/tab/useUpdateTab';
-import { showToast } from '../../../../../libs/react-toastify/toast';
 
 type TabsAreaProps = {
   tabs: Tab[];
-  setTabs: Dispatch<SetStateAction<Tab[]>>;
+  onRenameTab: (newTabName: string) => void;
+  onDeleteTab: () => void;
   handleCreateNewTab: () => void;
-  getLatestWorkSession: (
-    options?: RefetchOptions & RefetchQueryFilters<unknown>,
-  ) => Promise<QueryObserverResult<GetLatestWorkSessionResponse, unknown>>;
 };
 
 // styled components
@@ -101,17 +90,14 @@ const TabComponentWrapper = styled.div`
 
 const TabsArea = ({
   tabs,
-  setTabs,
+  onRenameTab,
+  onDeleteTab,
   handleCreateNewTab,
-  getLatestWorkSession,
 }: TabsAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
   const dispatch = useAppDispatch();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
-  const { workSessionId, isWorkSessionActive } = useAppSelector(
-    selectWorkSessionState,
-  );
 
   const {
     isOpenMenubar,
@@ -122,41 +108,6 @@ const TabsArea = ({
     onCloseRenamePopover,
     onCloseMenuBarAndRenamePopover,
   } = useHandleUpdateTab();
-
-  const { mutate: updateTab } = useUpdateTab({
-    onSuccess: () => {
-      getLatestWorkSession();
-    },
-    onError: (err) => {
-      console.error(err);
-      showToast('error', 'An error has occurred on updating tab');
-    },
-  });
-
-  const onRenameTab = (newTabName: string) => {
-    if (isWorkSessionActive) {
-      updateTab({
-        workSessionId,
-        tabId: selectedTab.id,
-        attr: { name: newTabName },
-      });
-    } else {
-      setTabs((prevTabs) => {
-        const newTabs = [];
-        const targetIndex = prevTabs.findIndex(
-          (tab) => tab.id === selectedTab.id,
-        );
-        prevTabs.forEach((tab, index) => {
-          if (index === targetIndex) {
-            newTabs.push({ ...tab, name: newTabName });
-          } else {
-            newTabs.push(tab);
-          }
-        });
-        return newTabs;
-      });
-    }
-  };
 
   // on selecting a tab
   const handleSelectTab = (tab: Tab) => {
@@ -177,9 +128,7 @@ const TabsArea = ({
         editableTabSelectorPosition={editableTabSelectorPosition}
         isOpen={isOpenMenubar}
         onRename={onOpenRenamePopover}
-        onDelete={() => {
-          alert('delete');
-        }}
+        onDelete={onDeleteTab}
       />
       <RenameTabPopover
         editableTabSelectorPosition={editableTabSelectorPosition}

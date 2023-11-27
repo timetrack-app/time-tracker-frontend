@@ -27,6 +27,11 @@ export type UpdateTabParams = {
   attr: Partial<Tab>;
 };
 
+export type DeleteTabParams = {
+  workSessionId: number;
+  tabId: number;
+};
+
 // API Responses
 export type CreateWorkSessionResponse = {
   isUnfinished: boolean;

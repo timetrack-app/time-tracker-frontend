@@ -24,6 +24,7 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       // tab related
       createTab: '/work-sessions/{workSessionId}/tabs',
       updateTab: '/work-sessions/{workSessionId}/tabs/{tabId}',
+      deleteTab: '/work-sessions/{workSessionId}/tabs/{tabId}',
     },
     apiBaseUrl,
   );
