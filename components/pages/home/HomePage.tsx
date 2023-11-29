@@ -117,6 +117,7 @@ const HomePage = () => {
   } = useDeleteTabConfirmModal();
 
   // End workSession confirm modal
+  // TODO : maybe better to create useEndWorkSessionConfirmModal hook as well
   const { isModalOpen, openModal, closeModal } = useModal();
 
   // API call related
@@ -300,6 +301,7 @@ const HomePage = () => {
     onCloseDeleteTabConfirmModal();
   };
 
+  // TODO: Consider if it's right to continue to put all of the loadin state in here
   const isLoading = useAnyTrue([
     isLoadingCreateWorkSession,
     isLoadingGetLatestWorkSession,
