@@ -19,12 +19,14 @@ type Props = {
   totalTimeSec?: number;
   totalTimeSecInSelectedTab?: number;
   onClickStartSession: () => void;
+  onOpenEndWorkSessionConfirmModal: () => void;
 };
 
 const OnGoingTimerArea = ({
   totalTimeSec = 0,
   totalTimeSecInSelectedTab = 0,
   onClickStartSession,
+  onOpenEndWorkSessionConfirmModal,
 }: Props) => {
   const [isBelowBreakPoint] = useWindowResize();
 
@@ -46,6 +48,7 @@ const OnGoingTimerArea = ({
       <SubSection
         totalSeconds={totalTimeSec}
         totalSecondsOfSelectedTab={totalTimeSecInSelectedTab}
+        onOpenEndWorkSessionConfirmModal={onOpenEndWorkSessionConfirmModal}
       />
     </Container>
   );

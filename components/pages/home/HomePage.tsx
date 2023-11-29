@@ -14,6 +14,7 @@ import {
   TabsArea,
   DeleteTabConfirmModal,
   useDeleteTabConfirmModal,
+  EndWorkSessionConfirmModal,
 } from '../../../features/workSession';
 
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
@@ -40,9 +41,14 @@ import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { getWebRoute } from '../../../routes/web';
 import { useCreateTab } from '../../../features/workSession/api/hooks/tab/useCreateTab';
-import { selectWorkSessionState } from '../../../stores/slices/workSessionSlice';
+import {
+  selectWorkSessionState,
+  updateIsWorkSessionActive,
+} from '../../../stores/slices/workSessionSlice';
 import { useUpdateTab } from '../../../features/workSession/api/hooks/tab/useUpdateTab';
 import { useDeleteTab } from '../../../features/workSession/api/hooks/tab/useDeleteTab';
+import { useEndWorkSession } from '../../../features/workSession/api/hooks/workSession/useEndWorkSession';
+import { useModal } from '../../elements/common/Modal/Modal';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -110,6 +116,9 @@ const HomePage = () => {
     onCloseDeleteTabConfirmModal,
   } = useDeleteTabConfirmModal();
 
+  // End workSession confirm modal
+  const { isModalOpen, openModal, closeModal } = useModal();
+
   // API call related
   const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
     useCreateWorkSession({
@@ -149,6 +158,8 @@ const HomePage = () => {
       },
     },
   );
+
+  const { mutate: endWorkSession } = useEndWorkSession();
 
   const { mutate: createTab } = useCreateTab({
     onSuccess: () => {
@@ -201,10 +212,26 @@ const HomePage = () => {
     onCloseSelectInitialTaskModal();
   };
 
+  const handleEndWorkSession = async () => {
+    const userId = 1;
+
+    await endWorkSession(
+      { authToken, userId, workSessionId },
+      {
+        onError: () => {},
+        onSuccess: () => {
+          dispatch(updateIsWorkSessionActive(false));
+          closeModal();
+        },
+      },
+    );
+  };
+
   // on creating a new tab
   const handleCreateNewTab = async () => {
     if (isWorkSessionActive) {
       const createTabParams: CreateTabParams = {
+        authToken,
         workSessionId,
         name: 'New tab',
         displayOrder: tabs.length + 1,
@@ -226,6 +253,7 @@ const HomePage = () => {
   const onRenameTab = async (newTabName: string) => {
     if (isWorkSessionActive) {
       await updateTab({
+        authToken,
         workSessionId,
         tabId: selectedTab.id,
         attr: { name: newTabName },
@@ -251,6 +279,7 @@ const HomePage = () => {
   const onDeleteTab = async () => {
     if (isWorkSessionActive) {
       await deleteTab({
+        authToken,
         workSessionId,
         tabId: selectedTab.id,
       });
@@ -287,6 +316,11 @@ const HomePage = () => {
         onClose={onCloseSelectInitialTaskModal}
         startWorkSession={startWorkSession}
       />
+      <EndWorkSessionConfirmModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        handleYesButtonOnClick={handleEndWorkSession}
+      />
       <DeleteTabConfirmModal
         isOpen={isOpenDeleteTabConfirmModal}
         onCloseModal={onCloseDeleteTabConfirmModal}
@@ -300,6 +334,7 @@ const HomePage = () => {
             selectedTab.id,
           )}
           onClickStartSession={onOpenSelectInitialTaskModal}
+          onOpenEndWorkSessionConfirmModal={openModal}
         />
         <TabsArea
           tabs={tabs}
