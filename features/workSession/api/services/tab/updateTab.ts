@@ -13,9 +13,10 @@ export const updateTab = async ({
   workSessionId,
   tabId,
   attr,
+  authToken,
 }: UpdateTabParams): Promise<UpdateTabResponse> => {
   const body: Partial<Tab> = { ...attr };
-  const res = await axiosBase().put(
+  const res = await axiosBase(authToken).put(
     getApiEndpointFull('updateTab', { workSessionId, tabId }),
     body,
   );

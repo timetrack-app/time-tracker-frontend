@@ -11,8 +11,9 @@ import { DeleteTabParams } from '../../../types';
 export const deleteTab = async ({
   workSessionId,
   tabId,
+  authToken,
 }: DeleteTabParams): Promise<void> => {
-  const res = await axiosBase().delete(
+  const res = await axiosBase(authToken).delete(
     getApiEndpointFull('deleteTab', { workSessionId, tabId }),
   );
   return res.data;

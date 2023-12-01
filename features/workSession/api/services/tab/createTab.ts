@@ -12,9 +12,10 @@ export const createTab = async ({
   workSessionId,
   name,
   displayOrder,
+  authToken,
 }: CreateTabParams): Promise<CreateTabResponse> => {
   const body = { name, displayOrder };
-  const res = await axiosBase().post(
+  const res = await axiosBase(authToken).post(
     getApiEndpointFull('createTab', { workSessionId }),
     body,
   );
