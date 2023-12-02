@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -12,22 +12,27 @@ import {
   useElapsedTimeCalc,
   OnGoingTimerArea,
   TabsArea,
-} from '../../../features/workSession/index';
+  DeleteTabConfirmModal,
+  useDeleteTabConfirmModal,
+  EndWorkSessionConfirmModal,
+} from '../../../features/workSession';
 
+import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
+
+import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
 import {
-  LoadingOverlay,
-  MobileMenu,
-  Navbar,
-} from '../../elements/common/index';
-
-import { useAppSelector } from '../../../stores/hooks';
-import { selectCurrentSelectedTab } from '../../../stores/slices/selectedTabSlice';
+  selectCurrentSelectedTab,
+  updateSelectedTab,
+} from '../../../stores/slices/selectedTabSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
 import { Tab } from '../../../types/entity';
-import { SelectInitialTaskFormValues } from '../../../features/workSession/types';
+import {
+  CreateTabParams,
+  SelectInitialTaskFormValues,
+} from '../../../features/workSession/types';
 
 import { showToast } from '../../../libs/react-toastify/toast';
 import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
@@ -35,6 +40,15 @@ import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { getWebRoute } from '../../../routes/web';
+import { useCreateTab } from '../../../features/workSession/api/hooks/tab/useCreateTab';
+import {
+  selectWorkSessionState,
+  updateIsWorkSessionActive,
+} from '../../../stores/slices/workSessionSlice';
+import { useUpdateTab } from '../../../features/workSession/api/hooks/tab/useUpdateTab';
+import { useDeleteTab } from '../../../features/workSession/api/hooks/tab/useDeleteTab';
+import { useEndWorkSession } from '../../../features/workSession/api/hooks/workSession/useEndWorkSession';
+import { useModal } from '../../elements/common/Modal/Modal';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -78,6 +92,11 @@ const HomePage = () => {
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
     useRDKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
+  const { workSessionId, isWorkSessionActive } = useAppSelector(
+    selectWorkSessionState,
+  );
+
+  const dispatch = useAppDispatch();
 
   // Utility hooks
   const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
@@ -90,6 +109,16 @@ const HomePage = () => {
     onOpenSelectInitialTaskModal,
     onCloseSelectInitialTaskModal,
   } = useSelectInitialTaskModal();
+
+  const {
+    isOpenDeleteTabConfirmModal,
+    onOpenDeleteTabConfirmModal,
+    onCloseDeleteTabConfirmModal,
+  } = useDeleteTabConfirmModal();
+
+  // End workSession confirm modal
+  // TODO : maybe better to create useEndWorkSessionConfirmModal hook as well
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   // API call related
   const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
@@ -108,13 +137,18 @@ const HomePage = () => {
       },
     });
 
-  const { isLoading: isLoadingGetLatestWorkSession } = useGetLatestWorkSession(
+  const {
+    refetch: getLatestWorkSession,
+    isLoading: isLoadingGetLatestWorkSession,
+  } = useGetLatestWorkSession(
     { authToken, userId: user?.id },
     {
       enabled: user !== undefined,
+      // enabled: false,
       onSuccess: (data) => {
         const { id, tabs, activeTab, activeList, activeTask } =
           data.workSession;
+
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTask(activeTab, activeList, activeTask);
@@ -126,37 +160,148 @@ const HomePage = () => {
     },
   );
 
+  const { mutate: endWorkSession } = useEndWorkSession();
+
+  const { mutate: createTab } = useCreateTab({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on starting a session.');
+    },
+  });
+
+  const { mutate: updateTab } = useUpdateTab({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating tab');
+    },
+  });
+
+  const { mutate: deleteTab } = useDeleteTab({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating tab');
+    },
+  });
+
   const selectableTaskInfos = generateTaskInfoArr(tabs);
 
   // data post & close the modal.
-  const startWorkSession = useCallback(
-    async (values: SelectInitialTaskFormValues) => {
-      // Get the initial task info with the index
-      const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
-      const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
+  const startWorkSession = async (values: SelectInitialTaskFormValues) => {
+    // Get the initial task info with the index
+    const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
+    const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
 
-      // create new tab array with the initial task to be active
-      const newTabs = newTabsWithInitialTaskActivated(
-        tabs,
-        tabIndex,
-        listIndex,
-        taskIndex,
-      );
-      // API call
-      await createWorkSession({ authToken, tabs: newTabs, userId: user?.id });
-      // Close the modal
-      onCloseSelectInitialTaskModal();
-    },
-    [
-      createWorkSession,
-      newTabsWithInitialTaskActivated,
-      onCloseSelectInitialTaskModal,
-      selectableTaskInfos,
+    // create new tab array with the initial task to be active
+    const newTabs = newTabsWithInitialTaskActivated(
       tabs,
-      user?.id,
-    ],
-  );
+      tabIndex,
+      listIndex,
+      taskIndex,
+    );
+    // API call
+    await createWorkSession({ authToken, tabs: newTabs, userId: user?.id });
+    // Close the modal
+    onCloseSelectInitialTaskModal();
+  };
 
+  const handleEndWorkSession = async () => {
+    const userId = 1;
+
+    await endWorkSession(
+      { authToken, userId, workSessionId },
+      {
+        onError: () => {},
+        onSuccess: () => {
+          dispatch(updateIsWorkSessionActive(false));
+          closeModal();
+        },
+      },
+    );
+  };
+
+  // on creating a new tab
+  const handleCreateNewTab = async () => {
+    if (isWorkSessionActive) {
+      const createTabParams: CreateTabParams = {
+        authToken,
+        workSessionId,
+        name: 'New tab',
+        displayOrder: tabs.length + 1,
+      };
+      await createTab(createTabParams);
+    } else {
+      const newTab: Tab = {
+        id: tabs[tabs.length - 1].id + 1,
+        name: 'New tab',
+        displayOrder: tabs.length + 1,
+        lists: [],
+      };
+      setTabs((tabs) => [...tabs, newTab]);
+      dispatch(updateSelectedTab(newTab));
+    }
+  };
+
+  // on renaming a tab
+  const onRenameTab = async (newTabName: string) => {
+    if (isWorkSessionActive) {
+      await updateTab({
+        authToken,
+        workSessionId,
+        tabId: selectedTab.id,
+        attr: { name: newTabName },
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetIndex = prevTabs.findIndex(
+          (tab) => tab.id === selectedTab.id,
+        );
+        prevTabs.forEach((tab, index) => {
+          if (index === targetIndex) {
+            newTabs.push({ ...tab, name: newTabName });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const onDeleteTab = async () => {
+    if (isWorkSessionActive) {
+      await deleteTab({
+        authToken,
+        workSessionId,
+        tabId: selectedTab.id,
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetIndex = prevTabs.findIndex(
+          (tab) => tab.id === selectedTab.id,
+        );
+        prevTabs.forEach((tab, index) => {
+          if (index !== targetIndex) {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+    onCloseDeleteTabConfirmModal();
+  };
+
+  // TODO: Consider if it's right to continue to put all of the loadin state in here
   const isLoading = useAnyTrue([
     isLoadingCreateWorkSession,
     isLoadingGetLatestWorkSession,
@@ -173,6 +318,16 @@ const HomePage = () => {
         onClose={onCloseSelectInitialTaskModal}
         startWorkSession={startWorkSession}
       />
+      <EndWorkSessionConfirmModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        handleYesButtonOnClick={handleEndWorkSession}
+      />
+      <DeleteTabConfirmModal
+        isOpen={isOpenDeleteTabConfirmModal}
+        onCloseModal={onCloseDeleteTabConfirmModal}
+        handleYesButtonOnClick={onDeleteTab}
+      />
       <MainAreaContainer>
         <OnGoingTimerArea
           totalTimeSec={calcTotalTimeSec(tabs)}
@@ -181,8 +336,14 @@ const HomePage = () => {
             selectedTab.id,
           )}
           onClickStartSession={onOpenSelectInitialTaskModal}
+          onOpenEndWorkSessionConfirmModal={openModal}
         />
-        <TabsArea tabs={tabs} />
+        <TabsArea
+          tabs={tabs}
+          onRenameTab={onRenameTab}
+          onDeleteTab={onOpenDeleteTabConfirmModal}
+          handleCreateNewTab={handleCreateNewTab}
+        />
       </MainAreaContainer>
     </>
   );

@@ -1,6 +1,6 @@
 import { UseMutationOptions, useMutation } from 'react-query';
-import { endWorkSession } from '../services/endWorkSession';
-import { EndWorkSessionParams } from '../../types';
+import { endWorkSession } from '../../services/workSession/endWorkSession';
+import { EndWorkSessionParams } from '../../../types';
 
 /**
  * Custom hook for end a work session
@@ -9,6 +9,7 @@ import { EndWorkSessionParams } from '../../types';
  */
 export const useEndWorkSession = (
   options?: UseMutationOptions<void, EndWorkSessionParams, undefined>,
-) => (
-  useMutation((values: EndWorkSessionParams) => endWorkSession(values), { ...options })
-);
+) =>
+  useMutation((values: EndWorkSessionParams) => endWorkSession(values), {
+    ...options,
+  });

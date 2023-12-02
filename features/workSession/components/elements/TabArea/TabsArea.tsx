@@ -14,6 +14,18 @@ import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
 
 import { breakPoint } from '../../../../../const/styles/breakPoint';
+import EditTabMenuBar from './TabSelectors/EditableTabSelector/EditTabMenuBar/EditTabMenuBar';
+import RenameTabPopover from './TabSelectors/EditableTabSelector/RenameTabPopover/RenameTabPopover';
+import { useTabEditMenuBarAndRenamePopover } from '../../../hooks/useTabEditMenuBarAndRenamePopover';
+
+type TabsAreaProps = {
+  tabs: Tab[];
+  onRenameTab: (newTabName: string) => void;
+  onDeleteTab: () => void;
+  handleCreateNewTab: () => void;
+};
+
+// styled components
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
@@ -76,36 +88,63 @@ const TabComponentWrapper = styled.div`
   height: 100%;
 `;
 
-type TabsAreaProps = {
-  tabs: Tab[];
-};
-
-const TabsArea = ({ tabs }: TabsAreaProps) => {
+const TabsArea = ({
+  tabs,
+  onRenameTab,
+  onDeleteTab,
+  handleCreateNewTab,
+}: TabsAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
   const dispatch = useAppDispatch();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
+
+  const {
+    isOpenMenubar,
+    isOpenRenamePopover,
+    editableTabSelectorPosition,
+    toggleMenuBar,
+    onOpenRenamePopover,
+    onCloseRenamePopover,
+    onCloseMenuBarAndRenamePopover,
+  } = useTabEditMenuBarAndRenamePopover();
 
   // on selecting a tab
   const handleSelectTab = (tab: Tab) => {
     dispatch(updateSelectedTab(tab));
   };
 
-  // on creating a new tab
-  const handleCreateNewTab = () => {};
-
   useEffect(() => {
     if (tabs.length) dispatch(updateSelectedTab(tabs[0]));
   }, [dispatch, tabs]);
 
+  useEffect(() => {
+    onCloseMenuBarAndRenamePopover();
+  }, [onCloseMenuBarAndRenamePopover, selectedTab]);
+
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
+      <EditTabMenuBar
+        editableTabSelectorPosition={editableTabSelectorPosition}
+        isOpen={isOpenMenubar}
+        onRename={onOpenRenamePopover}
+        onDelete={onDeleteTab}
+      />
+      <RenameTabPopover
+        editableTabSelectorPosition={editableTabSelectorPosition}
+        currentTabName={selectedTab.name}
+        isOpen={isOpenRenamePopover}
+        onSubmit={onRenameTab}
+        onDiscard={onCloseRenamePopover}
+      />
       <TabSelectorWrapper colorThemeName={currentColorTheme}>
         <TabSelectors
           tabs={tabs}
           selectedTabId={selectedTab.id}
+          isOpenMenubar={isOpenMenubar}
           handleSelectTab={handleSelectTab}
           onClickPlusCircleButton={handleCreateNewTab}
+          toggleMenuBar={toggleMenuBar}
         />
       </TabSelectorWrapper>
       <TabComponentWrapper>

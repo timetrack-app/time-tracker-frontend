@@ -1,15 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab } from '../../../../../../types/entity';
-import TabSelector, { TabSelectorProps } from './TabSelector/TabSelector';
+import TabSelector from './TabSelector/TabSelector';
 import PlusCircleButton from './PlusCircleButton/PlusCircleButton';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import EditableTabSelector from './EditableTabSelector/EditableTabSelector';
 
 type TabSelectorsProps = {
   tabs: Tab[];
   selectedTabId: number;
+  isOpenMenubar: boolean;
   handleSelectTab: (tab: Tab) => void;
   onClickPlusCircleButton: () => void;
+
+  toggleMenuBar: (rect: DOMRect) => void;
 };
 
 const ContainerDiv = styled.div`
@@ -24,35 +28,38 @@ const ContainerDiv = styled.div`
 
   width: 100%;
   max-width: 100%;
+  /* Replated first tab spacing left logic with this */
+  margin-left: 1em;
 
   @media ${breakPoint.tablet} {
-  };
-`;
-
-const FirstTabSelector = styled(TabSelector)`
-  margin-left: 1em;
+  }
 `;
 
 const TabSelectors = ({
   tabs,
   selectedTabId,
+  isOpenMenubar,
   handleSelectTab,
   onClickPlusCircleButton,
+  toggleMenuBar,
 }: TabSelectorsProps) => {
-  const getTabComponent = (idx: number) => (
-    idx === 0 ? FirstTabSelector : TabSelector
-  );
-
   return (
     <ContainerDiv>
-      {tabs.map((tab, idx) => {
-        const TabSelectorComponent = getTabComponent(idx);
-
+      {tabs.map((tab) => {
+        const isSelected = tab.id === selectedTabId;
+        if (isSelected)
+          return (
+            <EditableTabSelector
+              key={tab.id}
+              tab={tab}
+              isOpenMenubar={isOpenMenubar}
+              toggleMenuBar={toggleMenuBar}
+            />
+          );
         return (
-          <TabSelectorComponent
+          <TabSelector
             key={tab.id}
             tab={tab}
-            isSelected={tab.id === selectedTabId}
             handleSelectTab={handleSelectTab}
           />
         );

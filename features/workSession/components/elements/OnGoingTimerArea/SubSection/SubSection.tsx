@@ -1,16 +1,9 @@
 import styled from 'styled-components';
 
 import Button from '../../../../../../components/elements/common/Button/Button';
-import { useModal } from '../../../../../../components/elements/common/Modal/Modal';
-import EndWorkSessionConfirmModal from './EndWorkSessionConfirmModal';
 
-import { useEndWorkSession } from '../../../../api/hooks/useEndWorkSession';
+import { useAppSelector } from '../../../../../../stores/hooks';
 
-import { useAppDispatch, useAppSelector } from '../../../../../../stores/hooks';
-import {
-  selectWorkSessionState,
-  updateIsWorkSessionActive,
-} from '../../../../../../stores/slices/workSessionSlice';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
 import { ColorThemeName } from '../../../../../../types/colorTheme';
@@ -106,6 +99,7 @@ const ButtonTextP = styled.p`
 type SubSectionProps = {
   totalSeconds: number;
   totalSecondsOfSelectedTab: number;
+  onOpenEndWorkSessionConfirmModal: () => void;
 };
 
 // TODO: totalSeconds:
@@ -117,38 +111,13 @@ const SubSection = ({
   totalSeconds,
   // selectedTabName,
   totalSecondsOfSelectedTab,
+  onOpenEndWorkSessionConfirmModal,
 }: SubSectionProps) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const { name: selectedTabName } = useAppSelector(selectCurrentSelectedTab);
-  const { workSessionId } = useAppSelector(selectWorkSessionState);
+  // const { workSessionId } = useAppSelector(selectWorkSessionState);
   const currentColorTheme = useAppSelector(selectColorTheme);
-
-  const { isModalOpen, openModal, closeModal } = useModal();
-
-  const { mutate: endWorkSession } = useEndWorkSession();
-
-  const handleEndSessionOnClick = () => {
-    openModal();
-  };
-
-  const handleEndWorkSession = async () => {
-    // TODO: get user id
-    // TODO: need an API that returns logged in user
-    // Temporary solution
-    const userId = 1;
-
-    await endWorkSession(
-      { userId, workSessionId },
-      {
-        onError: () => {},
-        onSuccess: () => {
-          dispatch(updateIsWorkSessionActive(false));
-          closeModal();
-        },
-      },
-    );
-  };
 
   // TODO: LoadingOverlay
   return (
@@ -174,16 +143,11 @@ const SubSection = ({
           color={coralRed}
           borderColor={coralRed}
           backgroundColor={coralRed}
-          onClick={handleEndSessionOnClick}
+          onClick={onOpenEndWorkSessionConfirmModal}
         >
           <ButtonTextP>End this session</ButtonTextP>
         </ButtonCustom>
       </ContainerDiv>
-      <EndWorkSessionConfirmModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
-        handleYesButtonOnClick={handleEndWorkSession}
-      />
     </>
   );
 };

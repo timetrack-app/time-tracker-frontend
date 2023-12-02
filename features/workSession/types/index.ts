@@ -2,19 +2,40 @@ import { Tab, WorkSession } from '../../../types/entity';
 
 // API Params
 export type EndWorkSessionParams = {
+  authToken: string;
   userId: number;
   workSessionId: number;
 };
 
 export type CreateWorkSessionParams = {
-  authToken: string
+  authToken: string;
   userId: number;
   tabs: Tab[];
 };
 
 export type GetLatestWorkSessionParams = {
-  authToken: string
+  authToken: string;
   userId: number;
+};
+
+export type CreateTabParams = {
+  authToken: string;
+  workSessionId: number;
+  name: string;
+  displayOrder: number;
+};
+
+export type UpdateTabParams = {
+  authToken: string;
+  workSessionId: number;
+  tabId: number;
+  attr: Partial<Tab>;
+};
+
+export type DeleteTabParams = {
+  authToken: string;
+  workSessionId: number;
+  tabId: number;
 };
 
 // API Responses
@@ -25,6 +46,14 @@ export type CreateWorkSessionResponse = {
 
 export type GetLatestWorkSessionResponse = {
   workSession: WorkSession;
+};
+
+export type CreateTabResponse = {
+  newTab: Tab;
+};
+
+export type UpdateTabResponse = {
+  updatedTab: Tab;
 };
 
 // Related to initial task selection

@@ -1,15 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 import { Tab } from '../../types/entity';
+import { initialTabs } from '../../const/initialTabsState';
 
 type SelectedTabState = Tab;
 
-const initialState: SelectedTabState = {
-  id: null,
-  name: '',
-  displayOrder: null,
-  lists: [],
-};
+const initialState: SelectedTabState = initialTabs[0];
 
 const selectedTabSlice = createSlice({
   name: 'selectedTab',
