@@ -6,8 +6,6 @@ import {
   SelectInitialTaskModal,
   useSelectInitialTaskModal,
   useRDKUpdateActiveTask,
-  useGetLatestWorkSession,
-  useCreateWorkSession,
   useInitialTaskInfo,
   useElapsedTimeCalc,
   OnGoingTimerArea,
@@ -16,6 +14,18 @@ import {
   useDeleteTabConfirmModal,
   EndWorkSessionConfirmModal,
 } from '../../../features/workSession';
+
+import {
+  useCreateWorkSession,
+  useGetLatestWorkSession,
+  useEndWorkSession,
+  useCreateTab,
+  useUpdateTab,
+  useDeleteTab,
+  useCreateList,
+  useUpdateList,
+  useDeleteList,
+} from '../../../features/workSession/api';
 
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
 
@@ -40,14 +50,12 @@ import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { getWebRoute } from '../../../routes/web';
-import { useCreateTab } from '../../../features/workSession/api/hooks/tab/useCreateTab';
+
 import {
   selectWorkSessionState,
   updateIsWorkSessionActive,
 } from '../../../stores/slices/workSessionSlice';
-import { useUpdateTab } from '../../../features/workSession/api/hooks/tab/useUpdateTab';
-import { useDeleteTab } from '../../../features/workSession/api/hooks/tab/useDeleteTab';
-import { useEndWorkSession } from '../../../features/workSession/api/hooks/workSession/useEndWorkSession';
+
 import { useModal } from '../../elements/common/Modal/Modal';
 
 const MainAreaContainer = styled.div`
@@ -81,6 +89,7 @@ const HomePage = () => {
   const router = useRouter();
 
   const user = useAppSelector(selectLoggedInUser);
+
   if (!user) router.push(getWebRoute('login'));
 
   const authToken = getUserLoginCookie();
@@ -117,7 +126,7 @@ const HomePage = () => {
   } = useDeleteTabConfirmModal();
 
   // End workSession confirm modal
-  // TODO : maybe better to create useEndWorkSessionConfirmModal hook as well
+  // TODO : maybe better to create useEndWorkSessionConfirmModal hook
   const { isModalOpen, openModal, closeModal } = useModal();
 
   // API call related
@@ -168,7 +177,7 @@ const HomePage = () => {
     },
     onError: (err) => {
       console.error(err);
-      showToast('error', 'An error has occurred on starting a session.');
+      showToast('error', 'An error has occurred on creating a tab.');
     },
   });
 
@@ -188,14 +197,46 @@ const HomePage = () => {
     },
     onError: (err) => {
       console.error(err);
-      showToast('error', 'An error has occurred on updating tab');
+      showToast('error', 'An error has occurred on deleting tab');
+    },
+  });
+
+  const { mutate: createList } = useCreateList({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on creating a list.');
+    },
+  });
+
+  const { mutate: updateList } = useUpdateList({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating list');
+    },
+  });
+
+  const { mutate: deleteList } = useDeleteList({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on deleting list');
     },
   });
 
   const selectableTaskInfos = generateTaskInfoArr(tabs);
 
   // data post & close the modal.
-  const startWorkSession = async (values: SelectInitialTaskFormValues) => {
+  const handleStartWorkSession = async (
+    values: SelectInitialTaskFormValues,
+  ) => {
     // Get the initial task info with the index
     const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
     const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
@@ -251,7 +292,7 @@ const HomePage = () => {
   };
 
   // on renaming a tab
-  const onRenameTab = async (newTabName: string) => {
+  const handleRenameTab = async (newTabName: string) => {
     if (isWorkSessionActive) {
       await updateTab({
         authToken,
@@ -277,7 +318,7 @@ const HomePage = () => {
     }
   };
 
-  const onDeleteTab = async () => {
+  const handleDeleteTab = async () => {
     if (isWorkSessionActive) {
       await deleteTab({
         authToken,
@@ -301,6 +342,105 @@ const HomePage = () => {
     onCloseDeleteTabConfirmModal();
   };
 
+  const handleCreateNewList = async (tabId: number) => {
+    if (isWorkSessionActive) {
+      await createList({
+        authToken,
+        workSessionId,
+        tabId,
+        name: 'New list',
+        displayOrder: selectedTab.lists.length + 1,
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetIndex = prevTabs.findIndex((tab) => tab.id === tabId);
+        prevTabs.forEach((tab, index) => {
+          if (index === targetIndex) {
+            const newLists = [...tab.lists, { name: 'New list', tasks: [] }];
+            newTabs.push({ ...tab, lists: newLists });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const handleRenameList = async (
+    newListName: string,
+    tabId: number,
+    listId: number,
+  ) => {
+    if (isWorkSessionActive) {
+      await updateList({
+        authToken,
+        workSessionId,
+        tabId,
+        listId,
+        attr: { name: newListName },
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetTabIndex = prevTabs.findIndex((tab) => tab.id === tabId);
+        prevTabs.forEach((tab, index) => {
+          if (index === targetTabIndex) {
+            const newLists = [];
+            const targetListIndex = tab.lists.findIndex(
+              (list) => list.id === listId,
+            );
+            tab.lists.forEach((list, index) => {
+              if (index === targetListIndex) {
+                newLists.push({ ...list, name: newListName });
+              } else {
+                newLists.push(list);
+              }
+            });
+            newTabs.push({ ...tab, lists: newLists });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const handleDeleteList = async (tabId: number, listId: number) => {
+    if (isWorkSessionActive) {
+      await deleteList({
+        authToken,
+        workSessionId,
+        tabId,
+        listId,
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetTabIndex = prevTabs.findIndex((tab) => tab.id === tabId);
+        prevTabs.forEach((tab, index) => {
+          if (index === targetTabIndex) {
+            const newLists = [];
+            const targetListIndex = tab.lists.findIndex(
+              (list) => list.id === listId,
+            );
+            tab.lists.forEach((list, index) => {
+              if (index !== targetListIndex) {
+                newLists.push(list);
+              }
+            });
+            newTabs.push({ ...tab, lists: newLists });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
   // TODO: Consider if it's right to continue to put all of the loadin state in here
   const isLoading = useAnyTrue([
     isLoadingCreateWorkSession,
@@ -316,7 +456,7 @@ const HomePage = () => {
         isOpen={isOpenSelectInitialTaskModal}
         selectableTaskInfos={selectableTaskInfos}
         onClose={onCloseSelectInitialTaskModal}
-        startWorkSession={startWorkSession}
+        startWorkSession={handleStartWorkSession}
       />
       <EndWorkSessionConfirmModal
         isOpen={isModalOpen}
@@ -326,7 +466,7 @@ const HomePage = () => {
       <DeleteTabConfirmModal
         isOpen={isOpenDeleteTabConfirmModal}
         onCloseModal={onCloseDeleteTabConfirmModal}
-        handleYesButtonOnClick={onDeleteTab}
+        handleYesButtonOnClick={handleDeleteTab}
       />
       <MainAreaContainer>
         <OnGoingTimerArea
@@ -340,9 +480,12 @@ const HomePage = () => {
         />
         <TabsArea
           tabs={tabs}
-          onRenameTab={onRenameTab}
-          onDeleteTab={onOpenDeleteTabConfirmModal}
           handleCreateNewTab={handleCreateNewTab}
+          handleRenameTab={handleRenameTab}
+          handleDeleteTab={onOpenDeleteTabConfirmModal}
+          handleCreateNewList={handleCreateNewList}
+          handleRenameList={handleRenameList}
+          handleDeleteList={handleDeleteList}
         />
       </MainAreaContainer>
     </>

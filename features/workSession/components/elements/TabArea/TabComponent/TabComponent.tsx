@@ -13,9 +13,21 @@ import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlic
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import CreateTaskListButton from './CreateTaskListButton/CreateTaskListButton';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import { useListEditMenuBarAndRenamePopover } from '../../../../hooks';
+import EditListMenuBar from './EditListMenuBar/EditListMenuBar';
+import RenameListPopover from './RenameListPopover/RenameListPopover';
+import DeleteListConfirmModal from '../../modals/DeleteListConfirmModal/DeleteListConfirmModal';
+import { useDeleteListConfirmModal } from '../../../../hooks/modal/useDeleteListConfirmModal';
 
 type TabComponentProps = {
   tab: Tab;
+  handleCreateTaskList: () => void;
+  handleRenameList: (
+    newListName: string,
+    tabId: number,
+    listId: number,
+  ) => void;
+  handleDeleteList: (tabId: number, listId: number) => void;
 };
 
 const ContainerDiv = styled.div<{
@@ -52,15 +64,68 @@ const TaskListContainerDiv = styled.div`
   }
 `;
 
-const TabComponent = ({ tab }: TabComponentProps) => {
+const TabComponent = ({
+  tab,
+  handleCreateTaskList,
+  handleRenameList,
+  handleDeleteList,
+}: TabComponentProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
   const { lists } = tab;
-  const handleCreateTaskList = () => {};
+
+  const {
+    isOpenListEditMenuBar,
+    isOpenListRenamePopover,
+    listPosition,
+    currentList,
+    toggleListEditMenuBar,
+    onOpenListRenamePopover,
+    onCloseListRenamePopover,
+    onCloseListEditMenuBarAndListRenamePopover,
+  } = useListEditMenuBarAndRenamePopover();
+
+  const {
+    isOpenDeleteListConfirmModal,
+    onOpenDeleteListConfirmModal,
+    onCloseDeleteListConfirmModal,
+  } = useDeleteListConfirmModal();
+
+  const onSubmitListRename = (newListName: string) => {
+    handleRenameList(newListName, tab.id, currentList.id);
+    onCloseListRenamePopover();
+  };
+
   return (
     <ContainerDiv colorThemeName={currentColorThemeName}>
+      <EditListMenuBar
+        isOpen={isOpenListEditMenuBar}
+        listPosition={listPosition}
+        onRename={onOpenListRenamePopover}
+        onDelete={onOpenDeleteListConfirmModal}
+      />
+      <RenameListPopover
+        isOpen={isOpenListRenamePopover}
+        currentListName={currentList ? currentList.name : ''}
+        listPosition={listPosition}
+        onSubmit={onSubmitListRename}
+        onDiscard={onCloseListRenamePopover}
+      />
+      <DeleteListConfirmModal
+        isOpen={isOpenDeleteListConfirmModal}
+        onCloseModal={onCloseDeleteListConfirmModal}
+        handleYesButtonOnClick={() => {
+          handleDeleteList(tab.id, currentList.id);
+          onCloseDeleteListConfirmModal();
+          onCloseListEditMenuBarAndListRenamePopover();
+        }}
+      />
       {lists.map((taskList) => (
         <TaskListContainerDiv key={taskList.id}>
-          <TaskListComponent taskList={taskList} />
+          <TaskListComponent
+            taskList={taskList}
+            isOpenMenubar={isOpenListEditMenuBar}
+            toggleMenuBar={toggleListEditMenuBar}
+          />
         </TaskListContainerDiv>
       ))}
       <TaskListContainerDiv>

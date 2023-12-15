@@ -7,6 +7,8 @@ import CreateTaskButton from './CreateTaskButton/CreateTaskButton';
 
 type TaskListComponentProps = {
   taskList: TaskList;
+  isOpenMenubar: boolean;
+  toggleMenuBar: (rect: DOMRect, list?: TaskList) => void;
 };
 
 const ContainerDiv = styled.div`
@@ -18,15 +20,27 @@ const ContainerDiv = styled.div`
   align-items: center;
 `;
 
-const TaskListComponent = ({ taskList }: TaskListComponentProps) => {
+const TaskListComponent = ({
+  taskList,
+  isOpenMenubar,
+  toggleMenuBar,
+}: TaskListComponentProps) => {
   const handleEditTask = (task: Task) => {
     alert(task);
   };
   return (
     <ContainerDiv>
-      <TaskListName name={taskList.name} />
+      <TaskListName
+        taskList={taskList}
+        isOpenMenubar={isOpenMenubar}
+        toggleMenuBar={toggleMenuBar}
+      />
       {taskList.tasks.map((task) => (
-        <TaskCard key={task.id} task={task} onClickEditIcon={() => handleEditTask(task)} />
+        <TaskCard
+          key={task.id}
+          task={task}
+          onClickEditIcon={() => handleEditTask(task)}
+        />
       ))}
       <CreateTaskButton onClickCreateTaskCard={() => alert('create task')} />
     </ContainerDiv>

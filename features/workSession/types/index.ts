@@ -49,6 +49,7 @@ export type CreateListParams = {
 export type UpdateListParams = {
   authToken: string;
   workSessionId: number;
+  tabId: number;
   listId: number;
   attr: Partial<TaskList>;
 };
@@ -56,6 +57,7 @@ export type UpdateListParams = {
 export type DeleteListParams = {
   authToken: string;
   workSessionId: number;
+  tabId: number;
   listId: number;
 };
 
@@ -71,6 +73,8 @@ export type CreateTaskParams = {
 export type UpdateTaskParams = {
   authToken: string;
   workSessionId: number;
+  tabId: number;
+  listId: number;
   taskId: number;
   attr: Partial<Task>;
 };
@@ -78,6 +82,8 @@ export type UpdateTaskParams = {
 export type DeleteTaskParams = {
   authToken: string;
   workSessionId: number;
+  tabId: number;
+  listId: number;
   taskId: number;
 };
 

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { ColorThemeName } from '../../../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
@@ -10,9 +11,12 @@ import {
 } from '../../../../../../../../const/styles/colors';
 import { useAppSelector } from '../../../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../../../stores/slices/colorThemeSlice';
+import { TaskList } from '../../../../../../../../types/entity';
 
 type TaskListNameProps = {
-  name: string;
+  taskList: TaskList;
+  isOpenMenubar: boolean;
+  toggleMenuBar: (rect: DOMRect, list?: TaskList) => void;
 };
 
 const ContainerDiv = styled.div<{
@@ -22,7 +26,7 @@ const ContainerDiv = styled.div<{
   width: 100%;
   height: 44px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border-radius: 8px;
   border: 1px solid
@@ -47,13 +51,37 @@ const NameP = styled.p<{
   }};
   font-size: 20px;
   font-weight: 400;
+  padding-left: 12px;
 `;
 
-const TaskListName = ({ name }: TaskListNameProps) => {
+const IconButton = styled.button<{}>`
+  background: none;
+  border: none;
+
+  // to outstand close icon in dark color overlay
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+`;
+
+const TaskListName = ({
+  taskList,
+  isOpenMenubar,
+  toggleMenuBar,
+}: TaskListNameProps) => {
+  const ref = useRef(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
+  const handleToggleMenuBar = () => {
+    if (!ref.current) return;
+    const rect: DOMRect = ref.current.getBoundingClientRect();
+    // passing current list name when opening menubar
+    isOpenMenubar ? toggleMenuBar(rect) : toggleMenuBar(rect, taskList);
+  };
   return (
-    <ContainerDiv colorThemeName={currentColorThemeName}>
-      <NameP colorThemeName={currentColorThemeName}>{name}</NameP>
+    <ContainerDiv colorThemeName={currentColorThemeName} ref={ref}>
+      <NameP colorThemeName={currentColorThemeName}>{taskList.name}</NameP>
+      <IconButton onClick={handleToggleMenuBar}>
+        {isOpenMenubar ? <IoIosArrowUp /> : <IoIosArrowDown />}
+      </IconButton>
     </ContainerDiv>
   );
 };
