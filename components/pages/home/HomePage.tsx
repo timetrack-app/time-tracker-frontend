@@ -38,7 +38,7 @@ import {
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
-import { Tab } from '../../../types/entity';
+import { Tab, TaskList } from '../../../types/entity';
 import {
   CreateTabParams,
   SelectInitialTaskFormValues,
@@ -141,7 +141,7 @@ const HomePage = () => {
         setTabs(tabs);
       },
       onError: (err) => {
-        console.error(err);
+        console.error('error on creating workSession', err);
         showToast('error', 'An error has occurred on starting a session.');
       },
     });
@@ -357,7 +357,16 @@ const HomePage = () => {
         const targetIndex = prevTabs.findIndex((tab) => tab.id === tabId);
         prevTabs.forEach((tab, index) => {
           if (index === targetIndex) {
-            const newLists = [...tab.lists, { name: 'New list', tasks: [] }];
+            const newLists: TaskList[] = [
+              ...tab.lists,
+              {
+                id: tab.lists[tab.lists.length - 1].id + 1,
+                name: 'New list',
+                tasks: [],
+                displayOrder: tab.lists.length + 1,
+                tabId: tab.id,
+              },
+            ];
             newTabs.push({ ...tab, lists: newLists });
           } else {
             newTabs.push(tab);
