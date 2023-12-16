@@ -281,9 +281,9 @@ const HomePage = () => {
       await createTab(createTabParams);
     } else {
       const newTab: Tab = {
-        id: tabs[tabs.length - 1].id + 1,
+        id: tabs.length >= 1 ? tabs[tabs.length - 1].id + 1 : 1,
         name: 'New tab',
-        displayOrder: tabs.length + 1,
+        displayOrder: tabs.length > 0 ? tabs.length + 1 : 1,
         lists: [],
       };
       setTabs((tabs) => [...tabs, newTab]);
@@ -360,10 +360,13 @@ const HomePage = () => {
             const newLists: TaskList[] = [
               ...tab.lists,
               {
-                id: tab.lists[tab.lists.length - 1].id + 1,
+                id:
+                  tab.lists.length > 0
+                    ? tab.lists[tab.lists.length - 1].id + 1
+                    : 1,
                 name: 'New list',
                 tasks: [],
-                displayOrder: tab.lists.length + 1,
+                displayOrder: tab.lists.length > 0 ? tab.lists.length + 1 : 1,
                 tabId: tab.id,
               },
             ];
