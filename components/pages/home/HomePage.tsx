@@ -25,6 +25,9 @@ import {
   useCreateList,
   useUpdateList,
   useDeleteList,
+  useCreateTask,
+  useUpdateTask,
+  useDeleteTask,
 } from '../../../features/workSession/api';
 
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
@@ -231,6 +234,37 @@ const HomePage = () => {
     },
   });
 
+  const { mutate: createTask } = useCreateTask({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on creating a task.');
+    },
+  });
+
+  const { mutate: updateTask } = useUpdateTask({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating task');
+    },
+  });
+
+  const { mutate: deleteTask } = useDeleteTask({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on deleting task');
+    },
+  });
+
+  // for initial task selection
   const selectableTaskInfos = generateTaskInfoArr(tabs);
 
   // data post & close the modal.
@@ -255,10 +289,8 @@ const HomePage = () => {
   };
 
   const handleEndWorkSession = async () => {
-    const userId = 1;
-
     await endWorkSession(
-      { authToken, userId, workSessionId },
+      { authToken, userId: user?.id, workSessionId },
       {
         onError: () => {},
         onSuccess: () => {
@@ -440,6 +472,162 @@ const HomePage = () => {
             );
             tab.lists.forEach((list, index) => {
               if (index !== targetListIndex) {
+                newLists.push(list);
+              }
+            });
+            newTabs.push({ ...tab, lists: newLists });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const handleCreateNewTask = async (
+    tabId: number,
+    listId: number,
+    taskName: string,
+    description: string,
+  ) => {
+    if (isWorkSessionActive) {
+      await createTask({
+        authToken,
+        workSessionId,
+        listId,
+        description,
+        name: taskName,
+        displayOrder: selectedTab.lists.length + 1,
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetTabIndex = prevTabs.findIndex((tab) => tab.id === tabId);
+        const targetListIndex = prevTabs[targetTabIndex].lists.findIndex(
+          (list) => list.id === listId,
+        );
+        prevTabs.forEach((tab, index) => {
+          if (index === targetTabIndex) {
+            const newLists = [];
+            tab.lists.forEach((list, index) => {
+              if (index === targetListIndex) {
+                const newTasks = [
+                  ...list.tasks,
+                  {
+                    id:
+                      list.tasks.length > 0
+                        ? list.tasks[list.tasks.length - 1].id + 1
+                        : 1,
+                    name: taskName,
+                    displayOrder: list.tasks.length > 0 ? list.tasks.length : 1,
+                    listId: list.id,
+                  },
+                ];
+                newLists.push({ ...list, tasks: newTasks });
+              } else {
+                newLists.push(list);
+              }
+            });
+            newTabs.push({ ...tab, lists: newLists });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const handleRenameTask = async (
+    newTaskName: string,
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => {
+    if (isWorkSessionActive) {
+      await updateTask({
+        authToken,
+        workSessionId,
+        tabId,
+        listId,
+        taskId,
+        attr: { name: newTaskName },
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetTabIndex = prevTabs.findIndex((tab) => tab.id === tabId);
+        prevTabs.forEach((tab, index) => {
+          if (index === targetTabIndex) {
+            const newLists = [];
+            const targetListIndex = tab.lists.findIndex(
+              (list) => list.id === listId,
+            );
+            tab.lists.forEach((list, index) => {
+              if (index === targetListIndex) {
+                const newTasks = [];
+                const targetTaskIndex = list.tasks.findIndex(
+                  (task) => task.id === taskId,
+                );
+                list.tasks.forEach((task, index) => {
+                  if (index === targetTaskIndex) {
+                    newTasks.push({ ...task, name: newTaskName });
+                  } else {
+                    newTasks.push(task);
+                  }
+                });
+                newLists.push({ ...list, tasks: newTasks });
+              } else {
+                newLists.push(list);
+              }
+            });
+            newTabs.push({ ...tab, lists: newLists });
+          } else {
+            newTabs.push(tab);
+          }
+        });
+        return newTabs;
+      });
+    }
+  };
+
+  const handleDeleteTask = async (
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => {
+    if (isWorkSessionActive) {
+      await deleteTask({
+        authToken,
+        workSessionId,
+        tabId,
+        listId,
+        taskId,
+      });
+    } else {
+      setTabs((prevTabs) => {
+        const newTabs = [];
+        const targetTabIndex = prevTabs.findIndex((tab) => tab.id === tabId);
+        prevTabs.forEach((tab, index) => {
+          if (index === targetTabIndex) {
+            const newLists = [];
+            const targetListIndex = tab.lists.findIndex(
+              (list) => list.id === listId,
+            );
+            tab.lists.forEach((list, index) => {
+              if (index === targetListIndex) {
+                const newTasks = [];
+                const targetTaskIndex = list.tasks.findIndex(
+                  (task) => task.id === taskId,
+                );
+                list.tasks.forEach((task, index) => {
+                  if (index !== targetTaskIndex) {
+                    newTasks.push(task);
+                  }
+                });
+                newLists.push({ ...list, tasks: newTasks });
+              } else {
                 newLists.push(list);
               }
             });
