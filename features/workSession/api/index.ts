@@ -9,6 +9,10 @@ import { useCreateList } from './hooks/list/useCreateList';
 import { useUpdateList } from './hooks/list/useUpdateList';
 import { useDeleteList } from './hooks/list/useDeleteList';
 
+import { useCreateTask } from './hooks/task/useCreateTask';
+import { useUpdateTask } from './hooks/task/useUpdateTask';
+import { useDeleteTask } from './hooks/task/useDeleteTask';
+
 export {
   useCreateWorkSession,
   useGetLatestWorkSession,
@@ -19,4 +23,7 @@ export {
   useCreateList,
   useUpdateList,
   useDeleteList,
+  useCreateTask,
+  useUpdateTask,
+  useDeleteTask,
 };

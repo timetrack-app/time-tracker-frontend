@@ -113,6 +113,14 @@ export type UpdateListResponse = {
   updatedList: TaskList;
 };
 
+export type CreateTaskResponse = {
+  newTask: Task;
+};
+
+export type UpdateTaskResponse = {
+  updatedTask: Task;
+};
+
 // Related to initial task selection
 
 export type TaskInfoForInitialSelection = {
