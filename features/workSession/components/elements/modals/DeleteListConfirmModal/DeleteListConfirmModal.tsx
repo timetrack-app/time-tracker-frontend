@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-import ButtonPrimary from '../../../../../../components/elements/common/Button/ButtonPrimary';
-import ButtonDanger from '../../../../../../components/elements/common/Button/ButtonDanger';
-import Modal from '../../../../../../components/elements/common/Modal/Modal';
-
+import {
+  ButtonDanger,
+  ButtonPrimary,
+  Modal,
+} from '../../../../../../components/elements/common';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 const BodyDiv = styled.div`
@@ -55,12 +56,8 @@ const DeleteListConfirmModal = ({
   handleYesButtonOnClick,
 }: Props) => (
   <Modal isOpen={isOpen} onClose={onCloseModal}>
-    {/* <HeaderDiv>
-      <CloseButton onClick={onCloseModal} />
-    </HeaderDiv> */}
     <BodyDiv>
       <MessageP>Are you sure you want to delete this list?</MessageP>
-
       <ButtonContainerDiv>
         <ButtonWrapper>
           <ButtonPrimary onClick={handleYesButtonOnClick}>Yes</ButtonPrimary>
