@@ -10,6 +10,7 @@ import { CreateTaskParams, CreateTaskResponse } from '../../../types';
  */
 export const createTask = async ({
   workSessionId,
+  tabId,
   listId,
   name,
   displayOrder,
@@ -17,7 +18,7 @@ export const createTask = async ({
 }: CreateTaskParams): Promise<CreateTaskResponse> => {
   const body = { name, displayOrder };
   const res = await axiosBase(authToken).post(
-    getApiEndpointFull('createTask', { workSessionId, listId }),
+    getApiEndpointFull('createTask', { workSessionId, tabId, listId }),
     body,
   );
   return res.data;

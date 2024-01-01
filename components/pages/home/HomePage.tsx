@@ -41,7 +41,7 @@ import {
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
-import { Tab, TaskList } from '../../../types/entity';
+import { Tab, Task, TaskList } from '../../../types/entity';
 import {
   CreateTabParams,
   SelectInitialTaskFormValues,
@@ -495,6 +495,7 @@ const HomePage = () => {
       await createTask({
         authToken,
         workSessionId,
+        tabId,
         listId,
         description,
         name: taskName,
@@ -515,6 +516,7 @@ const HomePage = () => {
                 const newTasks = [
                   ...list.tasks,
                   {
+                    description,
                     id:
                       list.tasks.length > 0
                         ? list.tasks[list.tasks.length - 1].id + 1
@@ -522,6 +524,7 @@ const HomePage = () => {
                     name: taskName,
                     displayOrder: list.tasks.length > 0 ? list.tasks.length : 1,
                     listId: list.id,
+                    totalTime: 0,
                   },
                 ];
                 newLists.push({ ...list, tasks: newTasks });
@@ -686,6 +689,9 @@ const HomePage = () => {
           handleCreateNewList={handleCreateNewList}
           handleRenameList={handleRenameList}
           handleDeleteList={handleDeleteList}
+          handleCreateNewTask={handleCreateNewTask}
+          handleRenameTask={handleRenameTask}
+          handleDeleteTask={handleDeleteTask}
         />
       </MainAreaContainer>
     </>

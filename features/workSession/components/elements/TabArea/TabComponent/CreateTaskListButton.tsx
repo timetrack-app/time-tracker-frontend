@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ColorThemeName } from '../../../../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
   dryadBark,
   gainsboro,
   washedBlack,
   white,
-} from '../../../../../../../const/styles/colors';
-import { useAppSelector } from '../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
+} from '../../../../../../const/styles/colors';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
 type CreateTaskListButtonProps = {
   onClickCreateTaskList: () => void;

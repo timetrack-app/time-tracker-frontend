@@ -30,6 +30,23 @@ type TabsAreaProps = {
     listId: number,
   ) => void;
   handleDeleteList: (tabId: number, listId: number) => void;
+  handleCreateNewTask: (
+    tabId: number,
+    listId: number,
+    taskName: string,
+    description: string,
+  ) => Promise<void>;
+  handleRenameTask: (
+    newTaskName: string,
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+  handleDeleteTask: (
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
 };
 
 // styled components
@@ -103,6 +120,9 @@ const TabsArea = ({
   handleCreateNewList,
   handleRenameList,
   handleDeleteList,
+  handleCreateNewTask,
+  handleRenameTask,
+  handleDeleteTask,
 }: TabsAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
@@ -163,6 +183,9 @@ const TabsArea = ({
           handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
           handleRenameList={handleRenameList}
           handleDeleteList={handleDeleteList}
+          handleCreateNewTask={handleCreateNewTask}
+          handleRenameTask={handleRenameTask}
+          handleDeleteTask={handleDeleteTask}
         />
       </TabComponentWrapper>
     </ContainerDiv>

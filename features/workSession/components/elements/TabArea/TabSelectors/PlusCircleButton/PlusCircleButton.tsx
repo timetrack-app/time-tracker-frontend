@@ -8,7 +8,7 @@ type PlusCircleButtonProps = {
   onClickPlusCircleButton: () => void;
 };
 
-const PlusButton = styled.button<{colorThemeName: ColorThemeName}>`
+const PlusButton = styled.button<{ colorThemeName: ColorThemeName }>`
   width: 1.3em;
   height: 1.3em;
   display: flex;

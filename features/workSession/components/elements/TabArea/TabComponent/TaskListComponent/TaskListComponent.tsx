@@ -1,14 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Task, TaskList } from '../../../../../../../types/entity';
-import TaskListName from './TaskListName/TaskListName';
-import TaskCard from './TaskCard/TaskCard';
+import TaskListName from './TaskListName';
+import TaskCard from './TaskCard';
 import CreateTaskButton from './CreateTaskButton/CreateTaskButton';
 
 type TaskListComponentProps = {
   taskList: TaskList;
   isOpenMenubar: boolean;
   toggleMenuBar: (rect: DOMRect, list?: TaskList) => void;
+  onClickCreateTaskCard: (listId: number) => void;
+  handleRenameTask: (
+    newTaskName: string,
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+  handleDeleteTask: (
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
 };
 
 const ContainerDiv = styled.div`
@@ -24,6 +36,9 @@ const TaskListComponent = ({
   taskList,
   isOpenMenubar,
   toggleMenuBar,
+  onClickCreateTaskCard,
+  handleRenameTask,
+  handleDeleteTask,
 }: TaskListComponentProps) => {
   const handleEditTask = (task: Task) => {
     alert(task);
@@ -42,7 +57,9 @@ const TaskListComponent = ({
           onClickEditIcon={() => handleEditTask(task)}
         />
       ))}
-      <CreateTaskButton onClickCreateTaskCard={() => alert('create task')} />
+      <CreateTaskButton
+        onClickCreateTaskCard={() => onClickCreateTaskCard(taskList.id)}
+      />
     </ContainerDiv>
   );
 };

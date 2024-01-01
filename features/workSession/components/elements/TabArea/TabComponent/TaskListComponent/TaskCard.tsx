@@ -2,18 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BsPencil } from 'react-icons/bs';
-import { Task } from '../../../../../../../../types/entity';
-import { ColorThemeName } from '../../../../../../../../types/colorTheme';
+import { Task } from '../../../../../../../types/entity';
+import { ColorThemeName } from '../../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
   dryadBark,
   gainsboro,
   washedBlack,
   white,
-} from '../../../../../../../../const/styles/colors';
-import { useAppSelector } from '../../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../../stores/slices/colorThemeSlice';
-import { secondsToHHMMSS } from '../../../../../../../../utils/timer';
+} from '../../../../../../../const/styles/colors';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
+import { secondsToHHMMSS } from '../../../../../../../utils/timer';
 
 type TaskCardProps = {
   task: Task;

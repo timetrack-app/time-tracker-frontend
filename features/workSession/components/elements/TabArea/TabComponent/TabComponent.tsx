@@ -11,13 +11,17 @@ import {
 import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 import TaskListComponent from './TaskListComponent/TaskListComponent';
-import CreateTaskListButton from './CreateTaskListButton/CreateTaskListButton';
+import CreateTaskListButton from './CreateTaskListButton';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
-import { useListEditMenuBarAndRenamePopover } from '../../../../hooks';
-import EditListMenuBar from './EditListMenuBar/EditListMenuBar';
-import RenameListPopover from './RenameListPopover/RenameListPopover';
+import {
+  useCreateTaskDrawer,
+  useListEditMenuBarAndRenamePopover,
+} from '../../../../hooks';
+import EditListMenuBar from './EditListMenuBar';
+import RenameListPopover from './RenameListPopover';
 import DeleteListConfirmModal from '../../modals/DeleteListConfirmModal/DeleteListConfirmModal';
 import { useDeleteListConfirmModal } from '../../../../hooks/modal/useDeleteListConfirmModal';
+import CreateTaskDrawer from './CreateTaskDrawer';
 
 type TabComponentProps = {
   tab: Tab;
@@ -28,6 +32,23 @@ type TabComponentProps = {
     listId: number,
   ) => void;
   handleDeleteList: (tabId: number, listId: number) => void;
+  handleCreateNewTask: (
+    tabId: number,
+    listId: number,
+    taskName: string,
+    description: string,
+  ) => Promise<void>;
+  handleRenameTask: (
+    newTaskName: string,
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+  handleDeleteTask: (
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
 };
 
 const ContainerDiv = styled.div<{
@@ -69,6 +90,9 @@ const TabComponent = ({
   handleCreateTaskList,
   handleRenameList,
   handleDeleteList,
+  handleCreateNewTask,
+  handleRenameTask,
+  handleDeleteTask,
 }: TabComponentProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
   const { lists } = tab;
@@ -89,6 +113,13 @@ const TabComponent = ({
     onOpenDeleteListConfirmModal,
     onCloseDeleteListConfirmModal,
   } = useDeleteListConfirmModal();
+
+  const {
+    currentListId,
+    isOpenCreateTaskDrawer,
+    onOpenCreateTaskDrawer,
+    onCloseCreateTaskDrawer,
+  } = useCreateTaskDrawer();
 
   const onSubmitListRename = (newListName: string) => {
     handleRenameList(newListName, tab.id, currentList.id);
@@ -119,12 +150,21 @@ const TabComponent = ({
           onCloseListEditMenuBarAndListRenamePopover();
         }}
       />
+      <CreateTaskDrawer
+        isOpen={isOpenCreateTaskDrawer}
+        onClose={onCloseCreateTaskDrawer}
+        listId={currentListId}
+        handleCreateNewTask={handleCreateNewTask}
+      />
       {lists.map((taskList) => (
         <TaskListContainerDiv key={taskList.id}>
           <TaskListComponent
             taskList={taskList}
             isOpenMenubar={isOpenListEditMenuBar}
             toggleMenuBar={toggleListEditMenuBar}
+            onClickCreateTaskCard={onOpenCreateTaskDrawer}
+            handleRenameTask={handleRenameTask}
+            handleDeleteTask={handleDeleteTask}
           />
         </TaskListContainerDiv>
       ))}

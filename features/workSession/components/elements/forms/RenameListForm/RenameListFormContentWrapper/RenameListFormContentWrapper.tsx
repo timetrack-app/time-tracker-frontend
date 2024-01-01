@@ -40,7 +40,7 @@ type RenameListFormLayoutProps = {
 };
 
 /**
- * Wrapper component for login and registration form
+ * Wrapper component for rename list form
  * Wraps input fields and submit button
  *
  * @param {RenameListFormLayoutProps} { button, children }

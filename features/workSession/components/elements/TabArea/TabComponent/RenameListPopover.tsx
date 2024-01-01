@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { useAppSelector } from '../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
-import { ColorThemeName } from '../../../../../../../types/colorTheme';
-import RenameListForm from '../../../forms/RenameListForm/RenameListForm';
-import RenameListFormContentsWrapper from '../../../forms/RenameListForm/RenameListFormContentWrapper/RenameListFormContentWrapper';
-import { listRenameRequired } from '../../../../../../../const/validation/messages';
-import { TextInput } from '../../../../../../../components/elements/ReactHookForm';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
+import RenameListForm from '../../forms/RenameListForm/RenameListForm';
+import RenameListFormContentsWrapper from '../../forms/RenameListForm/RenameListFormContentWrapper/RenameListFormContentWrapper';
+import { listRenameRequired } from '../../../../../../const/validation/messages';
+import { TextInput } from '../../../../../../components/elements/ReactHookForm';
 import {
   ButtonPrimary,
   ButtonSecondary,
-} from '../../../../../../../components/elements/common';
+} from '../../../../../../components/elements/common';
 
 type RenameListPopoverProps = {
   listPosition: DOMRect;

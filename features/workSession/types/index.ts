@@ -64,6 +64,7 @@ export type DeleteListParams = {
 export type CreateTaskParams = {
   authToken: string;
   workSessionId: number;
+  tabId: number;
   listId: number;
   name: string;
   description: string;

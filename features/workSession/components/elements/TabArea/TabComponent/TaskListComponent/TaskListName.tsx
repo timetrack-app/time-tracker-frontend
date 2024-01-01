@@ -1,17 +1,17 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { ColorThemeName } from '../../../../../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
   dryadBark,
   gainsboro,
   washedBlack,
   white,
-} from '../../../../../../../../const/styles/colors';
-import { useAppSelector } from '../../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../../stores/slices/colorThemeSlice';
-import { TaskList } from '../../../../../../../../types/entity';
+} from '../../../../../../../const/styles/colors';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
+import { TaskList } from '../../../../../../../types/entity';
 
 type TaskListNameProps = {
   taskList: TaskList;

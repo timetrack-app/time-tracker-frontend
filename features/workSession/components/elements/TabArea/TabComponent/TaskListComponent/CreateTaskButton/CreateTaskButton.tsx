@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Task } from '../../../../../../../../types/entity';
 import { ColorThemeName } from '../../../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
   dryadBark,
   gainsboro,
+  vegetation,
   washedBlack,
   white,
 } from '../../../../../../../../const/styles/colors';
@@ -15,7 +15,7 @@ import { selectColorTheme } from '../../../../../../../../stores/slices/colorThe
 type CreateTaskButtonProps = {
   onClickCreateTaskCard: () => void;
 };
-const ContainerDiv = styled.div<{
+const StyledButton = styled.button<{
   colorThemeName: ColorThemeName;
 }>`
   position: relative;
@@ -27,9 +27,6 @@ const ContainerDiv = styled.div<{
   padding: 12px;
   border-radius: 8px;
   cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
   border: 1px solid
     ${({ colorThemeName }) => {
       if (colorThemeName === 'light') return gainsboro;
@@ -45,6 +42,13 @@ const ContainerDiv = styled.div<{
   }};
   box-shadow: ${({ colorThemeName, theme }) =>
     colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+  &:hover {
+    opacity: 0.5;
+  }
+  &:focus {
+    border: none;
+    outline: 2px solid ${vegetation};
+  }
 `;
 
 const NameP = styled.p`
@@ -55,12 +59,12 @@ const NameP = styled.p`
 const CreateTaskButton = ({ onClickCreateTaskCard }: CreateTaskButtonProps) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
   return (
-    <ContainerDiv
+    <StyledButton
       colorThemeName={currentColorThemeName}
       onClick={onClickCreateTaskCard}
     >
       <NameP>+ Create a task</NameP>
-    </ContainerDiv>
+    </StyledButton>
   );
 };
 
