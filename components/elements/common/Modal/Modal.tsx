@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
 
@@ -30,8 +30,7 @@ export const useModal = () => {
   };
 };
 
-const ModalOverlay = styled.div<{ isOpen: boolean }>`
-  display: ${(props) => (props.isOpen ? 'block' : 'none')};
+const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -65,7 +64,7 @@ const CloseButton = styled(IoClose)`
   cursor: pointer;
 `;
 
-type ModalProps = {
+export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   children?: React.ReactNode;
@@ -90,8 +89,29 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     [onClose],
   );
 
-  return (
-    <ModalOverlay isOpen={isOpen} onClick={handleOverlayClick}>
+  // Close popover when escape key is pressed
+  const handleKeydownEscape = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    },
+    [onClose],
+  );
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener('keydown', (e) => {
+        handleKeydownEscape(e);
+      });
+    } else {
+      window.removeEventListener('keydown', (e) => {
+        handleKeydownEscape(e);
+      });
+    }
+  });
+
+  return isOpen ? (
+    <ModalOverlay onClick={handleOverlayClick}>
       <ModalContainer>
         <HeaderDiv>
           <CloseButton onClick={onClose} />
@@ -99,7 +119,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         {children}
       </ModalContainer>
     </ModalOverlay>
-  );
+  ) : null;
 };
 
 export default Modal;
