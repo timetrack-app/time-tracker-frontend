@@ -3,17 +3,23 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import {
-  SelectInitialTaskModal,
   useSelectInitialTaskModal,
   useRDKUpdateActiveTask,
   useInitialTaskInfo,
   useElapsedTimeCalc,
-  OnGoingTimerArea,
-  TabsArea,
-  DeleteTabConfirmModal,
   useDeleteTabConfirmModal,
   EndWorkSessionConfirmModal,
 } from '../../../features/workSession';
+
+// components
+import {
+  TabArea,
+  OnGoingTimerArea,
+} from '../../../features/workSession/components/layouts';
+import {
+  SelectInitialTaskModal,
+  DeleteTabConfirmModal,
+} from '../../../features/workSession/components/modals';
 
 import {
   useCreateWorkSession,
@@ -29,7 +35,6 @@ import {
   useUpdateTask,
   useDeleteTask,
 } from '../../../features/workSession/api';
-
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
@@ -41,7 +46,7 @@ import {
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
-import { Tab, Task, TaskList } from '../../../types/entity';
+import { Tab, TaskList } from '../../../types/entity';
 import {
   CreateTabParams,
   SelectInitialTaskFormValues,
@@ -681,7 +686,7 @@ const HomePage = () => {
           onClickStartSession={onOpenSelectInitialTaskModal}
           onOpenEndWorkSessionConfirmModal={openModal}
         />
-        <TabsArea
+        <TabArea
           tabs={tabs}
           handleCreateNewTab={handleCreateNewTab}
           handleRenameTab={handleRenameTab}

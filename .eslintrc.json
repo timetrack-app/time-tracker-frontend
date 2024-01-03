@@ -20,7 +20,7 @@
     "airbnb",
     "airbnb-typescript"
   ],
-  "plugins": ["@typescript-eslint", "react"],
+  "plugins": ["@typescript-eslint", "react", "simple-import-sort"],
   "ignorePatterns": [
     "jest.config.mjs",
     "vitest.config.js",
