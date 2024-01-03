@@ -6,5 +6,10 @@ export { default as LoadingOverlay } from './LoadingOverlay/LoadingOverlay';
 export { default as Loader } from './LoadingOverlay/Loader';
 export { default as Overlay } from './LoadingOverlay/Overlay';
 export { default as MobileMenu } from './MobileMenu/MobileMenu';
-export { default as Modal } from './Modal/Modal';
+export { default as Modal, useModal } from './Modal/Modal';
+export {
+  default as Popover,
+  usePopover,
+  type PopoverProps,
+} from './Popover/Popover';
 export { default as Navbar } from './Navbar/Navbar';

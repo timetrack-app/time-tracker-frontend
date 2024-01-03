@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {
   FieldWrapper,
   FieldWrapperPassThroughProps,
-} from '../../../../../components/elements/ReactHookForm';
+} from '../../../../../../../../components/elements/ReactHookForm';
 
 // Reference:
 // https://github.com/alan2207/bulletproof-react/blob/master/src/components/Form/InputField.tsx

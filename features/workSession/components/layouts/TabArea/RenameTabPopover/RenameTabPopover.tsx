@@ -2,22 +2,24 @@ import React from 'react';
 import styled from 'styled-components';
 
 // stores
-import { useAppSelector } from '../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
 // types
-import { ColorThemeName } from '../../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../types/colorTheme';
 
 // const
-import { tabRenameRequired } from '../../../../../const/validation/messages';
+import { tabRenameRequired } from '../../../../../../const/validation/messages';
+
+// forms
+import { RenameTabForm, RenameTabFormContentWrapper } from './RenameTabForm';
 
 // components
-import { RenameTabForm, RenameTabFormContentWrapper } from '../../forms';
-import { TextInput } from '../../../../../components/elements/ReactHookForm';
+import { TextInput } from '../../../../../../components/elements/ReactHookForm';
 import {
   ButtonPrimary,
   ButtonSecondary,
-} from '../../../../../components/elements/common';
+} from '../../../../../../components/elements/common';
 
 type RenameTabPopoverProps = {
   editableTabSelectorPosition: DOMRect;

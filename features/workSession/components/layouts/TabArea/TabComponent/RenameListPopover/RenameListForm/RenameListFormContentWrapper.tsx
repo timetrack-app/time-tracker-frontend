@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { breakPoint } from '../../../../../const/styles/breakPoint';
+import { breakPoint } from '../../../../../../../../const/styles/breakPoint';
 
 const FormMainDiv = styled.div`
   width: 100%;
@@ -33,24 +33,24 @@ const ButtonsWrapperDiv = styled.div`
   justify-content: center;
 `;
 
-type RenameTabFormLayoutProps = {
+type RenameListFormLayoutProps = {
   submitButton: JSX.Element;
   discardButton: JSX.Element;
   children?: React.ReactNode;
 };
 
 /**
- * Wrapper component for login and registration form
+ * Wrapper component for rename list form
  * Wraps input fields and submit button
  *
- * @param {RenameTabFormLayoutProps} { button, children }
+ * @param {RenameListFormLayoutProps} { button, children }
  * @returns {JSX.Element}
  */
-const RenameTabFormContentsWrapper = ({
+const RenameListFormContentsWrapper = ({
   submitButton,
   discardButton,
   children,
-}: RenameTabFormLayoutProps) => (
+}: RenameListFormLayoutProps) => (
   <FormMainDiv>
     <FormFieldsDiv>{children}</FormFieldsDiv>
     <ButtonsWrapperDiv>
@@ -60,4 +60,4 @@ const RenameTabFormContentsWrapper = ({
   </FormMainDiv>
 );
 
-export default RenameTabFormContentsWrapper;
+export default RenameListFormContentsWrapper;

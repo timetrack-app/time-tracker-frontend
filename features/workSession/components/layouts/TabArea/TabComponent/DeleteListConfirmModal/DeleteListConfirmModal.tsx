@@ -4,8 +4,8 @@ import {
   ButtonDanger,
   ButtonPrimary,
   Modal,
-} from '../../../../../../components/elements/common';
-import { breakPoint } from '../../../../../../const/styles/breakPoint';
+} from '../../../../../../../components/elements/common';
+import { breakPoint } from '../../../../../../../const/styles/breakPoint';
 
 const BodyDiv = styled.div`
   width: 70vw;

@@ -2,18 +2,18 @@ import styled from 'styled-components';
 import { KeyboardEvent } from 'react';
 
 // stores
-import { useAppSelector } from '../../../../../../stores/hooks';
-import { selectCurrentSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectCurrentSelectedTab } from '../../../../../../../stores/slices/selectedTabSlice';
 
 // const
-import { taskNameRequiredMsg } from '../../../../../../const/validation/messages';
+import { taskNameRequiredMsg } from '../../../../../../../const/validation/messages';
 
 // forms
 import {
   CreateTaskForm,
   CreateTaskFormContentsWrapper,
   CreateTaskFormTextInput,
-} from '../../../forms';
+} from './CreateTaskForm';
 
 const BottomDrawerWrapperDiv = styled.div`
   position: fixed;

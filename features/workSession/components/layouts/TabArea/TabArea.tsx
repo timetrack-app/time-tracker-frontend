@@ -18,13 +18,15 @@ import { Tab } from '../../../../../types/entity';
 import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
 import EditTabMenuBar from './EditTabMenuBar';
-import RenameTabPopover from './RenameTabPopover';
+import RenameTabPopover from './RenameTabPopover/RenameTabPopover';
 
 // const
 import { breakPoint } from '../../../../../const/styles/breakPoint';
 
 // hooks
 import { useTabEditMenuBarAndRenamePopover } from '../../../hooks';
+import { usePopover } from '../../../../../components/elements/common';
+import EditTabMenuPopover from './EditTabMenuPopover';
 
 type TabAreaProps = {
   tabs: Tab[];
@@ -147,6 +149,13 @@ const TabArea = ({
     onCloseTabEditMenuBarAndTabRenamePopover,
   } = useTabEditMenuBarAndRenamePopover();
 
+  const {
+    isOpen: isOpenEditTabMenuPopover,
+    onClose: onCloseEditTabMenuPopover,
+    position,
+    togglePopover,
+  } = usePopover();
+
   // on selecting a tab
   const handleSelectTab = (tab: Tab) => {
     dispatch(updateSelectedTab(tab));
@@ -162,9 +171,10 @@ const TabArea = ({
 
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
-      <EditTabMenuBar
-        editableTabSelectorPosition={editableTabSelectorPosition}
-        isOpen={isOpenTabEditMenuBar}
+      <EditTabMenuPopover
+        position={position}
+        isOpen={isOpenEditTabMenuPopover}
+        onClose={onCloseEditTabMenuPopover}
         onRename={onOpenTabRenamePopover}
         onDelete={handleDeleteTab}
       />
@@ -182,7 +192,7 @@ const TabArea = ({
           isOpenMenubar={isOpenTabEditMenuBar}
           handleSelectTab={handleSelectTab}
           onClickPlusCircleButton={handleCreateNewTab}
-          toggleMenuBar={toggleTabEditMenuBar}
+          toggleMenuBar={togglePopover}
         />
       </TabSelectorWrapper>
       <TabComponentWrapper>

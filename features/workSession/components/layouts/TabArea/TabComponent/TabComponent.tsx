@@ -18,19 +18,18 @@ import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
 // hooks
-import {
-  useCreateTaskDrawer,
-  useListEditMenuBarAndRenamePopover,
-} from '../../../../hooks';
-import { useDeleteListConfirmModal } from '../../../../hooks/modal';
+import { useListEditMenuBarAndRenamePopover } from '../../../../hooks';
 
 // components
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import CreateTaskListButton from './CreateTaskListButton';
 import EditListMenuBar from './EditListMenuBar';
-import RenameListPopover from './RenameListPopover';
-import CreateTaskDrawer from './CreateTaskDrawer';
-import DeleteListConfirmModal from './DeleteListConfirmModal';
+import RenameListPopover from './RenameListPopover/RenameListPopover';
+import { CreateTaskDrawer, useCreateTaskDrawer } from './CreateTaskDrawer';
+import {
+  DeleteListConfirmModal,
+  useDeleteListConfirmModal,
+} from './DeleteListConfirmModal';
 
 type TabComponentProps = {
   tab: Tab;

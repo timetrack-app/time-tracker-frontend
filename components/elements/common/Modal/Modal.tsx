@@ -7,26 +7,26 @@ import { IoClose } from 'react-icons/io5';
  * Use it with Modal component
  *
  * @return {
-      isModalOpen: boolean;
-      openModal: () => void;
-      closeModal: () => void;
+      isMOpen: boolean;
+      onOpen: () => void;
+      onClose: () => void;
     }
  */
 export const useModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>();
+  const [isOpen, setIsOpen] = useState<boolean>();
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const onOpen = () => {
+    setIsOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const onClose = () => {
+    setIsOpen(false);
   };
 
   return {
-    isModalOpen,
-    openModal,
-    closeModal,
+    isOpen,
+    onOpen,
+    onClose,
   };
 };
 
@@ -46,7 +46,7 @@ const ModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background: ${({ theme }) => theme.colors.componentBackground};
   border-radius: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1001;

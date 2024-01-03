@@ -3,23 +3,19 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import {
-  useSelectInitialTaskModal,
   useRDKUpdateActiveTask,
   useInitialTaskInfo,
   useElapsedTimeCalc,
-  useDeleteTabConfirmModal,
-  EndWorkSessionConfirmModal,
 } from '../../../features/workSession';
 
 // components
 import {
   TabArea,
   OnGoingTimerArea,
-} from '../../../features/workSession/components/layouts';
-import {
   SelectInitialTaskModal,
   DeleteTabConfirmModal,
-} from '../../../features/workSession/components/modals';
+  EndWorkSessionConfirmModal,
+} from '../../../features/workSession/components';
 
 import {
   useCreateWorkSession,
@@ -53,7 +49,7 @@ import {
 } from '../../../features/workSession/types';
 
 import { showToast } from '../../../libs/react-toastify/toast';
-import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRDK/useRDKUpdateWorkSessionState';
+import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRTK/useRTKUpdateWorkSessionState';
 import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
@@ -120,22 +116,23 @@ const HomePage = () => {
   const { generateTaskInfoArr, newTabsWithInitialTaskActivated } =
     useInitialTaskInfo();
 
-  // Modal
+  // Modal hooks
   const {
-    isOpenSelectInitialTaskModal,
-    onOpenSelectInitialTaskModal,
-    onCloseSelectInitialTaskModal,
-  } = useSelectInitialTaskModal();
+    isOpen: isOpenEndWorkSessionConfirmModal,
+    onOpen: onOpenEndWorkSessionConfirmModal,
+    onClose: onCloseEndWorkSessionConfirmModal,
+  } = useModal();
 
   const {
-    isOpenDeleteTabConfirmModal,
-    onOpenDeleteTabConfirmModal,
-    onCloseDeleteTabConfirmModal,
-  } = useDeleteTabConfirmModal();
-
-  // End workSession confirm modal
-  // TODO : maybe better to create useEndWorkSessionConfirmModal hook
-  const { isModalOpen, openModal, closeModal } = useModal();
+    isOpen: isOpenSelectInitialTaskModal,
+    onOpen: onOpenSelectInitialTaskModal,
+    onClose: onCloseSelectInitialTaskModal,
+  } = useModal();
+  const {
+    isOpen: isOpenDeleteTabConfirmModal,
+    onOpen: onOpenDeleteTabConfirmModal,
+    onClose: onCloseDeleteTabConfirmModal,
+  } = useModal();
 
   // API call related
   const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
@@ -300,7 +297,7 @@ const HomePage = () => {
         onError: () => {},
         onSuccess: () => {
           dispatch(updateIsWorkSessionActive(false));
-          closeModal();
+          onCloseEndWorkSessionConfirmModal();
         },
       },
     );
@@ -667,8 +664,8 @@ const HomePage = () => {
         startWorkSession={handleStartWorkSession}
       />
       <EndWorkSessionConfirmModal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+        isOpen={isOpenEndWorkSessionConfirmModal}
+        onClose={onCloseEndWorkSessionConfirmModal}
         handleYesButtonOnClick={handleEndWorkSession}
       />
       <DeleteTabConfirmModal
@@ -684,7 +681,7 @@ const HomePage = () => {
             selectedTab.id,
           )}
           onClickStartSession={onOpenSelectInitialTaskModal}
-          onOpenEndWorkSessionConfirmModal={openModal}
+          onOpenEndWorkSessionConfirmModal={onOpenEndWorkSessionConfirmModal}
         />
         <TabArea
           tabs={tabs}

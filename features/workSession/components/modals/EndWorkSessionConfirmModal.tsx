@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import ButtonPrimary from '../../../../../../components/elements/common/Button/ButtonPrimary';
-import ButtonDanger from '../../../../../../components/elements/common/Button/ButtonDanger';
-import Modal from '../../../../../../components/elements/common/Modal/Modal';
+import ButtonPrimary from '../../../../components/elements/common/Button/ButtonPrimary';
+import ButtonDanger from '../../../../components/elements/common/Button/ButtonDanger';
+import Modal from '../../../../components/elements/common/Modal/Modal';
 
-import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import { breakPoint } from '../../../../const/styles/breakPoint';
 
 // const HeaderDiv = styled.div`
 //   display: flex;
@@ -52,7 +52,7 @@ const ButtonWrapper = styled.div`
 
 type Props = {
   isOpen: boolean;
-  closeModal: () => void;
+  onClose: () => void;
   handleYesButtonOnClick: () => void;
 };
 
@@ -64,10 +64,10 @@ type Props = {
  */
 const EndWorkSessionConfirmModal = ({
   isOpen,
-  closeModal,
+  onClose,
   handleYesButtonOnClick,
 }: Props) => (
-  <Modal isOpen={isOpen} onClose={closeModal}>
+  <Modal isOpen={isOpen} onClose={onClose}>
     {/* <HeaderDiv>
       <CloseButton onClick={closeModal} />
     </HeaderDiv> */}
@@ -75,7 +75,7 @@ const EndWorkSessionConfirmModal = ({
       <MessageP>Are you sure you want to finish this work session?</MessageP>
       <ButtonContainerDiv>
         <ButtonWrapper>
-          <ButtonDanger onClick={closeModal}>No</ButtonDanger>
+          <ButtonDanger onClick={onClose}>No</ButtonDanger>
         </ButtonWrapper>
         <ButtonWrapper>
           <ButtonPrimary onClick={handleYesButtonOnClick}>Yes</ButtonPrimary>

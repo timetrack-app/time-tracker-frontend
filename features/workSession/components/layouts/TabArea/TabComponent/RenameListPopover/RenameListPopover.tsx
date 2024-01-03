@@ -2,23 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 // stores
-import { useAppSelector } from '../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
+import { useAppSelector } from '../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
 
 // types
-import { ColorThemeName } from '../../../../../../types/colorTheme';
+import { ColorThemeName } from '../../../../../../../types/colorTheme';
 
 // const
-import { listRenameRequired } from '../../../../../../const/validation/messages';
+import { listRenameRequired } from '../../../../../../../const/validation/messages';
 
 // components
-import { TextInput } from '../../../../../../components/elements/ReactHookForm';
+import { TextInput } from '../../../../../../../components/elements/ReactHookForm';
 import {
   ButtonPrimary,
   ButtonSecondary,
-} from '../../../../../../components/elements/common';
+} from '../../../../../../../components/elements/common';
 // forms
-import { RenameListForm, RenameListFormContentWrapper } from '../../../forms';
+import { RenameListForm, RenameListFormContentWrapper } from './RenameListForm';
 
 type RenameListPopoverProps = {
   listPosition: DOMRect;

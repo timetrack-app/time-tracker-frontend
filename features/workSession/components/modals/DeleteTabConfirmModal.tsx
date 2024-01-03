@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
-import ButtonPrimary from '../../../../components/elements/common/Button/ButtonPrimary';
-import ButtonDanger from '../../../../components/elements/common/Button/ButtonDanger';
-import Modal from '../../../../components/elements/common/Modal/Modal';
+import {
+  ButtonPrimary,
+  ButtonDanger,
+  Modal,
+} from '../../../../components/elements/common';
 
 import { breakPoint } from '../../../../const/styles/breakPoint';
 

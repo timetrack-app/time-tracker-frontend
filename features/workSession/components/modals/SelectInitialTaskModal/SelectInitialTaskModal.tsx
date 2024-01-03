@@ -1,21 +1,21 @@
 import styled from 'styled-components';
 
-import ButtonPrimary from '../../../../components/elements/common/Button/ButtonPrimary';
-import Modal from '../../../../components/elements/common/Modal/Modal';
+import ButtonPrimary from '../../../../../components/elements/common/Button/ButtonPrimary';
+import Modal from '../../../../../components/elements/common/Modal/Modal';
 
-import { breakPoint } from '../../../../const/styles/breakPoint';
-import { SelectInput } from '../../../../components/elements/ReactHookForm/SelectInput';
+import { breakPoint } from '../../../../../const/styles/breakPoint';
+import { SelectInput } from '../../../../../components/elements/ReactHookForm/SelectInput';
 
 // form
 import {
   SelectInitialTaskForm,
   SelectInitialTaskFormContentWrapper,
-} from '../forms';
+} from './SelectInitialTaskForm';
 
 import {
   SelectInitialTaskFormValues,
   TaskInfoForInitialSelection,
-} from '../../types';
+} from '../../../types';
 
 type SelectInitialTaskModalProps = {
   isOpen: boolean;

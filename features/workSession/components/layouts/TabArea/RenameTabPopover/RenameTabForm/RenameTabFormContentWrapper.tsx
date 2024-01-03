@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { breakPoint } from '../../../../../const/styles/breakPoint';
+import { breakPoint } from '../../../../../../../const/styles/breakPoint';
 
 const FormMainDiv = styled.div`
   width: 100%;
@@ -25,13 +25,17 @@ const FormFieldsDiv = styled.div`
   gap: 1em;
 `;
 
-const SubmitButtonWrapperDiv = styled.div`
+const ButtonsWrapperDiv = styled.div`
   width: 100%;
   height: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-type SelectInitialTaskFormLayoutProps = {
-  button: JSX.Element;
+type RenameTabFormLayoutProps = {
+  submitButton: JSX.Element;
+  discardButton: JSX.Element;
   children?: React.ReactNode;
 };
 
@@ -39,17 +43,21 @@ type SelectInitialTaskFormLayoutProps = {
  * Wrapper component for login and registration form
  * Wraps input fields and submit button
  *
- * @param {SelectInitialTaskFormLayoutProps} { button, children }
+ * @param {RenameTabFormLayoutProps} { button, children }
  * @returns {JSX.Element}
  */
-const SelectInitialTaskFormContentsWrapper = ({
-  button,
+const RenameTabFormContentsWrapper = ({
+  submitButton,
+  discardButton,
   children,
-}: SelectInitialTaskFormLayoutProps) => (
+}: RenameTabFormLayoutProps) => (
   <FormMainDiv>
     <FormFieldsDiv>{children}</FormFieldsDiv>
-    <SubmitButtonWrapperDiv>{button}</SubmitButtonWrapperDiv>
+    <ButtonsWrapperDiv>
+      {submitButton}
+      {discardButton}
+    </ButtonsWrapperDiv>
   </FormMainDiv>
 );
 
-export default SelectInitialTaskFormContentsWrapper;
+export default RenameTabFormContentsWrapper;
