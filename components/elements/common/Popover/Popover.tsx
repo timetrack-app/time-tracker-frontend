@@ -5,7 +5,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { set } from 'react-hook-form';
 import styled from 'styled-components';
 
 /**
@@ -35,23 +34,11 @@ export const usePopover = () => {
     return;
   };
 
-  const togglePopover = useCallback(
-    (ref: MutableRefObject<HTMLElement>) => {
-      if (isOpen) {
-        onClose();
-      } else {
-        onOpen(ref);
-      }
-    },
-    [isOpen],
-  );
-
   return {
     triggerPosition,
     isOpen,
     onOpen,
     onClose,
-    togglePopover,
   };
 };
 

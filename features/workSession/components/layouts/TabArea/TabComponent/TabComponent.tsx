@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { MutableRefObject, useEffect, useState } from 'react';
 import styled from 'styled-components';
 // types
-import { Tab } from '../../../../../../types/entity';
+import { Tab, TaskList } from '../../../../../../types/entity';
 import { ColorThemeName } from '../../../../../../types/colorTheme';
 
 // const
@@ -20,16 +20,20 @@ import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlic
 // hooks
 import { useListEditMenuBarAndRenamePopover } from '../../../../hooks';
 
-// components
+// components and components related hooks
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import CreateTaskListButton from './CreateTaskListButton';
-import EditListMenuBar from './EditListMenuBar';
-import RenameListPopover from './RenameListPopover/RenameListPopover';
+import EditListMenuPopover from './EditListMenuPopover';
+import RenameListModal from './RenameListModal/RenameListModal';
 import { CreateTaskDrawer, useCreateTaskDrawer } from './CreateTaskDrawer';
 import {
   DeleteListConfirmModal,
   useDeleteListConfirmModal,
 } from './DeleteListConfirmModal';
+import {
+  useModal,
+  usePopover,
+} from '../../../../../../components/elements/common';
 
 type TabComponentProps = {
   tab: Tab;
@@ -102,21 +106,21 @@ const TabComponent = ({
   handleRenameTask,
   handleDeleteTask,
 }: TabComponentProps) => {
+  const [currentList, setCurrentList] = useState(undefined);
   const currentColorThemeName = useAppSelector(selectColorTheme);
   const { lists } = tab;
 
   const {
-    isOpenListEditMenuBar,
-    isOpenListRenamePopover,
-    listPosition,
-    currentList,
-    toggleListEditMenuBar,
-    onOpenListRenamePopover,
-    onCloseListRenamePopover,
-    onCloseListEditMenuBarAndListRenamePopover,
-  } = useListEditMenuBarAndRenamePopover();
-
-  // const {};
+    isOpen: isOpenRenameListModal,
+    onOpen: onOpenRenameListModal,
+    onClose: onCloseRenameListModal,
+  } = useModal();
+  const {
+    isOpen: isOpenEditListMenuPopover,
+    onClose: onCloseEditListMenuPopover,
+    onOpen: onOpenEditListMenuPopover,
+    triggerPosition: editListMenuPopoverTriggerPosition,
+  } = usePopover();
 
   const {
     isOpenDeleteListConfirmModal,
@@ -131,34 +135,47 @@ const TabComponent = ({
     onCloseCreateTaskDrawer,
   } = useCreateTaskDrawer();
 
+  const handleOpenEditListMenuPopover = (
+    ref: MutableRefObject<HTMLElement>,
+    list: TaskList,
+  ) => {
+    setCurrentList(list);
+    onOpenEditListMenuPopover(ref);
+  };
+
   const onSubmitListRename = (newListName: string) => {
     handleRenameList(newListName, tab.id, currentList.id);
-    onCloseListRenamePopover();
+    onCloseRenameListModal();
   };
+
+  // Close popover when modal is opened
+  useEffect(() => {
+    if (isOpenRenameListModal) {
+      onCloseEditListMenuPopover();
+    }
+  }, [isOpenRenameListModal, onCloseEditListMenuPopover]);
 
   return (
     <ContainerDiv colorThemeName={currentColorThemeName}>
-      <EditListMenuBar
-        isOpen={isOpenListEditMenuBar}
-        listPosition={listPosition}
-        onRename={onOpenListRenamePopover}
+      <EditListMenuPopover
+        triggerPosition={editListMenuPopoverTriggerPosition}
+        isOpen={isOpenEditListMenuPopover}
+        onClose={onCloseEditListMenuPopover}
+        onRename={onOpenRenameListModal}
         onDelete={onOpenDeleteListConfirmModal}
       />
-      <RenameListPopover
-        isOpen={isOpenListRenamePopover}
-        currentListName={currentList ? currentList.name : ''}
-        listPosition={listPosition}
+      <RenameListModal
+        isOpen={isOpenRenameListModal}
+        onClose={onCloseRenameListModal}
         onSubmit={onSubmitListRename}
-        onDiscard={onCloseListRenamePopover}
+        currentListName={currentList ? currentList.name : ''}
       />
-
       <DeleteListConfirmModal
         isOpen={isOpenDeleteListConfirmModal}
         onCloseModal={onCloseDeleteListConfirmModal}
         handleYesButtonOnClick={() => {
           handleDeleteList(tab.id, currentList.id);
           onCloseDeleteListConfirmModal();
-          onCloseListEditMenuBarAndListRenamePopover();
         }}
       />
       <CreateTaskDrawer
@@ -171,8 +188,9 @@ const TabComponent = ({
         <TaskListContainerDiv key={taskList.id}>
           <TaskListComponent
             taskList={taskList}
-            isOpenMenubar={isOpenListEditMenuBar}
-            toggleMenuBar={toggleListEditMenuBar}
+            onOpenMenuPopover={(ref) =>
+              handleOpenEditListMenuPopover(ref, taskList)
+            }
             onClickCreateTaskCard={onOpenCreateTaskDrawer}
             handleRenameTask={handleRenameTask}
             handleDeleteTask={handleDeleteTask}

@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import styled from 'styled-components';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { BsThreeDots } from 'react-icons/bs';
 
 // types
 import { ColorThemeName } from '../../../../../../../types/colorTheme';
@@ -22,12 +22,6 @@ import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeS
 // components
 import { IconButton } from '../../../../../../../components/elements/common';
 
-type TaskListNameProps = {
-  taskList: TaskList;
-  isOpenMenubar: boolean;
-  toggleMenuBar: (rect: DOMRect, list?: TaskList) => void;
-};
-
 const ContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
@@ -37,6 +31,8 @@ const ContainerDiv = styled.div<{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.5em;
+  gap: 0.5em;
   border-radius: 8px;
   border: 1px solid
     ${({ colorThemeName }) => {
@@ -63,24 +59,19 @@ const NameP = styled.p<{
   padding-left: 12px;
 `;
 
-const TaskListName = ({
-  taskList,
-  isOpenMenubar,
-  toggleMenuBar,
-}: TaskListNameProps) => {
+type TaskListNameProps = {
+  taskList: TaskList;
+  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
+};
+
+const TaskListName = ({ taskList, onOpenMenuPopover }: TaskListNameProps) => {
   const ref = useRef(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
-  const handleToggleMenuBar = () => {
-    if (!ref.current) return;
-    const rect: DOMRect = ref.current.getBoundingClientRect();
-    // passing current list name when opening menubar
-    isOpenMenubar ? toggleMenuBar(rect) : toggleMenuBar(rect, taskList);
-  };
   return (
     <ContainerDiv colorThemeName={currentColorThemeName} ref={ref}>
       <NameP colorThemeName={currentColorThemeName}>{taskList.name}</NameP>
-      <IconButton onClick={handleToggleMenuBar}>
-        {isOpenMenubar ? <IoIosArrowUp /> : <IoIosArrowDown />}
+      <IconButton onClick={() => onOpenMenuPopover(ref)}>
+        <BsThreeDots />
       </IconButton>
     </ContainerDiv>
   );

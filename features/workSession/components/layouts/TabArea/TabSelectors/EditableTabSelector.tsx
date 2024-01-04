@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useRef } from 'react';
 import styled from 'styled-components';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { BsThreeDots } from 'react-icons/bs';
+
 import { Tab } from '../../../../../../types/entity';
 import { ColorThemeName } from '../../../../../../types/colorTheme';
 import { useAppSelector } from '../../../../../../stores/hooks';
@@ -9,8 +10,7 @@ import { IconButton } from '../../../../../../components/elements/common';
 
 export type TabSelectorProps = {
   tab: Tab;
-  isOpenEditMenuPopover: boolean;
-  toggleMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
+  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
   className?: string;
 };
 
@@ -26,6 +26,7 @@ const SelectorContainerDiv = styled.div<{
   border-radius: 16px;
   margin-bottom: 0.5em;
   padding: 0.5em;
+  gap: 0.5em;
   cursor: pointer;
   border: 1px solid
     ${({ theme, colorThemeName }) => {
@@ -60,8 +61,7 @@ const TabNameP = styled.p<{
 const EditableTabSelector = ({
   tab,
   className,
-  isOpenEditMenuPopover,
-  toggleMenuPopover,
+  onOpenMenuPopover,
 }: TabSelectorProps) => {
   const ref = useRef(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
@@ -73,8 +73,8 @@ const EditableTabSelector = ({
       ref={ref}
     >
       <TabNameP colorThemeName={currentColorThemeName}>{tab.name}</TabNameP>
-      <IconButton onClick={() => toggleMenuPopover(ref)}>
-        {isOpenEditMenuPopover ? <IoIosArrowUp /> : <IoIosArrowDown />}
+      <IconButton onClick={() => onOpenMenuPopover(ref)}>
+        <BsThreeDots />
       </IconButton>
     </SelectorContainerDiv>
   );

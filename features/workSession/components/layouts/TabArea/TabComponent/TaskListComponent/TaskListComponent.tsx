@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 
 // types
@@ -11,8 +11,7 @@ import CreateTaskButton from './CreateTaskButton';
 
 type TaskListComponentProps = {
   taskList: TaskList;
-  isOpenMenubar: boolean;
-  toggleMenuBar: (rect: DOMRect, list?: TaskList) => void;
+  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
   onClickCreateTaskCard: (listId: number) => void;
   handleRenameTask: (
     newTaskName: string,
@@ -38,22 +37,15 @@ const ContainerDiv = styled.div`
 
 const TaskListComponent = ({
   taskList,
-  isOpenMenubar,
-  toggleMenuBar,
+  onOpenMenuPopover,
   onClickCreateTaskCard,
-}: // handleRenameTask,
-// handleDeleteTask,
-TaskListComponentProps) => {
+}: TaskListComponentProps) => {
   const handleEditTask = (task: Task) => {
     alert(task);
   };
   return (
     <ContainerDiv>
-      <TaskListName
-        taskList={taskList}
-        isOpenMenubar={isOpenMenubar}
-        toggleMenuBar={toggleMenuBar}
-      />
+      <TaskListName taskList={taskList} onOpenMenuPopover={onOpenMenuPopover} />
       {taskList.tasks.map((task) => (
         <TaskCard
           key={task.id}

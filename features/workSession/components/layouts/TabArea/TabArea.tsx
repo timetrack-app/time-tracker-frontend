@@ -139,9 +139,9 @@ const TabArea = ({
   } = useModal();
   const {
     isOpen: isOpenEditTabMenuPopover,
+    onOpen: onOpenEditTabMenuPopover,
     onClose: onCloseEditTabMenuPopover,
     triggerPosition: editTabMenuPopoverTriggerPosition,
-    togglePopover: toggleEditTabMenuPopover,
   } = usePopover();
 
   // on selecting a tab
@@ -185,10 +185,9 @@ const TabArea = ({
         <TabSelectors
           tabs={tabs}
           selectedTabId={selectedTab.id}
-          isOpenEditMenuPopover={isOpenEditTabMenuPopover}
           handleSelectTab={handleSelectTab}
           onClickPlusCircleButton={handleCreateNewTab}
-          toggleMenuPopover={toggleEditTabMenuPopover}
+          onOpenMenuPopover={onOpenEditTabMenuPopover}
         />
       </TabSelectorWrapper>
       <TabComponentWrapper>

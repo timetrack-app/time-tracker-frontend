@@ -12,11 +12,10 @@ import { breakPoint } from '../../../../../../const/styles/breakPoint';
 type TabSelectorsProps = {
   tabs: Tab[];
   selectedTabId: number;
-  isOpenEditMenuPopover: boolean;
   handleSelectTab: (tab: Tab) => void;
   onClickPlusCircleButton: () => void;
 
-  toggleMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
+  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
 };
 
 const ContainerDiv = styled.div`
@@ -41,10 +40,9 @@ const ContainerDiv = styled.div`
 const TabSelectors = ({
   tabs,
   selectedTabId,
-  isOpenEditMenuPopover,
   handleSelectTab,
   onClickPlusCircleButton,
-  toggleMenuPopover,
+  onOpenMenuPopover,
 }: TabSelectorsProps) => {
   return (
     <ContainerDiv>
@@ -55,8 +53,7 @@ const TabSelectors = ({
             <EditableTabSelector
               key={tab.id}
               tab={tab}
-              isOpenEditMenuPopover={isOpenEditMenuPopover}
-              toggleMenuPopover={toggleMenuPopover}
+              onOpenMenuPopover={onOpenMenuPopover}
             />
           );
         return (

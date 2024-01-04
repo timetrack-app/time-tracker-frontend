@@ -1,11 +1,11 @@
-import React, { MutableRefObject, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import {
   Popover,
   PopoverProps,
-} from '../../../../../components/elements/common';
-import { FloatingMenuButton } from '../../ui';
+} from '../../../../../../components/elements/common';
+import { FloatingMenuButton } from '../../../ui';
 
 type MenuPopoverProps = {
   onRename: () => void;
@@ -19,7 +19,7 @@ const MenuPopoverContainer = styled.div<{}>`
   gap: 8px;
 `;
 
-const EditTabMenuPopover = ({
+const EditListMenuPopover = ({
   triggerPosition,
   isOpen,
   onClose,
@@ -29,7 +29,7 @@ const EditTabMenuPopover = ({
   return (
     <Popover
       triggerPosition={triggerPosition}
-      left={120}
+      left={180}
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -48,4 +48,4 @@ const EditTabMenuPopover = ({
   );
 };
 
-export default EditTabMenuPopover;
+export default EditListMenuPopover;
