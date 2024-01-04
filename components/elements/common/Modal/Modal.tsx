@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, HTMLAttributes } from 'react';
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
+import IconButton from '../Button/IconButton';
 
 /**
  * Custom hook for managing Modal component open/close state
@@ -36,7 +37,7 @@ const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${({ theme }) => theme.colors.overlay};
   z-index: 1000;
 `;
 
@@ -49,27 +50,27 @@ const ModalContainer = styled.div`
   border-radius: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1001;
+  padding: 1em 1em 2em;
 `;
 
-const HeaderDiv = styled.div`
+const HeaderDiv = styled.div<{ hasTitle: boolean }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ hasTitle }) =>
+    hasTitle ? 'space-between' : 'flex-end'};
   align-items: center;
-  justify-content: flex-end;
-  padding: 0.5em 0.8em 0;
-  font-size: 1.5em;
 `;
 
-const CloseButton = styled(IoClose)`
-  cursor: pointer;
+const TitleH1 = styled.h1`
+  font-size: 1em;
+  font-weight: 500;
 `;
 
 export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  title?: string;
   children?: React.ReactNode;
 };
-
 /**
  * Reusable modal component
  * Use it with useModal custom hook
@@ -77,7 +78,7 @@ export type ModalProps = {
  * @param {ModalProps} { isOpen, onClose, children }
  * @return {JSX.Element}
  */
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
   // Close modal when the outside of the modal is clicked
   // useCallback because this function will be created every time Modal is rendered
   const handleOverlayClick = useCallback(
@@ -113,8 +114,11 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   return isOpen ? (
     <ModalOverlay onClick={handleOverlayClick}>
       <ModalContainer>
-        <HeaderDiv>
-          <CloseButton onClick={onClose} />
+        <HeaderDiv hasTitle={!!title}>
+          {title && <TitleH1>{title}</TitleH1>}
+          <IconButton onClick={onClose}>
+            <IoClose size={24} />
+          </IconButton>
         </HeaderDiv>
         {children}
       </ModalContainer>

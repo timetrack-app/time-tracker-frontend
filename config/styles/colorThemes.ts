@@ -13,8 +13,7 @@ import {
   washedBlack,
   softPetals,
   translucentUnicorn,
-  whiteSmoke,
-  carbon,
+  overlay,
 } from '../../const/styles/colors';
 
 export const lightTheme: ColorThemeStyle = {
@@ -27,7 +26,7 @@ export const lightTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
-    overlay: whiteSmoke,
+    overlay: overlay,
   },
 };
 
@@ -41,7 +40,7 @@ export const darkTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
-    overlay: carbon,
+    overlay: overlay,
   },
 };
 

@@ -36,8 +36,6 @@ const BodyDiv = styled.div`
   justify-content: center;
   gap: 3em;
 
-  padding: 1em 1em 2em;
-
   @media ${breakPoint.tablet} {
     width: 30em;
   }

@@ -17,17 +17,17 @@ import { Tab } from '../../../../../types/entity';
 // components
 import TabSelectors from './TabSelectors/TabSelectors';
 import TabComponent from './TabComponent/TabComponent';
-import EditTabMenuBar from './EditTabMenuBar';
-import RenameTabPopover from './RenameTabPopover/RenameTabPopover';
+import RenameTabModal from './RenameTabModal/RenameTabModal';
+import EditTabMenuPopover from './EditTabMenuPopover';
 
 // const
 import { breakPoint } from '../../../../../const/styles/breakPoint';
 
 // hooks
-import { useTabEditMenuBarAndRenamePopover } from '../../../hooks';
-import { usePopover } from '../../../../../components/elements/common';
-import EditTabMenuPopover from './EditTabMenuPopover';
-
+import {
+  useModal,
+  usePopover,
+} from '../../../../../components/elements/common';
 type TabAreaProps = {
   tabs: Tab[];
   handleCreateNewTab: () => void;
@@ -59,8 +59,6 @@ type TabAreaProps = {
   ) => Promise<void>;
 };
 
-// styled components
-
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   width: 100%;
   display: flex;
@@ -69,11 +67,6 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   padding: 24px;
   border-radius: 40px;
   background-color: ${({ theme }) => theme.colors.componentBackground};
-  /* box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light'
-      ? `0 5px 6px 0 ${theme.colors.border}`
-      : 'none'}; */
-
   @media ${breakPoint.tablet} {
     // 100% - (width of OnGoingTimerArea + flex gap)
     width: calc(100% - (310px + 24px));
@@ -140,20 +133,15 @@ const TabArea = ({
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
   const {
-    isOpenTabEditMenuBar,
-    isOpenTabRenamePopover,
-    editableTabSelectorPosition,
-    toggleTabEditMenuBar,
-    onOpenTabRenamePopover,
-    onCloseTabRenamePopover,
-    onCloseTabEditMenuBarAndTabRenamePopover,
-  } = useTabEditMenuBarAndRenamePopover();
-
+    isOpen: isOpenRenameTabModal,
+    onOpen: onOpenRenameTabModal,
+    onClose: onCloseRenameTabModal,
+  } = useModal();
   const {
     isOpen: isOpenEditTabMenuPopover,
     onClose: onCloseEditTabMenuPopover,
-    position,
-    togglePopover,
+    triggerPosition: editTabMenuPopoverTriggerPosition,
+    togglePopover: toggleEditTabMenuPopover,
   } = usePopover();
 
   // on selecting a tab
@@ -165,34 +153,42 @@ const TabArea = ({
     if (tabs.length) dispatch(updateSelectedTab(tabs[0]));
   }, [dispatch, tabs]);
 
+  // Close both popover and modal when selected tab is changed
   useEffect(() => {
-    onCloseTabEditMenuBarAndTabRenamePopover();
-  }, [onCloseTabEditMenuBarAndTabRenamePopover, selectedTab]);
+    onCloseEditTabMenuPopover();
+    onCloseRenameTabModal();
+  }, [selectedTab]);
+
+  // Close popover when modal is opened
+  useEffect(() => {
+    if (isOpenRenameTabModal) {
+      onCloseEditTabMenuPopover();
+    }
+  }, [isOpenRenameTabModal, onCloseEditTabMenuPopover]);
 
   return (
     <ContainerDiv colorThemeName={currentColorTheme}>
       <EditTabMenuPopover
-        position={position}
+        triggerPosition={editTabMenuPopoverTriggerPosition}
         isOpen={isOpenEditTabMenuPopover}
         onClose={onCloseEditTabMenuPopover}
-        onRename={onOpenTabRenamePopover}
+        onRename={onOpenRenameTabModal}
         onDelete={handleDeleteTab}
       />
-      <RenameTabPopover
-        editableTabSelectorPosition={editableTabSelectorPosition}
-        currentTabName={selectedTab.name}
-        isOpen={isOpenTabRenamePopover}
+      <RenameTabModal
+        isOpen={isOpenRenameTabModal}
+        onClose={onCloseRenameTabModal}
         onSubmit={handleRenameTab}
-        onDiscard={onCloseTabRenamePopover}
+        currentTabName={selectedTab.name}
       />
       <TabSelectorWrapper colorThemeName={currentColorTheme}>
         <TabSelectors
           tabs={tabs}
           selectedTabId={selectedTab.id}
-          isOpenMenubar={isOpenTabEditMenuBar}
+          isOpenEditMenuPopover={isOpenEditTabMenuPopover}
           handleSelectTab={handleSelectTab}
           onClickPlusCircleButton={handleCreateNewTab}
-          toggleMenuBar={togglePopover}
+          toggleMenuPopover={toggleEditTabMenuPopover}
         />
       </TabSelectorWrapper>
       <TabComponentWrapper>

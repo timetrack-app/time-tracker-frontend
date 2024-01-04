@@ -64,7 +64,11 @@ const ButtonPrimary = (props: ButtonProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
   const colorThemes: {
-    [key in ColorThemeName]: { color: string; backgroundColor: string; borderColor: string; }
+    [key in ColorThemeName]: {
+      color: string;
+      backgroundColor: string;
+      borderColor: string;
+    };
   } = {
     light: {
       color: vegetation,

@@ -1,45 +1,41 @@
-import React from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import styled from 'styled-components';
 
 import {
   Popover,
   PopoverProps,
 } from '../../../../../components/elements/common';
+import { FloatingMenuButton } from '../../ui';
 
 type MenuPopoverProps = {
   onRename: () => void;
   onDelete: () => void;
 } & PopoverProps;
 
-// TODO : Make styling better
 const MenuPopoverContainer = styled.div<{}>`
-  padding: 10px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-`;
-
-const MenuButton = styled.button<{}>`
-  cursor: pointer;
-  background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.text};
-  margin-right: 1em;
+  gap: 8px;
 `;
 
 const EditTabMenuPopover = ({
-  position,
+  triggerPosition,
   isOpen,
   onClose,
   onRename,
   onDelete,
 }: MenuPopoverProps) => {
   return (
-    <Popover position={position} isOpen={isOpen} onClose={onClose}>
+    <Popover
+      triggerPosition={triggerPosition}
+      left={120}
+      isOpen={isOpen}
+      onClose={onClose}
+    >
       <MenuPopoverContainer>
-        <MenuButton onClick={onRename}>Rename</MenuButton>
-        <MenuButton onClick={onDelete}>Delete</MenuButton>
+        <FloatingMenuButton onClick={onRename}>Rename</FloatingMenuButton>
+        <FloatingMenuButton onClick={onDelete}>Delete</FloatingMenuButton>
       </MenuPopoverContainer>
     </Popover>
   );

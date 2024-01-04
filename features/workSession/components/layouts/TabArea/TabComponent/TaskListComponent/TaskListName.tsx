@@ -19,6 +19,9 @@ import {
 import { useAppSelector } from '../../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
 
+// components
+import { IconButton } from '../../../../../../../components/elements/common';
+
 type TaskListNameProps = {
   taskList: TaskList;
   isOpenMenubar: boolean;
@@ -58,15 +61,6 @@ const NameP = styled.p<{
   font-size: 20px;
   font-weight: 400;
   padding-left: 12px;
-`;
-
-const IconButton = styled.button<{}>`
-  background: none;
-  border: none;
-
-  // to outstand close icon in dark color overlay
-  color: ${({ theme }) => theme.colors.text};
-  cursor: pointer;
 `;
 
 const TaskListName = ({

@@ -1,16 +1,17 @@
-import React, { useRef } from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import styled from 'styled-components';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { Tab } from '../../../../../../types/entity';
 import { ColorThemeName } from '../../../../../../types/colorTheme';
 import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
+import { IconButton } from '../../../../../../components/elements/common';
 
 export type TabSelectorProps = {
   tab: Tab;
+  isOpenEditMenuPopover: boolean;
+  toggleMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
   className?: string;
-  isOpenMenubar: boolean;
-  toggleMenuBar: (rect: DOMRect) => void;
 };
 
 // Selector Container
@@ -56,39 +57,24 @@ const TabNameP = styled.p<{
   font-size: 1.25em;
 `;
 
-const IconButton = styled.button<{}>`
-  background: none;
-  border: none;
-
-  // to outstand close icon in dark color overlay
-  color: ${({ theme }) => theme.colors.text};
-  cursor: pointer;
-`;
-
 const EditableTabSelector = ({
   tab,
   className,
-  isOpenMenubar,
-  toggleMenuBar,
+  isOpenEditMenuPopover,
+  toggleMenuPopover,
 }: TabSelectorProps) => {
-  const editableTabSelectorRef = useRef(null);
+  const ref = useRef(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
-  const handleToggleMenuBar = () => {
-    if (!editableTabSelectorRef.current) return;
-    const rect: DOMRect =
-      editableTabSelectorRef.current.getBoundingClientRect();
-    toggleMenuBar(rect);
-  };
   return (
     <SelectorContainerDiv
       colorThemeName={currentColorThemeName}
       className={className}
-      ref={editableTabSelectorRef}
+      ref={ref}
     >
       <TabNameP colorThemeName={currentColorThemeName}>{tab.name}</TabNameP>
-      <IconButton onClick={handleToggleMenuBar}>
-        {isOpenMenubar ? <IoIosArrowUp /> : <IoIosArrowDown />}
+      <IconButton onClick={() => toggleMenuPopover(ref)}>
+        {isOpenEditMenuPopover ? <IoIosArrowUp /> : <IoIosArrowDown />}
       </IconButton>
     </SelectorContainerDiv>
   );

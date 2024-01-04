@@ -15,7 +15,7 @@ type CreateTaskListButtonProps = {
   onClickCreateTaskList: () => void;
 };
 
-const ContainerDiv = styled.div<{
+const ContainerDiv = styled.button<{
   colorThemeName: ColorThemeName;
 }>`
   position: relative;

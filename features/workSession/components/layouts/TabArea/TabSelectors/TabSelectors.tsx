@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
+
 import { Tab } from '../../../../../../types/entity';
+
 import TabSelector from './TabSelector';
 import PlusCircleButton from './PlusCircleButton';
-import { breakPoint } from '../../../../../../const/styles/breakPoint';
 import EditableTabSelector from './EditableTabSelector';
+
+import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 type TabSelectorsProps = {
   tabs: Tab[];
   selectedTabId: number;
-  isOpenMenubar: boolean;
+  isOpenEditMenuPopover: boolean;
   handleSelectTab: (tab: Tab) => void;
   onClickPlusCircleButton: () => void;
 
-  toggleMenuBar: (rect: DOMRect) => void;
+  toggleMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
 };
 
 const ContainerDiv = styled.div`
@@ -38,10 +41,10 @@ const ContainerDiv = styled.div`
 const TabSelectors = ({
   tabs,
   selectedTabId,
-  isOpenMenubar,
+  isOpenEditMenuPopover,
   handleSelectTab,
   onClickPlusCircleButton,
-  toggleMenuBar,
+  toggleMenuPopover,
 }: TabSelectorsProps) => {
   return (
     <ContainerDiv>
@@ -52,8 +55,8 @@ const TabSelectors = ({
             <EditableTabSelector
               key={tab.id}
               tab={tab}
-              isOpenMenubar={isOpenMenubar}
-              toggleMenuBar={toggleMenuBar}
+              isOpenEditMenuPopover={isOpenEditMenuPopover}
+              toggleMenuPopover={toggleMenuPopover}
             />
           );
         return (

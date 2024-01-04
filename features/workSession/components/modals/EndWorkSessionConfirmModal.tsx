@@ -6,28 +6,13 @@ import Modal from '../../../../components/elements/common/Modal/Modal';
 
 import { breakPoint } from '../../../../const/styles/breakPoint';
 
-// const HeaderDiv = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   justify-content: flex-end;
-//   padding: 0.5em 0.8em 0;
-//   font-size: 1.5em;
-// `;
-
-// const CloseButton = styled(IoClose)`
-//   cursor: pointer;
-// `;
-
 const BodyDiv = styled.div`
   width: 70vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3em;
-
-  padding: 1em 1em 2em;
+  gap: 1.5em;
 
   @media ${breakPoint.tablet} {
     width: 30em;

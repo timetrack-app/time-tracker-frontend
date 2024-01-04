@@ -22,6 +22,7 @@ import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeS
 
 // utils
 import { secondsToHHMMSS } from '../../../../../../../utils/timer';
+import { IconButton } from '../../../../../../../components/elements/common';
 
 type TaskCardProps = {
   task: Task;
@@ -81,26 +82,6 @@ const BottomHalfDiv = styled.div`
   width: 100%;
 `;
 
-const IconButton = styled.button<{
-  colorThemeName: ColorThemeName;
-}>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  transition: opacity 0.3s ease;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
-  color: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return dryadBark;
-    return white;
-  }};
-`;
-
 const NameP = styled.p`
   font-size: 20px;
   font-weight: 400;
@@ -128,20 +109,14 @@ const TaskCard = ({
       <TopHalfDiv>
         <NameP>{task.name}</NameP>
         <EditIconButtonContainerDiv>
-          <IconButton
-            colorThemeName={currentColorThemeName}
-            onClick={onClickEditIcon}
-          >
+          <IconButton onClick={onClickEditIcon}>
             <BsThreeDots size={20} />
           </IconButton>
         </EditIconButtonContainerDiv>
       </TopHalfDiv>
       <BottomHalfDiv>
         <TimerContainerDiv>
-          <IconButton
-            colorThemeName={currentColorThemeName}
-            onClick={onClickTimerIcon}
-          >
+          <IconButton onClick={onClickTimerIcon}>
             <LuTimer size={20} />
           </IconButton>
           <TimeP>{secondsToHHMMSS(task.totalTime)}</TimeP>

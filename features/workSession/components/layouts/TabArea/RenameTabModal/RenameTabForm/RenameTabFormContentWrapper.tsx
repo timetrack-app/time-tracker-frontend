@@ -8,8 +8,8 @@ const FormMainDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3em;
-
+  padding-top: 0.5em;
+  gap: 1em;
   @media ${breakPoint.tablet} {
     max-width: 35em;
     margin: 0 auto;
@@ -27,10 +27,11 @@ const FormFieldsDiv = styled.div`
 
 const ButtonsWrapperDiv = styled.div`
   width: 100%;
-  height: 3em;
+  height: 2em;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5em;
 `;
 
 type RenameTabFormLayoutProps = {
@@ -54,8 +55,8 @@ const RenameTabFormContentsWrapper = ({
   <FormMainDiv>
     <FormFieldsDiv>{children}</FormFieldsDiv>
     <ButtonsWrapperDiv>
-      {submitButton}
       {discardButton}
+      {submitButton}
     </ButtonsWrapperDiv>
   </FormMainDiv>
 );
