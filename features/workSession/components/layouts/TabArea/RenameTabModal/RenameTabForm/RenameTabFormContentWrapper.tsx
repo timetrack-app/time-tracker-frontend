@@ -25,12 +25,19 @@ const FormFieldsDiv = styled.div`
   gap: 1em;
 `;
 
-const ButtonsWrapperDiv = styled.div`
+const ButtonWrapperContainerDiv = styled.div`
   width: 100%;
-  height: 2em;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+`;
+
+const ButtonsWrapperDiv = styled.div`
+  width: 50%;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   gap: 0.5em;
 `;
 
@@ -54,10 +61,12 @@ const RenameTabFormContentsWrapper = ({
 }: RenameTabFormLayoutProps) => (
   <FormMainDiv>
     <FormFieldsDiv>{children}</FormFieldsDiv>
-    <ButtonsWrapperDiv>
-      {discardButton}
-      {submitButton}
-    </ButtonsWrapperDiv>
+    <ButtonWrapperContainerDiv>
+      <ButtonsWrapperDiv>
+        {discardButton}
+        {submitButton}
+      </ButtonsWrapperDiv>
+    </ButtonWrapperContainerDiv>
   </FormMainDiv>
 );
 

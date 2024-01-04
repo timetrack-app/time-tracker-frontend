@@ -7,6 +7,8 @@ import {
   softPetals,
   vegetation,
   stonewallGrey,
+  dryadBark,
+  astrograniteDebris,
 } from '../../../../const/styles/colors';
 import { ColorThemeName } from '../../../../types/colorTheme';
 
@@ -69,14 +71,14 @@ const ButtonSecondary = (props: ButtonProps) => {
     };
   } = {
     light: {
-      color: vegetation,
-      backgroundColor: softPetals,
-      borderColor: vegetation,
+      color: dryadBark,
+      backgroundColor: stonewallGrey,
+      borderColor: dryadBark,
     },
     dark: {
-      color: softPetals,
-      backgroundColor: vegetation,
-      borderColor: vegetation,
+      color: dryadBark,
+      backgroundColor: stonewallGrey,
+      borderColor: astrograniteDebris,
     },
   };
 

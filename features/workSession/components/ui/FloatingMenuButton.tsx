@@ -27,18 +27,6 @@ export type FloatingMenuButtonProps = {
 } & StyledButtonProps &
   ButtonHTMLAttributes<HTMLButtonElement>;
 
-/**
- * Common button component
- *
- * @param {ButtonProps} {
- *   type = 'button',
- *   color,
- *   borderColor,
- *   backgroundColor,
- *   children,
- * }
- * @return {JSX.Element}
- */
 const FloatingMenuButton = ({
   className,
   children,

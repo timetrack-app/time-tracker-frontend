@@ -8,7 +8,7 @@ import FieldWrapper, { FieldWrapperPassThroughProps } from './FieldWrapper';
 
 const Input = styled.input<{ isError: boolean }>`
   width: 100%;
-  height: 2.5em;
+  height: 3em;
   padding: 0.5em;
   appearance: none;
   outline: none;

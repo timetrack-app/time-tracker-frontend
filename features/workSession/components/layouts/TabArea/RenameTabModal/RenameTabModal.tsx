@@ -10,11 +10,12 @@ import { RenameTabForm, RenameTabFormContentWrapper } from './RenameTabForm';
 // components
 import { TextInput } from '../../../../../../components/elements/ReactHookForm';
 import {
-  Button,
   ButtonPrimary,
+  ButtonSecondary,
   Modal,
   ModalProps,
 } from '../../../../../../components/elements/common';
+import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 type RenameTabModalProps = {
   currentTabName: string;
@@ -25,12 +26,25 @@ type RenameTabFormValues = {
   tabName: string;
 };
 
-const StyledPrimaryButton = styled(ButtonPrimary)`
-  font-size: 0.8em;
+const BodyDiv = styled.div`
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+
+  @media ${breakPoint.tablet} {
+    width: 30em;
+  }
 `;
 
-const StyledButton = styled(Button)`
-  font-size: 0.8em;
+const StyledButtonPrimary = styled(ButtonPrimary)`
+  font-size: 1em;
+`;
+
+const StyledButtonSecondary = styled(ButtonSecondary)`
+  font-size: 1em;
 `;
 
 const RenameTabModal = ({
@@ -44,37 +58,39 @@ const RenameTabModal = ({
   };
   return isOpen ? (
     <Modal isOpen={isOpen} onClose={onClose} title="Rename tab">
-      <RenameTabForm<RenameTabFormValues>
-        onSubmit={(values) => {
-          onSubmit(values.tabName);
-        }}
-        options={{ defaultValues }}
-      >
-        {({ register, formState }) => (
-          <RenameTabFormContentWrapper
-            submitButton={
-              <StyledPrimaryButton type="submit">
-                <p>Rename</p>
-              </StyledPrimaryButton>
-            }
-            discardButton={
-              <StyledButton onClick={onClose}>
-                <p>Discard</p>
-              </StyledButton>
-            }
-          >
-            <TextInput
-              type="text"
-              placeholder={currentTabName}
-              label=""
-              registration={register('tabName', {
-                required: tabRenameRequired,
-              })}
-              error={formState.errors.tabName}
-            />
-          </RenameTabFormContentWrapper>
-        )}
-      </RenameTabForm>
+      <BodyDiv>
+        <RenameTabForm<RenameTabFormValues>
+          onSubmit={(values) => {
+            onSubmit(values.tabName);
+          }}
+          options={{ defaultValues }}
+        >
+          {({ register, formState }) => (
+            <RenameTabFormContentWrapper
+              submitButton={
+                <StyledButtonPrimary type="submit">
+                  <p>Rename</p>
+                </StyledButtonPrimary>
+              }
+              discardButton={
+                <StyledButtonSecondary onClick={onClose}>
+                  <p>Discard</p>
+                </StyledButtonSecondary>
+              }
+            >
+              <TextInput
+                type="text"
+                placeholder={currentTabName}
+                label=""
+                registration={register('tabName', {
+                  required: tabRenameRequired,
+                })}
+                error={formState.errors.tabName}
+              />
+            </RenameTabFormContentWrapper>
+          )}
+        </RenameTabForm>
+      </BodyDiv>
     </Modal>
   ) : null;
 };

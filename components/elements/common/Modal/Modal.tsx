@@ -41,7 +41,7 @@ const ModalOverlay = styled.div`
   z-index: 1000;
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{ hasTitle: boolean }>`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -50,7 +50,7 @@ const ModalContainer = styled.div`
   border-radius: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1001;
-  padding: 1em 1em 2em;
+  padding: ${({ hasTitle }) => (hasTitle ? `1em` : '1em 1em 2em')};
 `;
 
 const HeaderDiv = styled.div<{ hasTitle: boolean }>`
@@ -58,6 +58,7 @@ const HeaderDiv = styled.div<{ hasTitle: boolean }>`
   justify-content: ${({ hasTitle }) =>
     hasTitle ? 'space-between' : 'flex-end'};
   align-items: center;
+  height: 1em;
 `;
 
 const TitleH1 = styled.h1`
@@ -111,10 +112,12 @@ const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
     }
   });
 
+  const hasTitle = !!title;
+
   return isOpen ? (
     <ModalOverlay onClick={handleOverlayClick}>
-      <ModalContainer>
-        <HeaderDiv hasTitle={!!title}>
+      <ModalContainer hasTitle={hasTitle}>
+        <HeaderDiv hasTitle={hasTitle}>
           {title && <TitleH1>{title}</TitleH1>}
           <IconButton onClick={onClose}>
             <IoClose size={24} />
