@@ -77,7 +77,7 @@ const TabSelectors = ({
         })}
       </SelectorsContainerDiv>
 
-      <PlusButton onClickPlusButton={onClickPlusButton} />
+      <PlusButton size={'44px'} onClickPlusButton={onClickPlusButton} />
     </ContainerDiv>
   );
 };

@@ -19,28 +19,27 @@ const ErrorMsgSpan = styled.span`
 `;
 
 type FieldWrapperProps = {
-  label?: string
-  children: ReactNode
-  error?: FieldError
-  className?: string
+  label?: string;
+  children: ReactNode;
+  error?: FieldError;
+  className?: string;
 };
 
 export type FieldWrapperPassThroughProps = Omit<FieldWrapperProps, 'children'>;
 
 const FieldWrapper = (props: FieldWrapperProps) => {
-  const {
-    label,
-    error,
-    children,
-    className,
-  } = props;
+  const { label, error, children, className } = props;
 
   return (
     <MainContainerDiv className={className}>
-      <label>
-        <LabelSpan>{label}</LabelSpan>
+      {label ? (
+        <label>
+          <LabelSpan>{label}</LabelSpan>
+          <div>{children}</div>
+        </label>
+      ) : (
         <div>{children}</div>
-      </label>
+      )}
       {error?.message && (
         <div>
           <ErrorMsgSpan>{error.message}</ErrorMsgSpan>

@@ -7,7 +7,7 @@ export { default as DeleteTabConfirmModal } from './components/modals/DeleteTabC
 export { default as EndWorkSessionConfirmModal } from './components/modals/EndWorkSessionConfirmModal';
 export { default as OnGoingTimerArea } from './components/layouts/OnGoingTimerArea/OnGoingTimerArea';
 export { default as CreateTaskListButton } from './components/layouts/TabArea/TabComponent/CreateTaskListButton';
-export { default as CreateTaskButton } from './components/layouts/TabArea/TabComponent/TaskListComponent/CreateTaskButton';
+export { default as CreateTaskButton } from './components/layouts/TabArea/TabComponent/TaskListComponent/CreateTaskButton/CreateTaskButton';
 export { default as TaskCard } from './components/layouts/TabArea/TabComponent/TaskListComponent/TaskCard';
 export { default as TaskListName } from './components/layouts/TabArea/TabComponent/TaskListComponent/TaskListName';
 export { default as TabComponent } from './components/layouts/TabArea/TabComponent/TabComponent';

@@ -24,22 +24,22 @@ const ContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
   width: 100%;
-  height: 93px;
+  height: 96px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   padding: 12px;
   border-radius: 8px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
+  cursor: grab;
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.componentBackground};
   box-shadow: ${({ colorThemeName, theme }) =>
     colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background};
+  }
 `;
 
 const TopHalfDiv = styled.div`
@@ -74,7 +74,7 @@ const TimerContainerDiv = styled.div`
   gap: 2px;
 `;
 
-const TimeP = styled.div`
+const TimeP = styled.p`
   font-size: 32px;
   font-weight: 600;
 `;

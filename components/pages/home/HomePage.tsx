@@ -67,17 +67,14 @@ const MainAreaContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-height: 100vh;
-  min-height: 100vh;
   gap: 24px;
-  padding: 2em 1.5em 1.5em;
+  padding-inline: 24px;
+  padding-block: 12px;
 
   @media ${breakPoint.tablet} {
-    min-height: auto;
+    height: calc(100vh - 94px);
     flex-direction: row;
     align-items: normal;
-    padding-inline: 24px;
-    padding-bottom: 24px;
   }
 `;
 

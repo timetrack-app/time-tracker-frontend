@@ -28,44 +28,15 @@ import {
   useModal,
   usePopover,
 } from '../../../../../components/elements/common';
-type TabAreaProps = {
-  tabs: Tab[];
-  handleCreateNewTab: () => void;
-  handleRenameTab: (newTabName: string) => void;
-  handleDeleteTab: () => void;
-  handleCreateNewList: (tabId: number) => void;
-  handleRenameList: (
-    newListName: string,
-    tabId: number,
-    listId: number,
-  ) => void;
-  handleDeleteList: (tabId: number, listId: number) => void;
-  handleCreateNewTask: (
-    tabId: number,
-    listId: number,
-    taskName: string,
-    description: string,
-  ) => Promise<void>;
-  handleRenameTask: (
-    newTaskName: string,
-    tabId: number,
-    listId: number,
-    taskId: number,
-  ) => Promise<void>;
-  handleDeleteTask: (
-    tabId: number,
-    listId: number,
-    taskId: number,
-  ) => Promise<void>;
-};
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 24px;
-  border-radius: 40px;
+  border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.componentBackground};
   @media ${breakPoint.tablet} {
     // 100% - (width of OnGoingTimerArea + flex gap)
@@ -102,15 +73,38 @@ const TabSelectorWrapper = styled.div<{ colorThemeName: ColorThemeName }>`
         ? `linear-gradient(to left, ${theme.colors.componentBackground}, rgba(255,255,255,0))`
         : `linear-gradient(to left, ${theme.colors.componentBackground}, rgba(32,37,40,0))`};
   }
-
-  @media ${breakPoint.tablet} {
-    /* padding-right: 1em; */
-  }
 `;
 
-const TabComponentWrapper = styled.div`
-  height: 100%;
-`;
+type TabAreaProps = {
+  tabs: Tab[];
+  handleCreateNewTab: () => void;
+  handleRenameTab: (newTabName: string) => void;
+  handleDeleteTab: () => void;
+  handleCreateNewList: (tabId: number) => void;
+  handleRenameList: (
+    newListName: string,
+    tabId: number,
+    listId: number,
+  ) => void;
+  handleDeleteList: (tabId: number, listId: number) => void;
+  handleCreateNewTask: (
+    tabId: number,
+    listId: number,
+    taskName: string,
+    description: string,
+  ) => Promise<void>;
+  handleRenameTask: (
+    newTaskName: string,
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+  handleDeleteTask: (
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+};
 
 const TabArea = ({
   tabs,
@@ -187,17 +181,15 @@ const TabArea = ({
           onOpenMenuPopover={onOpenEditTabMenuPopover}
         />
       </TabSelectorWrapper>
-      <TabComponentWrapper>
-        <TabComponent
-          tab={selectedTab}
-          handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
-          handleRenameList={handleRenameList}
-          handleDeleteList={handleDeleteList}
-          handleCreateNewTask={handleCreateNewTask}
-          handleRenameTask={handleRenameTask}
-          handleDeleteTask={handleDeleteTask}
-        />
-      </TabComponentWrapper>
+      <TabComponent
+        tab={selectedTab}
+        handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
+        handleRenameList={handleRenameList}
+        handleDeleteList={handleDeleteList}
+        handleCreateNewTask={handleCreateNewTask}
+        handleRenameTask={handleRenameTask}
+        handleDeleteTask={handleDeleteTask}
+      />
     </ContainerDiv>
   );
 };

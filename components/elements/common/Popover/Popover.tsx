@@ -60,7 +60,7 @@ type ContainerDivProps = {
 
 const ContainerDiv = styled.div<ContainerDivProps>`
   position: absolute;
-  z-index: 999;
+  z-index: 1001;
   top: ${({ triggerPosition, top }) => triggerPosition.top + top}px;
   left: ${({ triggerPosition, left }) =>
     // TODO : Find better way to calculate left triggerPosition

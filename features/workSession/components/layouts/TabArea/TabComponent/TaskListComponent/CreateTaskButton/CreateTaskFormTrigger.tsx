@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { LuPlus } from 'react-icons/lu';
 
-type CreateTaskButtonProps = {
+type CreateTaskFormTriggerProps = {
   onClickCreateTaskCard: () => void;
 };
 const StyledButton = styled.button`
-  position: relative;
   width: 100%;
   height: 93px;
   display: flex;
@@ -22,14 +21,19 @@ const StyledButton = styled.button`
     background: ${({ theme }) => theme.colors.background};
   }
   &:focus {
-    border: none;
+    /* border: none; */
     outline: 2px solid ${({ theme }) => theme.colors.outline};
+  }
+  &:active {
+    border: none;
+    outline: none;
   }
 `;
 
 const NameP = styled.p`
   font-size: 1.5em;
   font-weight: 400;
+  text-align: left;
 `;
 
 const IconSpan = styled.span`
@@ -39,15 +43,17 @@ const IconSpan = styled.span`
   margin-right: 8px;
 `;
 
-const CreateTaskButton = ({ onClickCreateTaskCard }: CreateTaskButtonProps) => {
+const CreateTaskFormTrigger = ({
+  onClickCreateTaskCard,
+}: CreateTaskFormTriggerProps) => {
   return (
     <StyledButton onClick={onClickCreateTaskCard}>
       <IconSpan>
         <LuPlus size={24} />
       </IconSpan>
-      <NameP>New</NameP>
+      <NameP>New task</NameP>
     </StyledButton>
   );
 };
 
-export default CreateTaskButton;
+export default CreateTaskFormTrigger;

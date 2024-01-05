@@ -29,7 +29,7 @@ const EditListMenuPopover = ({
   return (
     <Popover
       triggerPosition={triggerPosition}
-      left={180}
+      left={216}
       isOpen={isOpen}
       onClose={onClose}
     >

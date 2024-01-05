@@ -18,14 +18,14 @@ export type TabSelectorProps = {
 const SelectorContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
-  width: 7em;
-  height: 1.8em;
+  width: 112px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 8px;
-  padding: 0.5em;
-  gap: 0.5em;
+  padding: 12px;
+  gap: 12px;
   color: ${({ theme, colorThemeName }) => {
     if (colorThemeName === 'dark') return theme.colors.text;
 
@@ -49,7 +49,7 @@ const SelectorContainerDiv = styled.div<{
 `;
 
 const TabNameP = styled.p`
-  font-size: 1.2em;
+  font-size: 16px;
   font-weight: 500;
 `;
 

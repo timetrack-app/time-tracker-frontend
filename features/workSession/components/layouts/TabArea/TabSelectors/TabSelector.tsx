@@ -5,13 +5,13 @@ import styled from 'styled-components';
 import { Tab } from '../../../../../../types/entity';
 
 const ContainerDiv = styled.button`
-  width: 7em;
-  height: 1.8em;
+  width: 112px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   border-radius: 8px;
-  padding: 0.5em;
+  padding: 12px;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -19,7 +19,7 @@ const ContainerDiv = styled.button`
 `;
 
 const TabNameP = styled.p`
-  font-size: 1.2em;
+  font-size: 16px;
   font-weight: 500;
 `;
 

@@ -6,13 +6,20 @@ import TimerCarousel from './TimerCarousel/TimerCarousel';
 
 import { useWindowResize } from '../../../../../hooks/useWindowResize';
 
+const mainTimerSize = 288;
+
 const Container = styled.div`
-  width: 310px;
+  width: 288px;
   height: 100%;
 `;
 const MainTimerContainer = styled.div`
-  height: 310px;
-  margin-bottom: 16px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  margin-bottom: 12px;
+`;
+
+const SubSectionContainer = styled.div`
+  height: calc(100% - ${mainTimerSize}px - 12px);
 `;
 
 type Props = {
@@ -45,11 +52,13 @@ const OnGoingTimerArea = ({
           <MainTimer onClickStartSession={onClickStartSession} />
         )}
       </MainTimerContainer>
-      <SubSection
-        totalSeconds={totalTimeSec}
-        totalSecondsOfSelectedTab={totalTimeSecInSelectedTab}
-        onOpenEndWorkSessionConfirmModal={onOpenEndWorkSessionConfirmModal}
-      />
+      <SubSectionContainer>
+        <SubSection
+          totalSeconds={totalTimeSec}
+          totalSecondsOfSelectedTab={totalTimeSecInSelectedTab}
+          onOpenEndWorkSessionConfirmModal={onOpenEndWorkSessionConfirmModal}
+        />
+      </SubSectionContainer>
     </Container>
   );
 };

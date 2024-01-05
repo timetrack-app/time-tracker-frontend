@@ -7,27 +7,10 @@ import { Task, TaskList } from '../../../../../../../types/entity';
 // components
 import TaskListName from './TaskListName';
 import TaskCard from './TaskCard';
-import CreateTaskButton from './CreateTaskButton';
+import CreateTaskButton from './CreateTaskButton/CreateTaskButton';
 
 // const
 import { breakPoint } from '../../../../../../../const/styles/breakPoint';
-
-type TaskListComponentProps = {
-  taskList: TaskList;
-  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
-  onClickCreateTaskCard: (listId: number) => void;
-  handleRenameTask: (
-    newTaskName: string,
-    tabId: number,
-    listId: number,
-    taskId: number,
-  ) => Promise<void>;
-  handleDeleteTask: (
-    tabId: number,
-    listId: number,
-    taskId: number,
-  ) => Promise<void>;
-};
 
 const ContainerDiv = styled.div`
   min-width: 100%;
@@ -41,10 +24,46 @@ const ContainerDiv = styled.div`
   }
 `;
 
+const TaskCardListContainerDiv = styled.div`
+  max-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 8px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+type TaskListComponentProps = {
+  taskList: TaskList;
+  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
+  handleCreateNewTask: (
+    tabId: number,
+    listId: number,
+    taskName: string,
+    description: string,
+  ) => Promise<void>;
+  handleRenameTask: (
+    newTaskName: string,
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+  handleDeleteTask: (
+    tabId: number,
+    listId: number,
+    taskId: number,
+  ) => Promise<void>;
+};
+
 const TaskListComponent = ({
   taskList,
   onOpenMenuPopover,
-  onClickCreateTaskCard,
+  handleCreateNewTask,
 }: TaskListComponentProps) => {
   const handleEditTask = (task: Task) => {
     alert(task);
@@ -52,16 +71,21 @@ const TaskListComponent = ({
   return (
     <ContainerDiv>
       <TaskListName taskList={taskList} onOpenMenuPopover={onOpenMenuPopover} />
-      {taskList.tasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          task={task}
-          onClickEditIcon={() => handleEditTask(task)}
-          onClickTimerIcon={() => alert('timer')}
-        />
-      ))}
+      {taskList.tasks.length > 0 && (
+        <TaskCardListContainerDiv>
+          {taskList.tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onClickEditIcon={() => handleEditTask(task)}
+              onClickTimerIcon={() => alert('timer')}
+            />
+          ))}
+        </TaskCardListContainerDiv>
+      )}
       <CreateTaskButton
-        onClickCreateTaskCard={() => onClickCreateTaskCard(taskList.id)}
+        taskListId={taskList.id}
+        handleCreateNewTask={handleCreateNewTask}
       />
     </ContainerDiv>
   );

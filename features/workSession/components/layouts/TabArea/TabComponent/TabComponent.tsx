@@ -2,26 +2,11 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import styled from 'styled-components';
 // types
 import { Tab, TaskList } from '../../../../../../types/entity';
-import { ColorThemeName } from '../../../../../../types/colorTheme';
-
-// const
-import {
-  astrograniteDebris,
-  gainsboro,
-  washedBlack,
-  white,
-} from '../../../../../../const/styles/colors';
-import { breakPoint } from '../../../../../../const/styles/breakPoint';
-
-// global state
-import { useAppSelector } from '../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
 // components and components related hooks
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import EditListMenuPopover from './EditListMenuPopover';
 import RenameListModal from './RenameListModal/RenameListModal';
-import { CreateTaskDrawer, useCreateTaskDrawer } from './CreateTaskDrawer';
 import {
   DeleteListConfirmModal,
   useDeleteListConfirmModal,
@@ -31,6 +16,41 @@ import {
   usePopover,
 } from '../../../../../../components/elements/common';
 import { PlusButton } from '../../../ui';
+
+const ContainerDiv = styled.div`
+  height: 100%;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+
+  background-color: ${({ theme }) => theme.colors.componentBackground};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const TaskListContainerDiv = styled.div`
+  display: flex;
+  padding: 8px;
+  max-width: 100%;
+  max-height: 100%;
+  gap: 12px;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const PlusButtonContainerDiv = styled.div`
+  padding-top: 8px;
+`;
 
 type TabComponentProps = {
   tab: Tab;
@@ -60,38 +80,6 @@ type TabComponentProps = {
   ) => Promise<void>;
 };
 
-const ContainerDiv = styled.div<{
-  colorThemeName: ColorThemeName;
-}>`
-  height: 100%;
-  overflow-x: scroll;
-  display: flex;
-  justify-content: start;
-  align-items: start;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid
-    ${({ colorThemeName }) => {
-      if (colorThemeName === 'light') return gainsboro;
-      return astrograniteDebris;
-    }};
-  background: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return white;
-    return washedBlack;
-  }};
-`;
-
-const TaskListContainerDiv = styled.div`
-  display: flex;
-  width: 100;
-  gap: 12px;
-  overflow-x: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 const TabComponent = ({
   tab,
   handleCreateTaskList,
@@ -102,7 +90,6 @@ const TabComponent = ({
   handleDeleteTask,
 }: TabComponentProps) => {
   const [currentList, setCurrentList] = useState(undefined);
-  const currentColorThemeName = useAppSelector(selectColorTheme);
   const { lists } = tab;
 
   const {
@@ -122,13 +109,6 @@ const TabComponent = ({
     onOpenDeleteListConfirmModal,
     onCloseDeleteListConfirmModal,
   } = useDeleteListConfirmModal();
-
-  const {
-    currentListId,
-    isOpenCreateTaskDrawer,
-    onOpenCreateTaskDrawer,
-    onCloseCreateTaskDrawer,
-  } = useCreateTaskDrawer();
 
   const handleOpenEditListMenuPopover = (
     ref: MutableRefObject<HTMLElement>,
@@ -151,7 +131,7 @@ const TabComponent = ({
   }, [isOpenRenameListModal, onCloseEditListMenuPopover]);
 
   return (
-    <ContainerDiv colorThemeName={currentColorThemeName}>
+    <ContainerDiv>
       <EditListMenuPopover
         triggerPosition={editListMenuPopoverTriggerPosition}
         isOpen={isOpenEditListMenuPopover}
@@ -173,12 +153,6 @@ const TabComponent = ({
           onCloseDeleteListConfirmModal();
         }}
       />
-      <CreateTaskDrawer
-        isOpen={isOpenCreateTaskDrawer}
-        onClose={onCloseCreateTaskDrawer}
-        listId={currentListId}
-        handleCreateNewTask={handleCreateNewTask}
-      />
       <TaskListContainerDiv>
         {lists.map((taskList) => (
           <TaskListComponent
@@ -187,13 +161,15 @@ const TabComponent = ({
             onOpenMenuPopover={(ref) =>
               handleOpenEditListMenuPopover(ref, taskList)
             }
-            onClickCreateTaskCard={onOpenCreateTaskDrawer}
+            handleCreateNewTask={handleCreateNewTask}
             handleRenameTask={handleRenameTask}
             handleDeleteTask={handleDeleteTask}
           />
         ))}
       </TaskListContainerDiv>
-      <PlusButton size={'44px'} onClickPlusButton={handleCreateTaskList} />
+      <PlusButtonContainerDiv>
+        <PlusButton size={'44px'} onClickPlusButton={handleCreateTaskList} />
+      </PlusButtonContainerDiv>
     </ContainerDiv>
   );
 };

@@ -19,8 +19,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   &:hover {
     opacity: 0.5;
   }
-  color: ${({ theme }) => theme.colors.text};
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: none;
+  color: ${({ theme }) => theme.colors.secondaryText};
   background-color: ${({ theme }) => theme.colors.componentBackground};
 `;
 

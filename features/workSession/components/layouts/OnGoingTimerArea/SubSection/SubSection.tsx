@@ -23,19 +23,16 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
   display: none;
 
   @media ${breakPoint.tablet} {
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1.5em;
-    border-radius: 40px;
+    border-radius: 8px;
     padding: 2em;
     background-color: ${({ theme }) => theme.colors.componentBackground};
-    /* box-shadow: ${({ colorThemeName, theme }) =>
-      colorThemeName === 'light'
-        ? `0 5px 6px 0 ${theme.colors.border}`
-        : 'none'}; */
   }
 `;
 
