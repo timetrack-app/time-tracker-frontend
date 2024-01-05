@@ -1,29 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-
-// types
-import { ColorThemeName } from '../../../../../../../types/colorTheme';
-
-// const
-import {
-  astrograniteDebris,
-  dryadBark,
-  gainsboro,
-  vegetation,
-  washedBlack,
-  white,
-} from '../../../../../../../const/styles/colors';
-
-// stores
-import { useAppSelector } from '../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
+import { LuPlus } from 'react-icons/lu';
 
 type CreateTaskButtonProps = {
   onClickCreateTaskCard: () => void;
 };
-const StyledButton = styled.button<{
-  colorThemeName: ColorThemeName;
-}>`
+const StyledButton = styled.button`
   position: relative;
   width: 100%;
   height: 93px;
@@ -33,43 +15,37 @@ const StyledButton = styled.button<{
   padding: 12px;
   border-radius: 8px;
   cursor: pointer;
-  border: 1px solid
-    ${({ colorThemeName }) => {
-      if (colorThemeName === 'light') return gainsboro;
-      return astrograniteDebris;
-    }};
-  color: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return dryadBark;
-    return white;
-  }};
-  background: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return white;
-    return washedBlack;
-  }};
-  box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+  border: none;
+  color: ${({ theme }) => theme.colors.secondaryText};
+  background: ${({ theme }) => theme.colors.componentBackground};
   &:hover {
-    opacity: 0.5;
+    background: ${({ theme }) => theme.colors.background};
   }
   &:focus {
     border: none;
-    outline: 2px solid ${vegetation};
+    outline: 2px solid ${({ theme }) => theme.colors.outline};
   }
 `;
 
 const NameP = styled.p`
-  font-size: 20px;
+  font-size: 1.5em;
   font-weight: 400;
 `;
 
+const IconSpan = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+`;
+
 const CreateTaskButton = ({ onClickCreateTaskCard }: CreateTaskButtonProps) => {
-  const currentColorThemeName = useAppSelector(selectColorTheme);
   return (
-    <StyledButton
-      colorThemeName={currentColorThemeName}
-      onClick={onClickCreateTaskCard}
-    >
-      <NameP>+ Create a task</NameP>
+    <StyledButton onClick={onClickCreateTaskCard}>
+      <IconSpan>
+        <LuPlus size={24} />
+      </IconSpan>
+      <NameP>New</NameP>
     </StyledButton>
   );
 };

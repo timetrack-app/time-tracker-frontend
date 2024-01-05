@@ -37,7 +37,7 @@ const ContainerDiv = styled.div`
   align-items: center;
   @media ${breakPoint.tablet} {
     /* following 4px rule */
-    min-width: 192px;
+    min-width: 208px;
   }
 `;
 

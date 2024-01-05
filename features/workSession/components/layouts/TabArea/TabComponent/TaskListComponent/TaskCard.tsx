@@ -7,15 +7,6 @@ import { LuTimer } from 'react-icons/lu';
 import { Task } from '../../../../../../../types/entity';
 import { ColorThemeName } from '../../../../../../../types/colorTheme';
 
-// const
-import {
-  astrograniteDebris,
-  dryadBark,
-  gainsboro,
-  washedBlack,
-  white,
-} from '../../../../../../../const/styles/colors';
-
 // stores
 import { useAppSelector } from '../../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
