@@ -183,7 +183,7 @@ const TabArea = ({
           tabs={tabs}
           selectedTabId={selectedTab.id}
           handleSelectTab={handleSelectTab}
-          onClickPlusCircleButton={handleCreateNewTab}
+          onClickPlusButton={handleCreateNewTab}
           onOpenMenuPopover={onOpenEditTabMenuPopover}
         />
       </TabSelectorWrapper>

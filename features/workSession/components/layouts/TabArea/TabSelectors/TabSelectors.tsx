@@ -16,7 +16,7 @@ type TabSelectorsProps = {
   tabs: Tab[];
   selectedTabId: number;
   handleSelectTab: (tab: Tab) => void;
-  onClickPlusCircleButton: () => void;
+  onClickPlusButton: () => void;
   onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
 };
 
@@ -55,7 +55,7 @@ const TabSelectors = ({
   tabs,
   selectedTabId,
   handleSelectTab,
-  onClickPlusCircleButton,
+  onClickPlusButton,
   onOpenMenuPopover,
 }: TabSelectorsProps) => {
   return (
@@ -81,7 +81,7 @@ const TabSelectors = ({
         })}
       </SelectorsContainerDiv>
 
-      <PlusButton onClickPlusButton={onClickPlusCircleButton} />
+      <PlusButton onClickPlusButton={onClickPlusButton} />
     </ContainerDiv>
   );
 };
