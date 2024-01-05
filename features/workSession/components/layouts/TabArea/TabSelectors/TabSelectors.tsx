@@ -1,12 +1,15 @@
 import React, { MutableRefObject } from 'react';
 import styled from 'styled-components';
 
+// types
 import { Tab } from '../../../../../../types/entity';
 
+// components
 import TabSelector from './TabSelector';
-import PlusCircleButton from './PlusCircleButton';
 import EditableTabSelector from './EditableTabSelector';
+import { PlusButton } from '../../../ui';
 
+// const
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
 type TabSelectorsProps = {
@@ -14,11 +17,15 @@ type TabSelectorsProps = {
   selectedTabId: number;
   handleSelectTab: (tab: Tab) => void;
   onClickPlusCircleButton: () => void;
-
   onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
 };
 
 const ContainerDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SelectorsContainerDiv = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -28,12 +35,19 @@ const ContainerDiv = styled.div`
   overflow-y: visible;
   white-space: nowrap;
 
-  width: 100%;
-  max-width: 100%;
-  /* Replated first tab spacing left logic with this */
-  margin-left: 1em;
+  max-width: 75%;
+  margin-inline: 1em;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* @media ${breakPoint.tablet} {
+    max-width: 80%;
+  } */
 
   @media ${breakPoint.tablet} {
+    max-width: 90%;
   }
 `;
 
@@ -46,25 +60,28 @@ const TabSelectors = ({
 }: TabSelectorsProps) => {
   return (
     <ContainerDiv>
-      {tabs.map((tab) => {
-        const isSelected = tab.id === selectedTabId;
-        if (isSelected)
+      <SelectorsContainerDiv>
+        {tabs.map((tab) => {
+          const isSelected = tab.id === selectedTabId;
+          if (isSelected)
+            return (
+              <EditableTabSelector
+                key={tab.id}
+                tab={tab}
+                onOpenMenuPopover={onOpenMenuPopover}
+              />
+            );
           return (
-            <EditableTabSelector
+            <TabSelector
               key={tab.id}
               tab={tab}
-              onOpenMenuPopover={onOpenMenuPopover}
+              handleSelectTab={handleSelectTab}
             />
           );
-        return (
-          <TabSelector
-            key={tab.id}
-            tab={tab}
-            handleSelectTab={handleSelectTab}
-          />
-        );
-      })}
-      <PlusCircleButton onClickPlusCircleButton={onClickPlusCircleButton} />
+        })}
+      </SelectorsContainerDiv>
+
+      <PlusButton onClickPlusButton={onClickPlusCircleButton} />
     </ContainerDiv>
   );
 };

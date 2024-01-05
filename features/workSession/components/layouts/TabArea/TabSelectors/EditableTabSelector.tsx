@@ -22,12 +22,15 @@ const SelectorContainerDiv = styled.div<{
   height: 1.8em;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  margin-bottom: 0.5em;
+  justify-content: space-between;
+  border-radius: 8px;
   padding: 0.5em;
   gap: 0.5em;
-  cursor: pointer;
+  color: ${({ theme, colorThemeName }) => {
+    if (colorThemeName === 'dark') return theme.colors.text;
+
+    return theme.colors.info;
+  }};
   border: 1px solid
     ${({ theme, colorThemeName }) => {
       if (colorThemeName === 'dark') {
@@ -43,19 +46,11 @@ const SelectorContainerDiv = styled.div<{
 
     return theme.colors.infoBg;
   }};
-  box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 3px 6px 0 ${theme.colors.border}` : 'none'};
 `;
 
-const TabNameP = styled.p<{
-  colorThemeName: ColorThemeName;
-}>`
-  color: ${({ theme, colorThemeName }) => {
-    if (colorThemeName === 'dark') return theme.colors.text;
-
-    return theme.colors.info;
-  }};
-  font-size: 1.25em;
+const TabNameP = styled.p`
+  font-size: 1.2em;
+  font-weight: 500;
 `;
 
 const EditableTabSelector = ({
@@ -72,7 +67,7 @@ const EditableTabSelector = ({
       className={className}
       ref={ref}
     >
-      <TabNameP colorThemeName={currentColorThemeName}>{tab.name}</TabNameP>
+      <TabNameP>{tab.name}</TabNameP>
       <IconButton onClick={() => onOpenMenuPopover(ref)}>
         <BsThreeDots />
       </IconButton>

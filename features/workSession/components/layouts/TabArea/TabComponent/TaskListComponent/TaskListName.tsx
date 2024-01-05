@@ -32,7 +32,6 @@ const ContainerDiv = styled.div<{
   justify-content: space-between;
   align-items: center;
   padding: 0.5em;
-  gap: 0.5em;
   border-radius: 8px;
   border: 1px solid
     ${({ colorThemeName }) => {
@@ -50,13 +49,9 @@ const ContainerDiv = styled.div<{
 const NameP = styled.p<{
   colorThemeName: ColorThemeName;
 }>`
-  color: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return dryadBark;
-    return white;
-  }};
-  font-size: 20px;
-  font-weight: 400;
-  padding-left: 12px;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 1em;
+  font-weight: 500;
 `;
 
 type TaskListNameProps = {

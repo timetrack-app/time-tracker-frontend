@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { ColorThemeName } from '../../../../../../types/colorTheme';
 import {
   astrograniteDebris,
-  dryadBark,
   gainsboro,
   washedBlack,
   white,
@@ -45,12 +44,9 @@ const ContainerDiv = styled.button<{
 const NameP = styled.p<{
   colorThemeName: ColorThemeName;
 }>`
-  color: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return dryadBark;
-    return white;
-  }};
-  font-size: 20px;
-  font-weight: 400;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 1em;
+  font-weight: 600;
 `;
 
 const CreateTaskListButton = ({

@@ -75,10 +75,7 @@ const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
 
 const TabSelectorWrapper = styled.div<{ colorThemeName: ColorThemeName }>`
   position: relative;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  margin-bottom: 12px;
-
+  margin-bottom: 0.8em;
   &::before,
   &::after {
     content: '';

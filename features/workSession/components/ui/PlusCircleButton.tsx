@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ColorThemeName } from '../../../../../../types/colorTheme';
-import { useAppSelector } from '../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
+import { LuPlus } from 'react-icons/lu';
+
+import { ColorThemeName } from '../../../../types/colorTheme';
+import { useAppSelector } from '../../../../stores/hooks';
+import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
 type PlusCircleButtonProps = {
   onClickPlusCircleButton: () => void;
@@ -14,10 +16,9 @@ const PlusButton = styled.button<{ colorThemeName: ColorThemeName }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  font-size: 20px;
+  border-radius: 8px;
+  font-size: 1.5em;
   font-weight: 400;
-  padding: 0.5em;
   margin-right: 1em;
   margin-bottom: 0.5em;
   cursor: pointer;
@@ -28,8 +29,6 @@ const PlusButton = styled.button<{ colorThemeName: ColorThemeName }>`
   color: ${({ theme }) => theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.componentBackground};
-  box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 3px 6px 0 ${theme.colors.border}` : 'none'};
 `;
 
 const PlusCircleButton = ({
@@ -42,7 +41,7 @@ const PlusCircleButton = ({
       onClick={onClickPlusCircleButton}
       type="button"
     >
-      +
+      <LuPlus size={24} />
     </PlusButton>
   );
 };
