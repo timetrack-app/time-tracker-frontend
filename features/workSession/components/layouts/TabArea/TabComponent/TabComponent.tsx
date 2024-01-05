@@ -17,12 +17,8 @@ import { breakPoint } from '../../../../../../const/styles/breakPoint';
 import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
 
-// hooks
-import { useListEditMenuBarAndRenamePopover } from '../../../../hooks';
-
 // components and components related hooks
 import TaskListComponent from './TaskListComponent/TaskListComponent';
-import CreateTaskListButton from './CreateTaskListButton';
 import EditListMenuPopover from './EditListMenuPopover';
 import RenameListModal from './RenameListModal/RenameListModal';
 import { CreateTaskDrawer, useCreateTaskDrawer } from './CreateTaskDrawer';
@@ -34,6 +30,7 @@ import {
   useModal,
   usePopover,
 } from '../../../../../../components/elements/common';
+import { PlusButton } from '../../../ui';
 
 type TabComponentProps = {
   tab: Tab;
@@ -86,14 +83,12 @@ const ContainerDiv = styled.div<{
 `;
 
 const TaskListContainerDiv = styled.div`
-  /* width: 322px; */
-
-  flex: 0 0 auto;
-  width: 100%;
-
-  @media ${breakPoint.tablet} {
-    flex: initial;
-    width: auto;
+  display: flex;
+  width: 100;
+  gap: 12px;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -184,9 +179,10 @@ const TabComponent = ({
         listId={currentListId}
         handleCreateNewTask={handleCreateNewTask}
       />
-      {lists.map((taskList) => (
-        <TaskListContainerDiv key={taskList.id}>
+      <TaskListContainerDiv>
+        {lists.map((taskList) => (
           <TaskListComponent
+            key={taskList.id}
             taskList={taskList}
             onOpenMenuPopover={(ref) =>
               handleOpenEditListMenuPopover(ref, taskList)
@@ -195,11 +191,9 @@ const TabComponent = ({
             handleRenameTask={handleRenameTask}
             handleDeleteTask={handleDeleteTask}
           />
-        </TaskListContainerDiv>
-      ))}
-      <TaskListContainerDiv>
-        <CreateTaskListButton onClickCreateTaskList={handleCreateTaskList} />
+        ))}
       </TaskListContainerDiv>
+      <PlusButton size={'44px'} onClickPlusButton={handleCreateTaskList} />
     </ContainerDiv>
   );
 };

@@ -9,6 +9,9 @@ import TaskListName from './TaskListName';
 import TaskCard from './TaskCard';
 import CreateTaskButton from './CreateTaskButton';
 
+// const
+import { breakPoint } from '../../../../../../../const/styles/breakPoint';
+
 type TaskListComponentProps = {
   taskList: TaskList;
   onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
@@ -27,12 +30,14 @@ type TaskListComponentProps = {
 };
 
 const ContainerDiv = styled.div`
-  width: 100%;
+  min-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  justify-content: center;
   align-items: center;
+  @media ${breakPoint.tablet} {
+    min-width: 240px;
+  }
 `;
 
 const TaskListComponent = ({

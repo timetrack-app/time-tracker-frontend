@@ -44,19 +44,9 @@ const ContainerDiv = styled.div<{
   &:hover {
     opacity: 0.8;
   }
-  border: 1px solid
-    ${({ colorThemeName }) => {
-      if (colorThemeName === 'light') return gainsboro;
-      return astrograniteDebris;
-    }};
-  color: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return dryadBark;
-    return white;
-  }};
-  background: ${({ colorThemeName }) => {
-    if (colorThemeName === 'light') return white;
-    return washedBlack;
-  }};
+  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.componentBackground};
   box-shadow: ${({ colorThemeName, theme }) =>
     colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
 `;

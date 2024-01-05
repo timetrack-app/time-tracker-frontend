@@ -2,17 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { LuPlus } from 'react-icons/lu';
 
-import { ColorThemeName } from '../../../../types/colorTheme';
-import { useAppSelector } from '../../../../stores/hooks';
-import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
-
-type PlusButtonProps = {
-  onClickPlusButton: () => void;
+type StyledButtonProps = {
+  size?: string;
 };
 
-const StyledButton = styled.button<{ colorThemeName: ColorThemeName }>`
-  width: 1em;
-  height: 1em;
+const StyledButton = styled.button<StyledButtonProps>`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,15 +24,19 @@ const StyledButton = styled.button<{ colorThemeName: ColorThemeName }>`
   background-color: ${({ theme }) => theme.colors.componentBackground};
 `;
 
-const PlusButton = ({ onClickPlusButton }: PlusButtonProps) => {
-  const currentColorThemeName = useAppSelector(selectColorTheme);
+type PlusButtonProps = {
+  iconSize?: number;
+  onClickPlusButton: () => void;
+} & StyledButtonProps;
+
+const PlusButton = ({
+  size = '1em',
+  iconSize = 24,
+  onClickPlusButton,
+}: PlusButtonProps) => {
   return (
-    <StyledButton
-      colorThemeName={currentColorThemeName}
-      onClick={onClickPlusButton}
-      type="button"
-    >
-      <LuPlus size={24} />
+    <StyledButton size={size} onClick={onClickPlusButton}>
+      <LuPlus size={iconSize} />
     </StyledButton>
   );
 };

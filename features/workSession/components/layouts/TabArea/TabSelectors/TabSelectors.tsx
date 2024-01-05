@@ -32,7 +32,7 @@ const SelectorsContainerDiv = styled.div`
   gap: 12px;
 
   overflow-x: scroll;
-  overflow-y: visible;
+  /* overflow-y: visible; */
   white-space: nowrap;
 
   max-width: 75%;
@@ -41,10 +41,6 @@ const SelectorsContainerDiv = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-
-  /* @media ${breakPoint.tablet} {
-    max-width: 80%;
-  } */
 
   @media ${breakPoint.tablet} {
     max-width: 90%;
