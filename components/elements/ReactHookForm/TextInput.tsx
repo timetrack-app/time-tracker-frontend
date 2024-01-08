@@ -8,26 +8,30 @@ import FieldWrapper, { FieldWrapperPassThroughProps } from './FieldWrapper';
 
 const Input = styled.input<{ isError: boolean }>`
   width: 100%;
-  height: 2.5em;
+  height: 3em;
   padding: 0.5em;
   appearance: none;
   outline: none;
-  border: 1px solid ${({ theme, isError }) => (isError ? theme.colors.danger : theme.colors.border)};
+  border: 1px solid
+    ${({ theme, isError }) =>
+      isError ? theme.colors.danger : theme.colors.border};
   border-radius: 48px;
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.info};
+    border: 1px solid ${({ theme }) => theme.colors.outline};
   }
 `;
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
-  type?: 'text' | 'email' | 'password';
-  placeholder?: string
   registration: Partial<UseFormRegisterReturn>;
+  type?: 'text' | 'email' | 'password';
+  placeholder?: string;
+  autoFocus?: boolean;
 };
 
 const TextInput = (props: InputFieldProps) => {
   const {
     type = 'text',
+    autoFocus = false,
     placeholder,
     label,
     registration,
@@ -42,6 +46,7 @@ const TextInput = (props: InputFieldProps) => {
         {...registration}
         isError={Boolean(error?.message)}
         placeholder={placeholder}
+        autoFocus={autoFocus}
       />
     </FieldWrapper>
   );

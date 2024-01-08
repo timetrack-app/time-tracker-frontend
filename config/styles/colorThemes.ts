@@ -13,13 +13,15 @@ import {
   washedBlack,
   softPetals,
   translucentUnicorn,
-  whiteSmoke,
-  carbon,
+  overlay,
+  outline,
+  stonewallGrey,
 } from '../../const/styles/colors';
 
 export const lightTheme: ColorThemeStyle = {
   colors: {
     text: dryadBark,
+    secondaryText: stonewallGrey,
     background: errigalWhite,
     componentBackground: white,
     border: gainsboro,
@@ -27,13 +29,15 @@ export const lightTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
-    overlay: whiteSmoke,
+    overlay: overlay,
+    outline: outline,
   },
 };
 
 export const darkTheme: ColorThemeStyle = {
   colors: {
     text: white,
+    secondaryText: stonewallGrey,
     background: aswadBlack,
     componentBackground: washedBlack,
     border: astrograniteDebris,
@@ -41,7 +45,8 @@ export const darkTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
-    overlay: carbon,
+    overlay: overlay,
+    outline: outline,
   },
 };
 

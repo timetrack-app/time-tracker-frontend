@@ -7,7 +7,7 @@ type ActiveTaskState = {
   listId: number | null;
   id: number | null; // null when nothing is active
   name: string;
-  elapsedSeconds: number;
+  totalTime: number;
   isTimerRunning: boolean;
 };
 
@@ -16,7 +16,7 @@ const initialState: ActiveTaskState = {
   listId: null,
   id: null,
   name: '',
-  elapsedSeconds: 0,
+  totalTime: 0,
   isTimerRunning: false,
 };
 
@@ -26,11 +26,11 @@ const activeTaskSlice = createSlice({
   reducers: {
     resetActiveTask: (state) => {
       state.name = '';
-      state.elapsedSeconds = 0;
+      state.totalTime = 0;
       state.isTimerRunning = false;
     },
     resetTimer: (state) => {
-      state.elapsedSeconds = 0;
+      state.totalTime = 0;
       state.isTimerRunning = false;
     },
     updateActiveTask: (state, action: PayloadAction<ActiveTaskState>) => {
@@ -43,10 +43,10 @@ const activeTaskSlice = createSlice({
       state.isTimerRunning = action.payload;
     },
     updateElapsedSeconds: (state, action: PayloadAction<number>) => {
-      state.elapsedSeconds = action.payload;
+      state.totalTime = action.payload;
     },
     incrementElapsedSeconds: (state) => {
-      state.elapsedSeconds += 1;
+      state.totalTime += 1;
     },
   },
 });

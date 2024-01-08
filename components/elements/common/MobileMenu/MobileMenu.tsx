@@ -59,7 +59,10 @@ const ContentItemDiv = styled.div`
   padding: 0.5em;
 `;
 
-const ButtonWrapper = styled.button<{ colorThemeName: ColorThemeName; isOpen: boolean; }>`
+const ButtonWrapper = styled.button<{
+  colorThemeName: ColorThemeName;
+  isOpen: boolean;
+}>`
   position: absolute;
   top: 16px;
   right: 10px;
@@ -115,9 +118,7 @@ const MobileMenu = () => {
     const { body } = document;
 
     // disable scrolling when the menu is open, re-enable scrolling when the menu is closed
-    isOpen
-      ? body.style.overflow = 'hidden'
-      : body.style.overflow = 'auto';
+    isOpen ? (body.style.overflow = 'hidden') : (body.style.overflow = 'auto');
 
     // re-enable scrolling when the component unmounts
     return () => {
@@ -145,9 +146,7 @@ const MobileMenu = () => {
         <ContentsContainer onClick={(e) => e.stopPropagation()}>
           {Object.keys(menuItems).map((label) => (
             <ContentItemDiv key={label}>
-              <Link href={menuItems[label]}>
-                {label}
-              </Link>
+              <Link href={menuItems[label]}>{label}</Link>
             </ContentItemDiv>
           ))}
           <ContentItemDiv>

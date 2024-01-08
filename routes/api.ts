@@ -18,6 +18,8 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       createWorkSession: '/users/{userId}/work-sessions',
       getLatestWorkSession: '/users/{userId}/work-sessions/latest',
       endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
+      updateActiveTask:
+        '/users/{userId}/work-sessions/{workSessionId}/update-active-task',
       // user related
       getUser: '/users/{userId}',
       updateEmail: '/users/{userId}/email-update',
@@ -30,9 +32,17 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       deleteTab: '/work-sessions/{workSessionId}/tabs/{tabId}',
 
       // list related
-      createList: '/work-sessions/{workSessionId}/{tabId}/lists',
-      updateList: '/work-sessions/{workSessionId}/{tabId}/lists/{listId}',
-      deleteList: '/work-sessions/{workSessionId}/{tabId}/lists/{listId}',
+      createList: '/work-sessions/{workSessionId}/tabs/{tabId}/lists',
+      updateList: '/work-sessions/{workSessionId}/tabs/{tabId}/lists/{listId}',
+      deleteList: '/work-sessions/{workSessionId}/tabs/{tabId}/lists/{listId}',
+
+      // task related
+      createTask:
+        '/work-sessions/{workSessionId}/tabs/{tabId}/lists/{listId}/tasks',
+      updateTask:
+        '/work-sessions/{workSessionId}/tabs/{tabId}/lists/{listId}/tasks/{taskId}',
+      deleteTask:
+        '/work-sessions/{workSessionId}/tabs/{tabId}/lists/{listId}/tasks/{taskId}',
     },
     apiBaseUrl,
   );

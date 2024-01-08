@@ -1,40 +1,40 @@
 import { useState, useCallback } from 'react';
 
 export const useTabEditMenuBarAndRenamePopover = () => {
-  const [isOpenMenubar, setIsOpenMenubar] = useState(false);
-  const [isOpenRenamePopover, setIsOpenRenamePopover] = useState(false);
+  const [isOpenTabEditMenuBar, setIsOpenTabEditMenuBar] = useState(false);
+  const [isOpenTabRenamePopover, setIsOpenTabRenamePopover] = useState(false);
   const [editableTabSelectorPosition, setEditableTabSelectorPosition] =
     useState<DOMRect | null>();
 
-  const toggleMenuBar = useCallback(
+  const toggleTabEditMenuBar = useCallback(
     (rect: DOMRect) => {
-      if (!isOpenMenubar) setEditableTabSelectorPosition(rect);
-      setIsOpenMenubar((prev) => !prev);
+      if (!isOpenTabEditMenuBar) setEditableTabSelectorPosition(rect);
+      setIsOpenTabEditMenuBar((prev) => !prev);
     },
-    [isOpenMenubar],
+    [isOpenTabEditMenuBar],
   );
 
-  const onOpenRenamePopover = useCallback(() => {
-    setIsOpenMenubar(false);
-    setIsOpenRenamePopover(true);
+  const onOpenTabRenamePopover = useCallback(() => {
+    setIsOpenTabEditMenuBar(false);
+    setIsOpenTabRenamePopover(true);
   }, []);
 
-  const onCloseRenamePopover = useCallback(() => {
-    setIsOpenRenamePopover(false);
+  const onCloseTabRenamePopover = useCallback(() => {
+    setIsOpenTabRenamePopover(false);
   }, []);
 
-  const onCloseMenuBarAndRenamePopover = useCallback(() => {
-    setIsOpenMenubar(false);
-    setIsOpenRenamePopover(false);
+  const onCloseTabEditMenuBarAndTabRenamePopover = useCallback(() => {
+    setIsOpenTabEditMenuBar(false);
+    setIsOpenTabRenamePopover(false);
   }, []);
 
   return {
-    isOpenMenubar,
-    isOpenRenamePopover,
+    isOpenTabEditMenuBar,
+    isOpenTabRenamePopover,
     editableTabSelectorPosition,
-    toggleMenuBar,
-    onOpenRenamePopover,
-    onCloseRenamePopover,
-    onCloseMenuBarAndRenamePopover,
+    toggleTabEditMenuBar,
+    onOpenTabRenamePopover,
+    onCloseTabRenamePopover,
+    onCloseTabEditMenuBarAndTabRenamePopover,
   };
 };

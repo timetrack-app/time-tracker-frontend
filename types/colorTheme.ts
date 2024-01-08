@@ -3,6 +3,7 @@ import { colorThemeNames } from '../const/colorTheme';
 export type ColorThemeStyle = {
   colors: {
     text: string;
+    secondaryText: string;
     background: string;
     componentBackground: string;
     border: string;
@@ -11,6 +12,7 @@ export type ColorThemeStyle = {
     danger: string;
     dangerBg: string;
     overlay: string;
+    outline: string;
   };
 };
 

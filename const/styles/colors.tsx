@@ -20,3 +20,5 @@ export const aswadBlack = '#141519'; // dark theme background color
 export const washedBlack = '#202528'; // dark theme component background color
 export const whiteSmoke = '#F5F5F5'; // light theme overlay color
 export const carbon = '#333333'; // dark theme overlay color
+export const overlay = '#00000080'; // overlay color
+export const outline = '#82B1E9'; // outline color

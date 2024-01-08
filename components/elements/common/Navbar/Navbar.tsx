@@ -13,11 +13,12 @@ const NavbarContainer = styled.nav`
   display: none;
 
   @media ${breakPoint.tablet} {
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
-    padding: 10px 20px;
+    padding-inline: 24px;
     top: 0;
     left: 0;
     right: 0;
@@ -72,9 +73,7 @@ const StyledButton = styled(Button)`
 const Navbar = () => {
   const router = useRouter();
 
-  const {
-    mutate: logout,
-  } = useUserLogout();
+  const { mutate: logout } = useUserLogout();
 
   const handleLogout = () => {
     logout();
