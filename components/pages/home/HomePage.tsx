@@ -62,6 +62,7 @@ import {
 } from '../../../stores/slices/workSessionSlice';
 
 import { useModal } from '../../elements/common/Modal/Modal';
+import { selectActiveTask } from '../../../stores/slices/activeTaskSlice';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -106,6 +107,8 @@ const HomePage = () => {
   const { workSessionId, isWorkSessionActive } = useAppSelector(
     selectWorkSessionState,
   );
+
+  const { tabId } = useAppSelector(selectActiveTask);
 
   const dispatch = useAppDispatch();
 
@@ -362,6 +365,12 @@ const HomePage = () => {
 
   const handleDeleteTab = async () => {
     if (isWorkSessionActive) {
+      if (tabId === selectedTab.id) {
+        return showToast(
+          'error',
+          'Failed to delete this tab because it contains the active task.',
+        );
+      }
       await deleteTab({
         authToken,
         workSessionId,

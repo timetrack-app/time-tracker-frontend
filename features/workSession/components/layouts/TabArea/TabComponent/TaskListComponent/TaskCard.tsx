@@ -67,17 +67,20 @@ const TimeP = styled.p`
 
 type TaskCardProps = {
   task: Task;
-  onClickEditIcon: () => void;
   handleOpenStartNewTaskConfirmPopover: (
     task: Task,
     ref: MutableRefObject<HTMLElement>,
+  ) => void;
+  handleOpenEditTaskMenuPopover: (
+    ref: MutableRefObject<HTMLElement>,
+    task: Task,
   ) => void;
 };
 
 const TaskCard = ({
   task,
-  onClickEditIcon,
   handleOpenStartNewTaskConfirmPopover,
+  handleOpenEditTaskMenuPopover,
 }: TaskCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
@@ -90,8 +93,7 @@ const TaskCard = ({
     <ContainerDiv colorThemeName={currentColorThemeName} ref={ref}>
       <TopHalfDiv>
         <NameP>{task.name}</NameP>
-
-        <IconButton onClick={onClickEditIcon}>
+        <IconButton onClick={() => handleOpenEditTaskMenuPopover(ref, task)}>
           <BsThreeDots size={20} />
         </IconButton>
       </TopHalfDiv>

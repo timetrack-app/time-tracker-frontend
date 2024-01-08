@@ -45,22 +45,15 @@ type TaskListComponentProps = {
     task: Task,
     ref: MutableRefObject<HTMLElement>,
   ) => void;
+  handleOpenEditTaskMenuPopover: (
+    ref: MutableRefObject<HTMLElement>,
+    task: Task,
+  ) => void;
   handleCreateNewTask: (
     tabId: number,
     listId: number,
     taskName: string,
     description: string,
-  ) => Promise<void>;
-  handleRenameTask: (
-    newTaskName: string,
-    tabId: number,
-    listId: number,
-    taskId: number,
-  ) => Promise<void>;
-  handleDeleteTask: (
-    tabId: number,
-    listId: number,
-    taskId: number,
   ) => Promise<void>;
 };
 
@@ -68,11 +61,9 @@ const TaskListComponent = ({
   taskList,
   onOpenMenuPopover,
   handleOpenStartNewTaskConfirmPopover,
+  handleOpenEditTaskMenuPopover,
   handleCreateNewTask,
 }: TaskListComponentProps) => {
-  const handleEditTask = (task: Task) => {
-    alert(task);
-  };
   return (
     <ContainerDiv>
       <TaskListName taskList={taskList} onOpenMenuPopover={onOpenMenuPopover} />
@@ -82,10 +73,10 @@ const TaskListComponent = ({
             <TaskCard
               key={task.id}
               task={task}
-              onClickEditIcon={() => handleEditTask(task)}
               handleOpenStartNewTaskConfirmPopover={
                 handleOpenStartNewTaskConfirmPopover
               }
+              handleOpenEditTaskMenuPopover={handleOpenEditTaskMenuPopover}
             />
           ))}
         </TaskCardListContainerDiv>

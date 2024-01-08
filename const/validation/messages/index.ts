@@ -23,3 +23,6 @@ export const tabRenameRequired = 'Tab name has to be at least 1 character long';
 
 export const listRenameRequired =
   'List name has to be at least 1 character long';
+
+export const taskRenameRequired =
+  'Task name has to be at least 1 character long';

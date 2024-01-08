@@ -4,6 +4,11 @@ import styled from 'styled-components';
 import { Tab, Task, TaskList } from '../../../../../../types/entity';
 
 // components and components related hooks
+import { PlusButton } from '../../../ui';
+import StartNewTaskConfirmPopover from './StartNewTaskConfirnPopover';
+import EditTaskMenuPopover from './EditTaskMenuPopover';
+import RenameTaskModal from './RenameTaskModal/RenameTaskModal';
+import DeleteTaskConfirmModal from './DeleteTaskConfirmModal';
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import EditListMenuPopover from './EditListMenuPopover';
 import RenameListModal from './RenameListModal/RenameListModal';
@@ -12,8 +17,13 @@ import {
   useModal,
   usePopover,
 } from '../../../../../../components/elements/common';
-import { PlusButton } from '../../../ui';
-import StartNewTaskConfirmPopover from './StartNewTaskConfirnPopover';
+
+// stores
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectActiveTask } from '../../../../../../stores/slices/activeTaskSlice';
+
+// libs
+import { showToast } from '../../../../../../libs/react-toastify/toast';
 
 const ContainerDiv = styled.div`
   height: 100%;
@@ -105,6 +115,9 @@ const TabComponent = ({
     undefined,
   );
   const [currentTask, setCurrentTask] = useState<Task | undefined>(undefined);
+
+  const { listId: activeListId, id: activeTaskId } =
+    useAppSelector(selectActiveTask);
   const { lists } = tab;
 
   const {
@@ -117,6 +130,18 @@ const TabComponent = ({
     isOpen: isOpenDeleteListConfirmModal,
     onOpen: onOpenDeleteListConfirmModal,
     onClose: onCloseDeleteListConfirmModal,
+  } = useModal();
+
+  const {
+    isOpen: isOpenRenameTaskModal,
+    onOpen: onOpenRenameTaskModal,
+    onClose: onCloseRenameTaskModal,
+  } = useModal();
+
+  const {
+    isOpen: isOpenDeleteTaskConfirmModal,
+    onOpen: onOpenDeleteTaskConfirmModal,
+    onClose: onCloseDeleteTaskConfirmModal,
   } = useModal();
 
   const {
@@ -133,6 +158,13 @@ const TabComponent = ({
     triggerPosition: startNewTaskConfirmPopoverTriggerPosition,
   } = usePopover();
 
+  const {
+    isOpen: isOpenEditTaskMenuPopover,
+    onClose: onCloseEditTaskMenuPopover,
+    onOpen: onOpenEditTaskMenuPopover,
+    triggerPosition: editTaskMenuPopoverTriggerPosition,
+  } = usePopover();
+
   const handleOpenEditListMenuPopover = (
     ref: MutableRefObject<HTMLElement>,
     list: TaskList,
@@ -146,6 +178,41 @@ const TabComponent = ({
     onCloseRenameListModal();
   };
 
+  const onDeleteList = () => {
+    if (activeListId === currentList.id) {
+      return showToast(
+        'error',
+        'Failed to delete this list because it contains the active task.',
+      );
+    }
+    handleDeleteList(tab.id, currentList.id);
+    onCloseDeleteListConfirmModal();
+  };
+
+  const handleOpenEditTaskMenuPopover = (
+    ref: MutableRefObject<HTMLElement>,
+    task: Task,
+  ) => {
+    setCurrentTask(task);
+    onOpenEditTaskMenuPopover(ref);
+  };
+
+  const onSubmitTaskRename = (newTaskName: string) => {
+    handleRenameTask(newTaskName, tab.id, currentTask.listId, currentTask.id);
+    onCloseRenameTaskModal();
+  };
+
+  const onDeleteTask = () => {
+    if (activeTaskId === currentTask.id) {
+      return showToast(
+        'error',
+        'Failed to delete this task because it is the active task.',
+      );
+    }
+    handleDeleteTask(tab.id, currentTask.listId, currentTask.id);
+    onCloseDeleteTaskConfirmModal();
+  };
+
   const handleOpenStartNewTaskConfirmPopover = (
     task: Task,
     ref: MutableRefObject<HTMLElement>,
@@ -154,15 +221,29 @@ const TabComponent = ({
     onOpenStartNewTaskConfirmPopover(ref);
   };
 
-  // Close popover when modal is opened
+  // Close list popover when list modal is opened
   useEffect(() => {
     if (isOpenRenameListModal) {
       onCloseEditListMenuPopover();
     }
   }, [isOpenRenameListModal, onCloseEditListMenuPopover]);
 
+  // Close task popover when task modal is opened
+  useEffect(() => {
+    if (isOpenRenameTaskModal) {
+      onCloseEditTaskMenuPopover();
+    }
+  }, [isOpenRenameTaskModal, onCloseEditTaskMenuPopover]);
+
   return (
     <ContainerDiv>
+      <StartNewTaskConfirmPopover
+        isOpen={isOpenStartNewTaskConfirmPopover}
+        onClose={onCloseStartNewTaskConfirmPopover}
+        task={currentTask}
+        triggerPosition={startNewTaskConfirmPopoverTriggerPosition}
+        handleStartNewTask={handleStartNewTask}
+      />
       <EditListMenuPopover
         triggerPosition={editListMenuPopoverTriggerPosition}
         isOpen={isOpenEditListMenuPopover}
@@ -170,12 +251,12 @@ const TabComponent = ({
         onRename={onOpenRenameListModal}
         onDelete={onOpenDeleteListConfirmModal}
       />
-      <StartNewTaskConfirmPopover
-        isOpen={isOpenStartNewTaskConfirmPopover}
-        onClose={onCloseStartNewTaskConfirmPopover}
-        task={currentTask}
-        triggerPosition={startNewTaskConfirmPopoverTriggerPosition}
-        handleStartNewTask={handleStartNewTask}
+      <EditTaskMenuPopover
+        isOpen={isOpenEditTaskMenuPopover}
+        onClose={onCloseEditTaskMenuPopover}
+        triggerPosition={editTaskMenuPopoverTriggerPosition}
+        onRename={onOpenRenameTaskModal}
+        onDelete={onOpenDeleteTaskConfirmModal}
       />
       <RenameListModal
         isOpen={isOpenRenameListModal}
@@ -186,10 +267,18 @@ const TabComponent = ({
       <DeleteListConfirmModal
         isOpen={isOpenDeleteListConfirmModal}
         onCloseModal={onCloseDeleteListConfirmModal}
-        handleYesButtonOnClick={() => {
-          handleDeleteList(tab.id, currentList.id);
-          onCloseDeleteListConfirmModal();
-        }}
+        handleYesButtonOnClick={onDeleteList}
+      />
+      <RenameTaskModal
+        isOpen={isOpenRenameTaskModal}
+        onClose={onCloseRenameTaskModal}
+        onSubmit={onSubmitTaskRename}
+        currentTaskName={currentTask ? currentTask.name : ''}
+      />
+      <DeleteTaskConfirmModal
+        isOpen={isOpenDeleteTaskConfirmModal}
+        onCloseModal={onCloseDeleteTaskConfirmModal}
+        handleYesButtonOnClick={onDeleteTask}
       />
       <TaskListContainerDiv>
         {lists.map((taskList) => (
@@ -202,9 +291,8 @@ const TabComponent = ({
             handleOpenStartNewTaskConfirmPopover={
               handleOpenStartNewTaskConfirmPopover
             }
+            handleOpenEditTaskMenuPopover={handleOpenEditTaskMenuPopover}
             handleCreateNewTask={handleCreateNewTask}
-            handleRenameTask={handleRenameTask}
-            handleDeleteTask={handleDeleteTask}
           />
         ))}
       </TaskListContainerDiv>
