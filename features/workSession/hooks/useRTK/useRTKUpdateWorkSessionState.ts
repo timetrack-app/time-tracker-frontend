@@ -5,7 +5,7 @@ import {
 } from '../../../../stores/slices/workSessionSlice';
 import { useAppDispatch } from '../../../../stores/hooks';
 
-export const useRDKUpdateWorkSessionState = () => {
+export const useRTKUpdateWorkSessionState = () => {
   const dispatch = useAppDispatch();
   const handleUpdateWorkSessionId = useCallback(
     (workSessionId) => {

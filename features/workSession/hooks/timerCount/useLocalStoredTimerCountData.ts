@@ -9,12 +9,20 @@ export const useLocalStoredTimerCountData = () => {
     return localStoredTimerCountData;
   };
 
-  const setLocalStoredTimerCount = (taskId: number): void => {
+  const setLocalStoredTimerCount = (
+    taskId: number,
+    totalTime: number,
+  ): void => {
+    // Logic to calculate the startedDate. It is the current time minus the totalTime
+    const currentTimeInMilliseconds = new Date().getTime();
+    const totalTimeInMilliseconds = totalTime * 1000;
+    const startedDate = new Date(
+      currentTimeInMilliseconds - totalTimeInMilliseconds,
+    ).toISOString();
     const localStoredTimerCountData: LocalStoredTimerCountData = {
       taskId: taskId.toString(),
-      startedDate: new Date().toISOString(),
+      startedDate,
     };
-
     localStorage.setItem(key, JSON.stringify(localStoredTimerCountData));
   };
 

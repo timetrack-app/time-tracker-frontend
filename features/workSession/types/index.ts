@@ -18,6 +18,15 @@ export type GetLatestWorkSessionParams = {
   userId: number;
 };
 
+export type UpdateActiveTaskParams = {
+  authToken: string;
+  userId: number;
+  workSessionId: number;
+  activeTabId: number;
+  activeListId: number;
+  activeTaskId: number;
+};
+
 export type CreateTabParams = {
   authToken: string;
   workSessionId: number;

@@ -86,6 +86,7 @@ const RenameListModal = ({
                   required: listRenameRequired,
                 })}
                 error={formState.errors.listName}
+                autoFocus
               />
             </RenameListFormContentWrapper>
           )}

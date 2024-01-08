@@ -4,10 +4,10 @@ import { updateActiveTask } from '../../../../stores/slices/activeTaskSlice';
 import { Tab, Task, TaskList } from '../../../../types/entity';
 import { updateIsWorkSessionActive } from '../../../../stores/slices/workSessionSlice';
 
-export const useRDKUpdateActiveTask = () => {
+export const useRTKUpdateActiveTask = () => {
   const dispatch = useAppDispatch();
 
-  const handleUpdateActiveTask = useCallback(
+  const handleUpdateActiveTaskState = useCallback(
     (activeTab: Tab, activeList: TaskList, activeTask: Task) => {
       dispatch(
         updateActiveTask({
@@ -15,7 +15,7 @@ export const useRDKUpdateActiveTask = () => {
           listId: activeList.id,
           id: activeTask.id,
           name: activeTask.name,
-          elapsedSeconds: activeTask.totalTime,
+          totalTime: activeTask.totalTime,
           isTimerRunning: true,
         }),
       );
@@ -24,5 +24,5 @@ export const useRDKUpdateActiveTask = () => {
     [dispatch],
   );
 
-  return { handleUpdateActiveTask };
+  return { handleUpdateActiveTaskState };
 };

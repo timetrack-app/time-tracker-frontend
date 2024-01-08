@@ -25,7 +25,7 @@ const TaskNameP = styled.p`
   white-space: nowrap;
 `;
 
-const ElapsedTimeP = styled.p`
+const TotalTimeP = styled.p`
   display: block;
   font-size: 3em;
   font-weight: bold;
@@ -35,17 +35,17 @@ const ElapsedTimeP = styled.p`
 
 type Props = {
   title: string;
-  elapsedSeconds: number;
+  totalTime: number;
   className?: string;
 };
 
 /**
  * Circle shaped timer component
  *
- * @param {Props} { taskName, elapsedSeconds }
+ * @param {Props} { taskName, totalTime }
  * @return {JSX.Element}
  */
-const Timer = ({ title, elapsedSeconds, className }: Props) => {
+const Timer = ({ title, totalTime, className }: Props) => {
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
   return (
@@ -53,7 +53,7 @@ const Timer = ({ title, elapsedSeconds, className }: Props) => {
       <TaskNameWrapperDiv>
         <TaskNameP>{title}</TaskNameP>
       </TaskNameWrapperDiv>
-      <ElapsedTimeP>{secondsToHHMMSS(elapsedSeconds)}</ElapsedTimeP>
+      <TotalTimeP>{secondsToHHMMSS(totalTime)}</TotalTimeP>
     </Layout>
   );
 };

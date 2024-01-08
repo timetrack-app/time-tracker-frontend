@@ -52,7 +52,7 @@ const SectionTitleWrapperDiv = styled.div`
   align-items: center;
   justify-content: center;
   border: 1px solid ${({ theme }) => theme.colors.text};
-  border-radius: 16px;
+  border-radius: 8px;
 `;
 
 const SectionTitleP = styled.p`
@@ -63,7 +63,7 @@ const SectionTitleP = styled.p`
   white-space: nowrap;
 `;
 
-const ElapsedTimeP = styled.p`
+const TotalTimeP = styled.p`
   display: block;
   font-size: 3em;
   font-weight: bold;
@@ -100,9 +100,9 @@ type SubSectionProps = {
 };
 
 // TODO: totalSeconds:
-//  sum of total_time of all tasks(from the latest work session) + selectActiveTask.elapsedSeconds
+//  sum of total_time of all tasks(from the latest work session) + selectActiveTask.totalTime
 // TODO: totalSecondsOfSelectedTab:
-// if active task is in the tab -> sum elapsedSeconds
+// if active task is in the tab -> sum totalTime
 
 const SubSection = ({
   totalSeconds,
@@ -124,16 +124,14 @@ const SubSection = ({
           <SectionTitleWrapperDiv>
             <SectionTitleP>Total Time</SectionTitleP>
           </SectionTitleWrapperDiv>
-          <ElapsedTimeP>{secondsToHHMMSS(totalSeconds)}</ElapsedTimeP>
+          <TotalTimeP>{secondsToHHMMSS(totalSeconds)}</TotalTimeP>
         </SectionDiv>
 
         <SectionDiv>
           <SectionTitleWrapperDiv>
             <SectionTitleP>{`${selectedTabName} Total Time`}</SectionTitleP>
           </SectionTitleWrapperDiv>
-          <ElapsedTimeP>
-            {secondsToHHMMSS(totalSecondsOfSelectedTab)}
-          </ElapsedTimeP>
+          <TotalTimeP>{secondsToHHMMSS(totalSecondsOfSelectedTab)}</TotalTimeP>
         </SectionDiv>
 
         <ButtonCustom

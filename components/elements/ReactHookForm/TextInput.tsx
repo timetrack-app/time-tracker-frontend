@@ -17,19 +17,21 @@ const Input = styled.input<{ isError: boolean }>`
       isError ? theme.colors.danger : theme.colors.border};
   border-radius: 48px;
   &:focus {
-    border: 1px solid ${({ theme }) => theme.colors.info};
+    border: 1px solid ${({ theme }) => theme.colors.outline};
   }
 `;
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
+  registration: Partial<UseFormRegisterReturn>;
   type?: 'text' | 'email' | 'password';
   placeholder?: string;
-  registration: Partial<UseFormRegisterReturn>;
+  autoFocus?: boolean;
 };
 
 const TextInput = (props: InputFieldProps) => {
   const {
     type = 'text',
+    autoFocus = false,
     placeholder,
     label,
     registration,
@@ -44,6 +46,7 @@ const TextInput = (props: InputFieldProps) => {
         {...registration}
         isError={Boolean(error?.message)}
         placeholder={placeholder}
+        autoFocus={autoFocus}
       />
     </FieldWrapper>
   );

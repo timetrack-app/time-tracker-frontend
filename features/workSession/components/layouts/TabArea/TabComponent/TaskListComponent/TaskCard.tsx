@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import styled from 'styled-components';
 import { BsThreeDots } from 'react-icons/bs';
-import { LuTimer } from 'react-icons/lu';
+import { IoPlay } from 'react-icons/io5';
+import { FaRunning } from 'react-icons/fa';
 
 // types
 import { Task } from '../../../../../../../types/entity';
@@ -10,16 +11,14 @@ import { ColorThemeName } from '../../../../../../../types/colorTheme';
 // stores
 import { useAppSelector } from '../../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
+import { selectActiveTask } from '../../../../../../../stores/slices/activeTaskSlice';
 
 // utils
 import { secondsToHHMMSS } from '../../../../../../../utils/timer';
+
+// components
 import { IconButton } from '../../../../../../../components/elements/common';
 
-type TaskCardProps = {
-  task: Task;
-  onClickEditIcon: () => void;
-  onClickTimerIcon: () => void;
-};
 const ContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
@@ -43,22 +42,15 @@ const ContainerDiv = styled.div<{
 `;
 
 const TopHalfDiv = styled.div`
-  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 `;
 
-const EditIconButtonContainerDiv = styled.div`
-  position: absolute;
-  top: 1/2;
-  right: 0;
-`;
-
 const BottomHalfDiv = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 `;
@@ -68,40 +60,57 @@ const NameP = styled.p`
   font-weight: 400;
 `;
 
-const TimerContainerDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2px;
-`;
-
 const TimeP = styled.p`
   font-size: 32px;
   font-weight: 600;
 `;
 
+type TaskCardProps = {
+  task: Task;
+  onClickEditIcon: () => void;
+  handleOpenStartNewTaskConfirmPopover: (
+    task: Task,
+    ref: MutableRefObject<HTMLElement>,
+  ) => void;
+};
+
 const TaskCard = ({
   task,
   onClickEditIcon,
-  onClickTimerIcon,
+  handleOpenStartNewTaskConfirmPopover,
 }: TaskCardProps) => {
+  const ref = useRef<HTMLDivElement>(null);
   const currentColorThemeName = useAppSelector(selectColorTheme);
+  const { id, totalTime } = useAppSelector(selectActiveTask);
+
+  const isTimerRunning = !!id;
+  const isThisTaskRunning = id === task.id;
+
   return (
-    <ContainerDiv colorThemeName={currentColorThemeName}>
+    <ContainerDiv colorThemeName={currentColorThemeName} ref={ref}>
       <TopHalfDiv>
         <NameP>{task.name}</NameP>
-        <EditIconButtonContainerDiv>
-          <IconButton onClick={onClickEditIcon}>
-            <BsThreeDots size={20} />
-          </IconButton>
-        </EditIconButtonContainerDiv>
+
+        <IconButton onClick={onClickEditIcon}>
+          <BsThreeDots size={20} />
+        </IconButton>
       </TopHalfDiv>
       <BottomHalfDiv>
-        <TimerContainerDiv>
-          <IconButton onClick={onClickTimerIcon}>
-            <LuTimer size={20} />
-          </IconButton>
-          <TimeP>{secondsToHHMMSS(task.totalTime)}</TimeP>
-        </TimerContainerDiv>
+        <TimeP>
+          {isThisTaskRunning
+            ? secondsToHHMMSS(totalTime)
+            : secondsToHHMMSS(task.totalTime)}
+        </TimeP>
+        {isTimerRunning &&
+          (isThisTaskRunning ? (
+            <FaRunning size={20} />
+          ) : (
+            <IconButton
+              onClick={() => handleOpenStartNewTaskConfirmPopover(task, ref)}
+            >
+              <IoPlay size={20} />
+            </IconButton>
+          ))}
       </BottomHalfDiv>
     </ContainerDiv>
   );

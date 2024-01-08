@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
 import {
-  useRDKUpdateActiveTask,
+  useRTKUpdateActiveTask,
   useInitialTaskInfo,
-  useElapsedTimeCalc,
+  useTotalTimeCalc,
 } from '../../../features/workSession';
 
 // components
@@ -30,6 +30,7 @@ import {
   useCreateTask,
   useUpdateTask,
   useDeleteTask,
+  useUpdateActiveTask,
 } from '../../../features/workSession/api';
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
 
@@ -49,7 +50,7 @@ import {
 } from '../../../features/workSession/types';
 
 import { showToast } from '../../../libs/react-toastify/toast';
-import { useRDKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRTK/useRTKUpdateWorkSessionState';
+import { useRTKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRTK/useRTKUpdateWorkSessionState';
 import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
@@ -97,10 +98,10 @@ const HomePage = () => {
 
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
-  // RDK related
-  const { handleUpdateActiveTask } = useRDKUpdateActiveTask();
+  // RTK related
+  const { handleUpdateActiveTaskState } = useRTKUpdateActiveTask();
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
-    useRDKUpdateWorkSessionState();
+    useRTKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
   const { workSessionId, isWorkSessionActive } = useAppSelector(
     selectWorkSessionState,
@@ -109,7 +110,7 @@ const HomePage = () => {
   const dispatch = useAppDispatch();
 
   // Utility hooks
-  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useElapsedTimeCalc();
+  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useTotalTimeCalc();
   const { generateTaskInfoArr, newTabsWithInitialTaskActivated } =
     useInitialTaskInfo();
 
@@ -139,7 +140,7 @@ const HomePage = () => {
           data.workSession;
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
-        handleUpdateActiveTask(activeTab, activeList, activeTask);
+        handleUpdateActiveTaskState(activeTab, activeList, activeTask);
         setTabs(tabs);
       },
       onError: (err) => {
@@ -162,7 +163,7 @@ const HomePage = () => {
 
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
-        handleUpdateActiveTask(activeTab, activeList, activeTask);
+        handleUpdateActiveTaskState(activeTab, activeList, activeTask);
         setTabs(tabs);
       },
       onError: (err) => {
@@ -170,6 +171,16 @@ const HomePage = () => {
       },
     },
   );
+
+  const { mutate: updateActiveTask } = useUpdateActiveTask({
+    onSuccess: () => {
+      getLatestWorkSession();
+    },
+    onError: (err) => {
+      console.error(err);
+      showToast('error', 'An error has occurred on updating active task.');
+    },
+  });
 
   const { mutate: endWorkSession } = useEndWorkSession();
 
@@ -490,6 +501,8 @@ const HomePage = () => {
     taskName: string,
     description: string,
   ) => {
+    // when the task name is empty, set it to 'Untitled'
+    if (taskName === '') taskName = 'Untitled';
     if (isWorkSessionActive) {
       await createTask({
         authToken,
@@ -643,7 +656,37 @@ const HomePage = () => {
     }
   };
 
-  // TODO: Consider if it's right to continue to put all of the loadin state in here
+  const handleStartNewTask = async (
+    currentActiveTaskInfo: {
+      tabId: number;
+      listId: number;
+      taskId: number;
+    },
+    newTaskInfo: {
+      tabId: number;
+      listId: number;
+      taskId: number;
+    },
+    currentTaskTotalTime: number,
+  ) => {
+    // Save the current active task total time in DB
+    await updateTask({
+      authToken,
+      workSessionId,
+      attr: { totalTime: currentTaskTotalTime },
+      ...currentActiveTaskInfo,
+    });
+    // Update the active task
+    await updateActiveTask({
+      authToken,
+      userId: user?.id,
+      workSessionId,
+      activeTabId: newTaskInfo.tabId,
+      activeListId: newTaskInfo.listId,
+      activeTaskId: newTaskInfo.taskId,
+    });
+  };
+
   const isLoading = useAnyTrue([
     isLoadingCreateWorkSession,
     isLoadingGetLatestWorkSession,
@@ -691,6 +734,7 @@ const HomePage = () => {
           handleCreateNewTask={handleCreateNewTask}
           handleRenameTask={handleRenameTask}
           handleDeleteTask={handleDeleteTask}
+          handleStartNewTask={handleStartNewTask}
         />
       </MainAreaContainer>
     </>

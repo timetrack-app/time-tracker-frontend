@@ -1,21 +1,19 @@
 import React, { MutableRefObject, useEffect, useState } from 'react';
 import styled from 'styled-components';
 // types
-import { Tab, TaskList } from '../../../../../../types/entity';
+import { Tab, Task, TaskList } from '../../../../../../types/entity';
 
 // components and components related hooks
 import TaskListComponent from './TaskListComponent/TaskListComponent';
 import EditListMenuPopover from './EditListMenuPopover';
 import RenameListModal from './RenameListModal/RenameListModal';
-import {
-  DeleteListConfirmModal,
-  useDeleteListConfirmModal,
-} from './DeleteListConfirmModal';
+import DeleteListConfirmModal from './DeleteListConfirmModal';
 import {
   useModal,
   usePopover,
 } from '../../../../../../components/elements/common';
 import { PlusButton } from '../../../ui';
+import StartNewTaskConfirmPopover from './StartNewTaskConfirnPopover';
 
 const ContainerDiv = styled.div`
   height: 100%;
@@ -78,6 +76,19 @@ type TabComponentProps = {
     listId: number,
     taskId: number,
   ) => Promise<void>;
+  handleStartNewTask: (
+    currentActiveTaskInfo: {
+      tabId: number;
+      listId: number;
+      taskId: number;
+    },
+    newTaskInfo: {
+      tabId: number;
+      listId: number;
+      taskId: number;
+    },
+    currentTaskTotalTime: number,
+  ) => Promise<void>;
 };
 
 const TabComponent = ({
@@ -88,8 +99,12 @@ const TabComponent = ({
   handleCreateNewTask,
   handleRenameTask,
   handleDeleteTask,
+  handleStartNewTask,
 }: TabComponentProps) => {
-  const [currentList, setCurrentList] = useState(undefined);
+  const [currentList, setCurrentList] = useState<TaskList | undefined>(
+    undefined,
+  );
+  const [currentTask, setCurrentTask] = useState<Task | undefined>(undefined);
   const { lists } = tab;
 
   const {
@@ -97,6 +112,13 @@ const TabComponent = ({
     onOpen: onOpenRenameListModal,
     onClose: onCloseRenameListModal,
   } = useModal();
+
+  const {
+    isOpen: isOpenDeleteListConfirmModal,
+    onOpen: onOpenDeleteListConfirmModal,
+    onClose: onCloseDeleteListConfirmModal,
+  } = useModal();
+
   const {
     isOpen: isOpenEditListMenuPopover,
     onClose: onCloseEditListMenuPopover,
@@ -105,10 +127,11 @@ const TabComponent = ({
   } = usePopover();
 
   const {
-    isOpenDeleteListConfirmModal,
-    onOpenDeleteListConfirmModal,
-    onCloseDeleteListConfirmModal,
-  } = useDeleteListConfirmModal();
+    isOpen: isOpenStartNewTaskConfirmPopover,
+    onOpen: onOpenStartNewTaskConfirmPopover,
+    onClose: onCloseStartNewTaskConfirmPopover,
+    triggerPosition: startNewTaskConfirmPopoverTriggerPosition,
+  } = usePopover();
 
   const handleOpenEditListMenuPopover = (
     ref: MutableRefObject<HTMLElement>,
@@ -121,6 +144,14 @@ const TabComponent = ({
   const onSubmitListRename = (newListName: string) => {
     handleRenameList(newListName, tab.id, currentList.id);
     onCloseRenameListModal();
+  };
+
+  const handleOpenStartNewTaskConfirmPopover = (
+    task: Task,
+    ref: MutableRefObject<HTMLElement>,
+  ) => {
+    setCurrentTask(task);
+    onOpenStartNewTaskConfirmPopover(ref);
   };
 
   // Close popover when modal is opened
@@ -138,6 +169,13 @@ const TabComponent = ({
         onClose={onCloseEditListMenuPopover}
         onRename={onOpenRenameListModal}
         onDelete={onOpenDeleteListConfirmModal}
+      />
+      <StartNewTaskConfirmPopover
+        isOpen={isOpenStartNewTaskConfirmPopover}
+        onClose={onCloseStartNewTaskConfirmPopover}
+        task={currentTask}
+        triggerPosition={startNewTaskConfirmPopoverTriggerPosition}
+        handleStartNewTask={handleStartNewTask}
       />
       <RenameListModal
         isOpen={isOpenRenameListModal}
@@ -160,6 +198,9 @@ const TabComponent = ({
             taskList={taskList}
             onOpenMenuPopover={(ref) =>
               handleOpenEditListMenuPopover(ref, taskList)
+            }
+            handleOpenStartNewTaskConfirmPopover={
+              handleOpenStartNewTaskConfirmPopover
             }
             handleCreateNewTask={handleCreateNewTask}
             handleRenameTask={handleRenameTask}

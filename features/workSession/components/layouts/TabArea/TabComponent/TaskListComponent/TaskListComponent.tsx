@@ -41,6 +41,10 @@ const TaskCardListContainerDiv = styled.div`
 type TaskListComponentProps = {
   taskList: TaskList;
   onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
+  handleOpenStartNewTaskConfirmPopover: (
+    task: Task,
+    ref: MutableRefObject<HTMLElement>,
+  ) => void;
   handleCreateNewTask: (
     tabId: number,
     listId: number,
@@ -63,6 +67,7 @@ type TaskListComponentProps = {
 const TaskListComponent = ({
   taskList,
   onOpenMenuPopover,
+  handleOpenStartNewTaskConfirmPopover,
   handleCreateNewTask,
 }: TaskListComponentProps) => {
   const handleEditTask = (task: Task) => {
@@ -78,7 +83,9 @@ const TaskListComponent = ({
               key={task.id}
               task={task}
               onClickEditIcon={() => handleEditTask(task)}
-              onClickTimerIcon={() => alert('timer')}
+              handleOpenStartNewTaskConfirmPopover={
+                handleOpenStartNewTaskConfirmPopover
+              }
             />
           ))}
         </TaskCardListContainerDiv>

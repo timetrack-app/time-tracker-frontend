@@ -93,6 +93,19 @@ type TabAreaProps = {
     taskName: string,
     description: string,
   ) => Promise<void>;
+  handleStartNewTask: (
+    currentActiveTaskInfo: {
+      tabId: number;
+      listId: number;
+      taskId: number;
+    },
+    newTaskInfo: {
+      tabId: number;
+      listId: number;
+      taskId: number;
+    },
+    currentTaskTotalTime: number,
+  ) => Promise<void>;
   handleRenameTask: (
     newTaskName: string,
     tabId: number,
@@ -115,6 +128,7 @@ const TabArea = ({
   handleRenameList,
   handleDeleteList,
   handleCreateNewTask,
+  handleStartNewTask,
   handleRenameTask,
   handleDeleteTask,
 }: TabAreaProps) => {
@@ -189,6 +203,7 @@ const TabArea = ({
         handleCreateNewTask={handleCreateNewTask}
         handleRenameTask={handleRenameTask}
         handleDeleteTask={handleDeleteTask}
+        handleStartNewTask={handleStartNewTask}
       />
     </ContainerDiv>
   );

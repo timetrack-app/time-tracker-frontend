@@ -86,6 +86,7 @@ const RenameTabModal = ({
                   required: tabRenameRequired,
                 })}
                 error={formState.errors.tabName}
+                autoFocus
               />
             </RenameTabFormContentWrapper>
           )}

@@ -113,11 +113,11 @@ const TimerCarousel = ({
   const slides = {
     // TODO: Fix current timer later...
     current: <MainTimer onClickStartSession={onClickStartSession} />,
-    total: <Timer title="Total Time" elapsedSeconds={totalTimeSec} />,
+    total: <Timer title="Total Time" totalTime={totalTimeSec} />,
     totalInTab: (
       <Timer
         title={`${selectedTabName} Total Time`}
-        elapsedSeconds={totalTimeSecInSelectedTab}
+        totalTime={totalTimeSecInSelectedTab}
       />
     ),
   };

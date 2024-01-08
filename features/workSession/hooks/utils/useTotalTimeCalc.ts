@@ -8,7 +8,7 @@ import { Tab, TaskList, Task } from '../../../../types/entity';
  *
  * @return {*}
  */
-export const useElapsedTimeCalc = () => {
+export const useTotalTimeCalc = () => {
   const activeTask = useAppSelector(selectActiveTask);
 
   /**
@@ -84,7 +84,7 @@ export const useElapsedTimeCalc = () => {
    */
   const calcTotalTimeSec = useCallback(
     (tabs: Tab[]): number => {
-      return calcNonActiveTaskTotalSec(tabs) + activeTask.elapsedSeconds;
+      return calcNonActiveTaskTotalSec(tabs) + activeTask.totalTime;
     },
     [calcNonActiveTaskTotalSec, activeTask],
   );
@@ -120,7 +120,7 @@ export const useElapsedTimeCalc = () => {
       const nonActiveTaskTotal = calcNonActiveTaskTotalSecOfATab(tabs, tabId);
 
       return activeTask.tabId === tabId
-        ? nonActiveTaskTotal + activeTask.elapsedSeconds
+        ? nonActiveTaskTotal + activeTask.totalTime
         : nonActiveTaskTotal;
     },
     [calcNonActiveTaskTotalSecOfATab, activeTask],

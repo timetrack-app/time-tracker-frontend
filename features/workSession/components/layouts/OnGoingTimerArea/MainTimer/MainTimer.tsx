@@ -19,17 +19,13 @@ type Props = {
  * @return {JSX.Element}
  */
 const MainTimer = ({ className, onClickStartSession }: Props) => {
-  const { name: title, elapsedSeconds } = useAppSelector(selectActiveTask);
+  const { name: title, totalTime } = useAppSelector(selectActiveTask);
   const { isWorkSessionActive } = useAppSelector(selectWorkSessionState);
 
   return (
     <>
       {isWorkSessionActive ? (
-        <Timer
-          title={title}
-          elapsedSeconds={elapsedSeconds}
-          className={className}
-        />
+        <Timer title={title} totalTime={totalTime} className={className} />
       ) : (
         <StartWorkSessionButton
           onClick={onClickStartSession}

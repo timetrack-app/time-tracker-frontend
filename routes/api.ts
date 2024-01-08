@@ -18,6 +18,8 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       createWorkSession: '/users/{userId}/work-sessions',
       getLatestWorkSession: '/users/{userId}/work-sessions/latest',
       endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
+      updateActiveTask:
+        '/users/{userId}/work-sessions/{workSessionId}/update-active-task',
       // user related
       getUser: '/users/{userId}',
       updateEmail: '/users/{userId}/email-update',

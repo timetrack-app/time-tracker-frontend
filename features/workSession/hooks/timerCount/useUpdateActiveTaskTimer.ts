@@ -8,18 +8,17 @@ import { useLocalStoredTimerCountData } from './useLocalStoredTimerCountData';
 import { selectWorkSessionState } from '../../../../stores/slices/workSessionSlice';
 
 /**
- * Custom hook for updating elapsedSeconds of the activeTask
+ * Custom hook for updating totalTime of the activeTask
  *
  */
 export const useUpdateActiveTaskTimer = () => {
   const dispatch = useAppDispatch();
-  const { id, elapsedSeconds } = useAppSelector(selectActiveTask);
+  const { id, totalTime } = useAppSelector(selectActiveTask);
   const { isWorkSessionActive } = useAppSelector(selectWorkSessionState);
   const { getLocalStoredTimerCount, setLocalStoredTimerCount } =
     useLocalStoredTimerCountData();
 
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-
   useEffect(() => {
     if (isWorkSessionActive) {
       intervalIdRef.current = setInterval(() => {
@@ -29,13 +28,13 @@ export const useUpdateActiveTaskTimer = () => {
           !localStoredTimerCountData ||
           localStoredTimerCountData.taskId !== id.toString()
         ) {
-          setLocalStoredTimerCount(id);
+          setLocalStoredTimerCount(id, totalTime);
         } else {
           const { startedDate } = localStoredTimerCountData;
           const dateDiff =
             new Date().getTime() - new Date(startedDate).getTime();
-          const elapsedSecondsDiff = Math.floor(dateDiff / 1000);
-          dispatch(updateElapsedSeconds(elapsedSecondsDiff));
+          const totalTimeDiff = Math.floor(dateDiff / 1000);
+          dispatch(updateElapsedSeconds(totalTimeDiff));
         }
       }, 1000);
     } else if (intervalIdRef.current) {
@@ -48,7 +47,7 @@ export const useUpdateActiveTaskTimer = () => {
     };
   }, [
     dispatch,
-    elapsedSeconds,
+    totalTime,
     getLocalStoredTimerCount,
     id,
     isWorkSessionActive,
