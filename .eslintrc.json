@@ -1,0 +1,91 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2023": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "airbnb-typescript"
+  ],
+  "plugins": ["@typescript-eslint", "react"],
+  "ignorePatterns": [
+    "jest.config.mjs",
+    "vitest.config.js",
+    "next.config.js",
+    "**/*.test.tsx",
+    "**/*.test.ts"
+  ],
+  "rules": {
+    // "linebreak-style": ["error", "windows"],
+    "react/react-in-jsx-scope": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "arrow-body-style": "off",
+    "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-restricted-syntax": "off",
+    "import/prefer-default-export": "off",
+    "react/require-default-props": "off",
+    "react/no-unused-prop-types": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-indent": "off",
+    "react/no-array-index-key": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "test.{ts,tsx}", // repos with a single test file
+          "**/test-*.{ts,tsx}", // repos with multiple top-level test files
+          "**/*{.,_}{test,spec}.{ts,tsx}", // tests where the extension or filename suffix denotes that it is a test
+          "**/jest.config.ts", // jest config
+          "**/jest.setup.ts" // jest setup
+        ],
+        "optionalDependencies": false
+      }
+    ],
+    "no-confusing-arrow": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": "off",
+    "operator-linebreak": "off",
+    "implicit-arrow-linebreak": "off",
+    "react/jsx-wrap-multilines": "off",
+    "no-plusplus": "off",
+    "function-paren-newline": "off",
+    "object-curly-newline": "off",
+    "radix": "off",
+    "no-param-reassign": "off",
+    "consistent-return": "off",
+    "@typescript-eslint/quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/comma-dangle": "off"
+  }
+}
