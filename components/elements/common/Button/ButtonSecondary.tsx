@@ -4,8 +4,6 @@ import { useAppSelector } from '../../../../stores/hooks';
 import { selectColorTheme } from '../../../../stores/slices/colorThemeSlice';
 
 import {
-  softPetals,
-  vegetation,
   stonewallGrey,
   dryadBark,
   astrograniteDebris,

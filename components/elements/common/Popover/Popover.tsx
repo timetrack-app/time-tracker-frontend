@@ -1,5 +1,4 @@
 import {
-  HTMLAttributes,
   MutableRefObject,
   useCallback,
   useEffect,
@@ -31,7 +30,6 @@ export const usePopover = () => {
   const onClose = () => {
     setTriggerPosition(undefined);
     setIsOpen(false);
-    return;
   };
 
   return {
