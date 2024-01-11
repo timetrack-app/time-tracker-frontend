@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, HTMLAttributes } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
 import IconButton from '../Button/IconButton';
