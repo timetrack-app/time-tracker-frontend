@@ -1,6 +1,7 @@
 ---
 name: Problem
 about: Report a bug or any other problem
+title: '[Fix]'
 ---
 
 ## Description
