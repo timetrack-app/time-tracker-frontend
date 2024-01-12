@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
-
 import { TextInput } from '../../elements/ReactHookForm';
 import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
@@ -8,9 +7,10 @@ import {
   AuthForm,
   AuthFormContentsWrapper,
   useUserRegistration,
+  useIsAuthenticated,
 } from '../../../features/auth';
 import SignUpFailedToastContents from './SignUpFailedToastContents';
-
+import SignUpCompletePage from './SignUpCompletePage';
 import { emailRegExp } from '../../../const/validation/rules/email';
 import {
   emailRequiredMsg,
@@ -20,13 +20,13 @@ import {
   passwordConfirmationMismatchMsg,
   invalidPasswordLengthMsg,
 } from '../../../const/validation/messages';
-
 import { showToast } from '../../../libs/react-toastify/toast';
 import { isValidLengthPassword } from '../../../utils/validation';
-import { useAppSelector } from '../../../stores/hooks';
-import { selectLoggedInUser } from '../../../stores/slices/authSlice';
+// import { useAppSelector } from '../../../stores/hooks';
+// import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { getWebRoute } from '../../../routes/web';
-import SignUpCompletePage from './SignUpCompletePage';
+import { getUserLoginCookie } from '../../../utils/cookie/auth';
+import { useAnyTrue } from '../../../hooks/useAnyTrue';
 
 type SignUpFormValues = {
   email: string;
@@ -37,11 +37,17 @@ type SignUpFormValues = {
 const SignUpPage = () => {
   const router = useRouter();
 
-  const user = useAppSelector(selectLoggedInUser);
-  // redirect if the user is already have an account and logged in
-  if (user) {
-    router.push(getWebRoute('home'));
-  }
+  const authToken = getUserLoginCookie();
+  const { isLoading: isAuthCheckLoading } = useIsAuthenticated(authToken, {
+    onSuccess() {
+      router.push(getWebRoute('home'));
+    },
+    onError() {
+      // Do not remove this empty onError
+      // If this is not here, session expired error toast will be shown
+      // and that is not the expected behavior.
+    },
+  });
 
   const {
     isLoading: isUserRegistrationLoading,
@@ -63,9 +69,14 @@ const SignUpPage = () => {
     );
   };
 
+  const isLoading = useAnyTrue([
+    isAuthCheckLoading,
+    isUserRegistrationLoading,
+  ]);
+
   return (
     <>
-      <LoadingOverlay loading={isUserRegistrationLoading} />
+      <LoadingOverlay loading={isLoading} />
       {
         isRegistrationSuccess
           ? <SignUpCompletePage />
