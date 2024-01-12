@@ -15,13 +15,9 @@ import { getWebRoute } from '../../../routes/web';
  */
 const AuthGuard = () => {
   const router = useRouter();
-
   const dispatch = useAppDispatch();
-
   const authToken = getUserLoginCookie();
-
   const { mutate: logout } = useUserLogout();
-
   const { isLoading } = useIsAuthenticated(authToken, {
     onSuccess(user) {
       const { id, email, isVerified } = user;
