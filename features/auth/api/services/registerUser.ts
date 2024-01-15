@@ -6,7 +6,7 @@ import { UserRegistrationRequest } from '../../types';
  * User registration API call
  *
  * @param {UserRegistrationRequest} values
- * @return {*}  {Promise<void>}
+ * @return {Promise<void>}
  */
 export const registerUser = async (
   values: UserRegistrationRequest,

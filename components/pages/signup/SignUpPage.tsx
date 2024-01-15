@@ -22,8 +22,6 @@ import {
 } from '../../../const/validation/messages';
 import { showToast } from '../../../libs/react-toastify/toast';
 import { isValidLengthPassword } from '../../../utils/validation';
-// import { useAppSelector } from '../../../stores/hooks';
-// import { selectLoggedInUser } from '../../../stores/slices/authSlice';
 import { getWebRoute } from '../../../routes/web';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { useAnyTrue } from '../../../hooks/useAnyTrue';
@@ -55,12 +53,9 @@ const SignUpPage = () => {
     isSuccess: isRegistrationSuccess,
   } = useUserRegistration();
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = async ({
-    email,
-    password,
-  }) => {
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (formValues) => {
     await registerUser(
-      { email, password },
+      { ...formValues },
       {
         onError: () => {
           showToast('error', <SignUpFailedToastContents />);
