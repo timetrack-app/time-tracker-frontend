@@ -1,4 +1,3 @@
-import AuthGuard from '../components/layouts/auth/AuthGuard';
 import SignUpPage from '../components/pages/signup/SignUpPage';
 import { AuthFormLayout } from '../features/auth/index';
 
@@ -9,11 +8,6 @@ import { AuthFormLayout } from '../features/auth/index';
  */
 const SignUp = () => (<SignUpPage />);
 
-SignUp.getLayout = (page: React.ReactElement) => (
-  <>
-    <AuthGuard />
-    <AuthFormLayout>{page}</AuthFormLayout>
-  </>
-);
+SignUp.getLayout = (page: React.ReactElement) => (<AuthFormLayout>{page}</AuthFormLayout>);
 
 export default SignUp;
