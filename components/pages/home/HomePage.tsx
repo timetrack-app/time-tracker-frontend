@@ -99,7 +99,7 @@ const HomePage = () => {
 
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
-  // RTK related
+  // Global state related
   const { handleUpdateActiveTaskState } = useRTKUpdateActiveTask();
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
     useRTKUpdateWorkSessionState();

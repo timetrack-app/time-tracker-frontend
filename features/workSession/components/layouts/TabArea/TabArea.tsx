@@ -145,12 +145,6 @@ const TabArea = ({
     triggerPosition: editTabMenuPopoverTriggerPosition,
   } = usePopover();
 
-  // Close both popover and modal when selected tab is changed
-  useEffect(() => {
-    onCloseEditTabMenuPopover();
-    onCloseRenameTabModal();
-  }, [onCloseEditTabMenuPopover, onCloseRenameTabModal, selectedTab]);
-
   // Close popover when modal is opened
   useEffect(() => {
     if (isOpenRenameTabModal) {
