@@ -12,14 +12,6 @@ import { PlusButton } from '../../../ui';
 // const
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
 
-type TabSelectorsProps = {
-  tabs: Tab[];
-  selectedTabId: number;
-  handleSelectTab: (tab: Tab) => void;
-  onClickPlusButton: () => void;
-  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
-};
-
 const ContainerDiv = styled.div`
   display: flex;
   align-items: center;
@@ -47,10 +39,16 @@ const SelectorsContainerDiv = styled.div`
   }
 `;
 
+type TabSelectorsProps = {
+  tabs: Tab[];
+  selectedTabId: number;
+  onClickPlusButton: () => void;
+  onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
+};
+
 const TabSelectors = ({
   tabs,
   selectedTabId,
-  handleSelectTab,
   onClickPlusButton,
   onOpenMenuPopover,
 }: TabSelectorsProps) => {
@@ -67,17 +65,11 @@ const TabSelectors = ({
                 onOpenMenuPopover={onOpenMenuPopover}
               />
             );
-          return (
-            <TabSelector
-              key={tab.id}
-              tab={tab}
-              handleSelectTab={handleSelectTab}
-            />
-          );
+          return <TabSelector key={tab.id} tab={tab} />;
         })}
       </SelectorsContainerDiv>
 
-      <PlusButton size={'44px'} onClickPlusButton={onClickPlusButton} />
+      <PlusButton size="44px" onClickPlusButton={onClickPlusButton} />
     </ContainerDiv>
   );
 };

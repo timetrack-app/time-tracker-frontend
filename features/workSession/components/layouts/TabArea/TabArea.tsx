@@ -3,12 +3,9 @@ import { useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 // stores
-import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
+import { useAppSelector } from '../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
-import {
-  updateSelectedTab,
-  selectCurrentSelectedTab,
-} from '../../../../../stores/slices/selectedTabSlice';
+import { selectCurrentSelectedTab } from '../../../../../stores/slices/selectedTabSlice';
 
 // types
 import { ColorThemeName } from '../../../../../types/colorTheme';
@@ -29,7 +26,7 @@ import {
   usePopover,
 } from '../../../../../components/elements/common';
 
-const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
+const ContainerDiv = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -134,7 +131,6 @@ const TabArea = ({
 }: TabAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
-  const dispatch = useAppDispatch();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
   const {
@@ -149,20 +145,11 @@ const TabArea = ({
     triggerPosition: editTabMenuPopoverTriggerPosition,
   } = usePopover();
 
-  // on selecting a tab
-  const handleSelectTab = (tab: Tab) => {
-    dispatch(updateSelectedTab(tab));
-  };
-
-  useEffect(() => {
-    if (tabs.length) dispatch(updateSelectedTab(tabs[0]));
-  }, [dispatch, tabs]);
-
   // Close both popover and modal when selected tab is changed
   useEffect(() => {
     onCloseEditTabMenuPopover();
     onCloseRenameTabModal();
-  }, [selectedTab]);
+  }, [onCloseEditTabMenuPopover, onCloseRenameTabModal, selectedTab]);
 
   // Close popover when modal is opened
   useEffect(() => {
@@ -172,7 +159,7 @@ const TabArea = ({
   }, [isOpenRenameTabModal, onCloseEditTabMenuPopover]);
 
   return (
-    <ContainerDiv colorThemeName={currentColorTheme}>
+    <ContainerDiv>
       <EditTabMenuPopover
         triggerPosition={editTabMenuPopoverTriggerPosition}
         isOpen={isOpenEditTabMenuPopover}
@@ -190,7 +177,6 @@ const TabArea = ({
         <TabSelectors
           tabs={tabs}
           selectedTabId={selectedTab.id}
-          handleSelectTab={handleSelectTab}
           onClickPlusButton={handleCreateNewTab}
           onOpenMenuPopover={onOpenEditTabMenuPopover}
         />
