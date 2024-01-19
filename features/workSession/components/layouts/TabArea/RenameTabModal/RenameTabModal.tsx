@@ -62,6 +62,7 @@ const RenameTabModal = ({
         <RenameTabForm<RenameTabFormValues>
           onSubmit={(values) => {
             onSubmit(values.tabName);
+            onClose();
           }}
           options={{ defaultValues }}
         >
