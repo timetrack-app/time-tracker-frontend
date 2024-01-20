@@ -144,7 +144,10 @@ const HomePage = () => {
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTaskState(activeTab, activeList, activeTask);
+        dispatch(updateSelectedTab(activeTab));
+        console.log('update active task invoked');
         setTabs(tabs);
+        console.log('setTABs invoked');
       },
       onError: (err) => {
         console.error('error on creating workSession', err);
@@ -168,6 +171,7 @@ const HomePage = () => {
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTaskState(activeTab, activeList, activeTask);
         setTabs(tabs);
+        dispatch(updateSelectedTab(activeTab));
       },
       onError: (err) => {
         console.error(err);

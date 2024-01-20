@@ -152,6 +152,9 @@ const TabArea = ({
     }
   }, [isOpenRenameTabModal, onCloseEditTabMenuPopover]);
 
+  console.log('selectedTab', selectedTab);
+  console.log('tabs', tabs);
+
   return (
     <ContainerDiv>
       <EditTabMenuPopover
@@ -176,7 +179,7 @@ const TabArea = ({
         />
       </TabSelectorWrapper>
       <TabComponent
-        tab={selectedTab}
+        tab={tabs.find((tab) => tab.id === selectedTab.id) ?? tabs[0]}
         handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
         handleRenameList={handleRenameList}
         handleDeleteList={handleDeleteList}
