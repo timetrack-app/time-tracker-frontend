@@ -145,12 +145,9 @@ const HomePage = () => {
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTaskState(activeTab, activeList, activeTask);
         dispatch(updateSelectedTab(activeTab));
-        console.log('update active task invoked');
         setTabs(tabs);
-        console.log('setTABs invoked');
       },
-      onError: (err) => {
-        console.error('error on creating workSession', err);
+      onError: () => {
         showToast('error', 'An error has occurred on starting a session.');
       },
     });
@@ -171,7 +168,6 @@ const HomePage = () => {
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTaskState(activeTab, activeList, activeTask);
         setTabs(tabs);
-        dispatch(updateSelectedTab(activeTab));
       },
       onError: (err) => {
         console.error(err);
@@ -516,6 +512,7 @@ const HomePage = () => {
   ) => {
     // when the task name is empty, set it to 'Untitled'
     if (taskName === '') taskName = 'Untitled';
+
     if (isWorkSessionActive) {
       await createTask({
         authToken,

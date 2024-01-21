@@ -152,8 +152,12 @@ const TabArea = ({
     }
   }, [isOpenRenameTabModal, onCloseEditTabMenuPopover]);
 
-  console.log('selectedTab', selectedTab);
-  console.log('tabs', tabs);
+  // global state `selectedTab` is not a state to manage tab data,
+  // so we need to find the tab data from useState `tabs` array
+  // There's a slight update timing gap on useState and global state,
+  // so we need to set tabs[0] as default value
+  const selectedTabState =
+    tabs.find((tab) => tab.id === selectedTab.id) ?? tabs[0];
 
   return (
     <ContainerDiv>
@@ -179,7 +183,7 @@ const TabArea = ({
         />
       </TabSelectorWrapper>
       <TabComponent
-        tab={tabs.find((tab) => tab.id === selectedTab.id) ?? tabs[0]}
+        tab={selectedTabState}
         handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
         handleRenameList={handleRenameList}
         handleDeleteList={handleDeleteList}
