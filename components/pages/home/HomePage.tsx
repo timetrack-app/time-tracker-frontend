@@ -99,7 +99,7 @@ const HomePage = () => {
 
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
-  // RTK related
+  // Global state related
   const { handleUpdateActiveTaskState } = useRTKUpdateActiveTask();
   const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
     useRTKUpdateWorkSessionState();
@@ -144,10 +144,10 @@ const HomePage = () => {
         handleUpdateWorkSessionId(id);
         handleUpdateIsWorkSessionActive(true);
         handleUpdateActiveTaskState(activeTab, activeList, activeTask);
+        dispatch(updateSelectedTab(activeTab));
         setTabs(tabs);
       },
-      onError: (err) => {
-        console.error('error on creating workSession', err);
+      onError: () => {
         showToast('error', 'An error has occurred on starting a session.');
       },
     });
@@ -512,6 +512,7 @@ const HomePage = () => {
   ) => {
     // when the task name is empty, set it to 'Untitled'
     if (taskName === '') taskName = 'Untitled';
+
     if (isWorkSessionActive) {
       await createTask({
         authToken,

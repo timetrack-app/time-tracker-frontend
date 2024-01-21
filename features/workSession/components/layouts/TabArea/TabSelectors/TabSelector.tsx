@@ -4,6 +4,10 @@ import styled from 'styled-components';
 // types
 import { Tab } from '../../../../../../types/entity';
 
+// stores
+import { useAppDispatch } from '../../../../../../stores/hooks';
+import { updateSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
+
 const ContainerDiv = styled.button`
   width: 112px;
   height: 44px;
@@ -25,13 +29,16 @@ const TabNameP = styled.p`
 
 export type TabSelectorProps = {
   tab: Tab;
-  handleSelectTab: (tab: Tab) => void;
   className?: string;
 };
 
-const TabSelector = ({ tab, handleSelectTab, className }: TabSelectorProps) => {
+const TabSelector = ({ tab, className }: TabSelectorProps) => {
+  const dispatch = useAppDispatch();
   return (
-    <ContainerDiv onClick={() => handleSelectTab(tab)} className={className}>
+    <ContainerDiv
+      onClick={() => dispatch(updateSelectedTab(tab))}
+      className={className}
+    >
       <TabNameP>{tab.name}</TabNameP>
     </ContainerDiv>
   );
