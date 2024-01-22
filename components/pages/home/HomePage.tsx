@@ -514,14 +514,20 @@ const HomePage = () => {
     if (taskName === '') taskName = 'Untitled';
 
     if (isWorkSessionActive) {
+      // Find the list to add a new task to from the tab state
+      const targetList = tabs
+        .find((tab) => tab.id === tabId)
+        ?.lists.find((list) => list.id === listId);
+      const displayOrder =
+        targetList.tasks.length > 0 ? targetList.tasks.length + 1 : 1;
       await createTask({
         authToken,
         workSessionId,
         tabId,
         listId,
         description,
+        displayOrder,
         name: taskName,
-        displayOrder: selectedTab.lists.length + 1,
       });
     } else {
       setTabs((prevTabs) => {
@@ -544,7 +550,8 @@ const HomePage = () => {
                         ? list.tasks[list.tasks.length - 1].id + 1
                         : 1,
                     name: taskName,
-                    displayOrder: list.tasks.length > 0 ? list.tasks.length : 1,
+                    displayOrder:
+                      list.tasks.length > 0 ? list.tasks.length + 1 : 1,
                     listId: list.id,
                     totalTime: 0,
                   },
