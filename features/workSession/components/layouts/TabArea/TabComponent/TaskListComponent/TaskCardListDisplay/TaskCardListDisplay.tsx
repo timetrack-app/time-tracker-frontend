@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useCallback } from 'react';
+import React, { MutableRefObject, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 
 import TaskCard from './TaskCard';
@@ -36,19 +36,14 @@ const TaskCardListDisplay = ({
   handleOpenStartNewTaskConfirmPopover,
   handleOpenEditTaskMenuPopover,
 }: TaskCardListDisplayProps) => {
-  const sortedTasks = useCallback(() => {
-    console.log('tasks before sort', tasks);
-
-    const soreted = tasks.sort((a, b) => a.displayOrder - b.displayOrder);
-    console.log('tasks after sort', soreted);
-
-    return soreted;
+  const sortedTasks = useMemo(() => {
+    return tasks.sort((a, b) => a.displayOrder - b.displayOrder);
   }, [tasks]);
 
   return (
     tasks.length > 0 && (
       <TaskCardListContainerDiv>
-        {sortedTasks().map((task) => (
+        {sortedTasks.map((task) => (
           <TaskCard
             key={task.id}
             task={task}
