@@ -62,6 +62,7 @@ const RenameListModal = ({
         <RenameListForm<RenameListFormValues>
           onSubmit={(values) => {
             onSubmit(values.listName);
+            onClose();
           }}
           options={{ defaultValues }}
         >

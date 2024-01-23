@@ -285,9 +285,9 @@ const TabComponent = ({
           <TaskListComponent
             key={taskList.id}
             taskList={taskList}
-            onOpenMenuPopover={(ref) =>
-              handleOpenEditListMenuPopover(ref, taskList)
-            }
+            onOpenMenuPopover={(ref) => {
+              handleOpenEditListMenuPopover(ref, taskList);
+            }}
             handleOpenStartNewTaskConfirmPopover={
               handleOpenStartNewTaskConfirmPopover
             }
@@ -297,7 +297,7 @@ const TabComponent = ({
         ))}
       </TaskListContainerDiv>
       <PlusButtonContainerDiv>
-        <PlusButton size={'44px'} onClickPlusButton={handleCreateTaskList} />
+        <PlusButton size="44px" onClickPlusButton={handleCreateTaskList} />
       </PlusButtonContainerDiv>
     </ContainerDiv>
   );

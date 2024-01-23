@@ -6,8 +6,8 @@ import { Task, TaskList } from '../../../../../../../types/entity';
 
 // components
 import TaskListName from './TaskListName';
-import TaskCard from './TaskCard';
 import CreateTaskButton from './CreateTaskButton/CreateTaskButton';
+import TaskCardListDisplay from './TaskCardListDisplay/TaskCardListDisplay';
 
 // const
 import { breakPoint } from '../../../../../../../const/styles/breakPoint';
@@ -21,20 +21,6 @@ const ContainerDiv = styled.div`
   @media ${breakPoint.tablet} {
     /* following 4px rule */
     min-width: 208px;
-  }
-`;
-
-const TaskCardListContainerDiv = styled.div`
-  max-height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-bottom: 8px;
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
   }
 `;
 
@@ -67,20 +53,13 @@ const TaskListComponent = ({
   return (
     <ContainerDiv>
       <TaskListName taskList={taskList} onOpenMenuPopover={onOpenMenuPopover} />
-      {taskList.tasks.length > 0 && (
-        <TaskCardListContainerDiv>
-          {taskList.tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              handleOpenStartNewTaskConfirmPopover={
-                handleOpenStartNewTaskConfirmPopover
-              }
-              handleOpenEditTaskMenuPopover={handleOpenEditTaskMenuPopover}
-            />
-          ))}
-        </TaskCardListContainerDiv>
-      )}
+      <TaskCardListDisplay
+        tasks={taskList.tasks}
+        handleOpenStartNewTaskConfirmPopover={
+          handleOpenStartNewTaskConfirmPopover
+        }
+        handleOpenEditTaskMenuPopover={handleOpenEditTaskMenuPopover}
+      />
       <CreateTaskButton
         taskListId={taskList.id}
         handleCreateNewTask={handleCreateNewTask}

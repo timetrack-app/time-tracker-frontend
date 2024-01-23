@@ -3,12 +3,9 @@ import { useEffect, memo } from 'react';
 import styled from 'styled-components';
 
 // stores
-import { useAppDispatch, useAppSelector } from '../../../../../stores/hooks';
+import { useAppSelector } from '../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../stores/slices/colorThemeSlice';
-import {
-  updateSelectedTab,
-  selectCurrentSelectedTab,
-} from '../../../../../stores/slices/selectedTabSlice';
+import { selectCurrentSelectedTab } from '../../../../../stores/slices/selectedTabSlice';
 
 // types
 import { ColorThemeName } from '../../../../../types/colorTheme';
@@ -29,7 +26,7 @@ import {
   usePopover,
 } from '../../../../../components/elements/common';
 
-const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`
+const ContainerDiv = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
@@ -134,7 +131,6 @@ const TabArea = ({
 }: TabAreaProps) => {
   const currentColorTheme = useAppSelector(selectColorTheme);
 
-  const dispatch = useAppDispatch();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
 
   const {
@@ -149,21 +145,6 @@ const TabArea = ({
     triggerPosition: editTabMenuPopoverTriggerPosition,
   } = usePopover();
 
-  // on selecting a tab
-  const handleSelectTab = (tab: Tab) => {
-    dispatch(updateSelectedTab(tab));
-  };
-
-  useEffect(() => {
-    if (tabs.length) dispatch(updateSelectedTab(tabs[0]));
-  }, [dispatch, tabs]);
-
-  // Close both popover and modal when selected tab is changed
-  useEffect(() => {
-    onCloseEditTabMenuPopover();
-    onCloseRenameTabModal();
-  }, [selectedTab]);
-
   // Close popover when modal is opened
   useEffect(() => {
     if (isOpenRenameTabModal) {
@@ -171,8 +152,15 @@ const TabArea = ({
     }
   }, [isOpenRenameTabModal, onCloseEditTabMenuPopover]);
 
+  // global state `selectedTab` is not a state to manage tab data,
+  // so we need to find the tab data from useState `tabs` array
+  // There's a slight update timing gap on useState and global state,
+  // so we need to set tabs[0] as default value
+  const selectedTabState =
+    tabs.find((tab) => tab.id === selectedTab.id) ?? tabs[0];
+
   return (
-    <ContainerDiv colorThemeName={currentColorTheme}>
+    <ContainerDiv>
       <EditTabMenuPopover
         triggerPosition={editTabMenuPopoverTriggerPosition}
         isOpen={isOpenEditTabMenuPopover}
@@ -190,13 +178,12 @@ const TabArea = ({
         <TabSelectors
           tabs={tabs}
           selectedTabId={selectedTab.id}
-          handleSelectTab={handleSelectTab}
           onClickPlusButton={handleCreateNewTab}
           onOpenMenuPopover={onOpenEditTabMenuPopover}
         />
       </TabSelectorWrapper>
       <TabComponent
-        tab={selectedTab}
+        tab={selectedTabState}
         handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
         handleRenameList={handleRenameList}
         handleDeleteList={handleDeleteList}

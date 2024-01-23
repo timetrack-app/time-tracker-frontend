@@ -5,19 +5,19 @@ import { IoPlay } from 'react-icons/io5';
 import { FaRunning } from 'react-icons/fa';
 
 // types
-import { Task } from '../../../../../../../types/entity';
-import { ColorThemeName } from '../../../../../../../types/colorTheme';
+import { Task } from '../../../../../../../../types/entity';
+import { ColorThemeName } from '../../../../../../../../types/colorTheme';
 
 // stores
-import { useAppSelector } from '../../../../../../../stores/hooks';
-import { selectColorTheme } from '../../../../../../../stores/slices/colorThemeSlice';
-import { selectActiveTask } from '../../../../../../../stores/slices/activeTaskSlice';
+import { useAppSelector } from '../../../../../../../../stores/hooks';
+import { selectColorTheme } from '../../../../../../../../stores/slices/colorThemeSlice';
+import { selectActiveTask } from '../../../../../../../../stores/slices/activeTaskSlice';
 
 // utils
-import { secondsToHHMMSS } from '../../../../../../../utils/timer';
+import { secondsToHHMMSS } from '../../../../../../../../utils/timer';
 
 // components
-import { IconButton } from '../../../../../../../components/elements/common';
+import { IconButton } from '../../../../../../../../components/elements/common';
 
 const ContainerDiv = styled.div<{
   colorThemeName: ColorThemeName;
