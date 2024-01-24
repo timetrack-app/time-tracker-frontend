@@ -1,5 +1,7 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
+import styled from 'styled-components';
 import { TextInput } from '../../elements/ReactHookForm';
 import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
@@ -13,14 +15,32 @@ import {
   passwordRequiredMsg,
   invalidPasswordLengthMsg,
 } from '../../../const/validation/messages';
+import { breakPoint } from '../../../const/styles/breakPoint';
+import { vegetation } from '../../../const/styles/colors';
 
 import { useAppDispatch, useAppSelector } from '../../../stores/hooks';
 import { login, selectLoggedInUser } from '../../../stores/slices/authSlice';
 
-import { getWebRouteFull } from '../../../routes/web';
+import { getWebRoute, getWebRouteFull } from '../../../routes/web';
 import { setUserLoginCookie } from '../../../utils/cookie/auth';
 import { showToast } from '../../../libs/react-toastify/toast';
 import { isValidLengthPassword } from '../../../utils/validation';
+
+const FooterDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2em 0;
+
+  @media ${breakPoint.tablet} {
+    flex-direction: row;
+  }
+`;
+
+const SignUpSpan = styled.span`
+  color: ${vegetation};
+`;
 
 type LoginFormValues = {
   email: string;
@@ -36,7 +56,6 @@ const LoginPage = () => {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-
   const user = useAppSelector(selectLoggedInUser);
 
   const { isLoading: isUserLoginLoading, mutate: userLogin } = useUserLogin();
@@ -104,6 +123,12 @@ const LoginPage = () => {
           </AuthFormContentsWrapper>
         )}
       </AuthForm>
+      <FooterDiv>
+        <p>Don&apos;t have an account?&nbsp;</p>
+        <Link href={getWebRoute('signUp')}>
+          <SignUpSpan>Sign Up</SignUpSpan>
+        </Link>
+      </FooterDiv>
     </>
   );
 };
