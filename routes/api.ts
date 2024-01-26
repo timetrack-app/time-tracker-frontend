@@ -16,6 +16,7 @@ const { getPath: getApiEndpoint, getFullPath: getApiEndpointFull } =
       isAuthenticated: '/auth/is-authenticated',
       // workSession related
       createWorkSession: '/users/{userId}/work-sessions',
+      getWorkSessionsByUserId: '/users/{userId}/work-sessions',
       getLatestWorkSession: '/users/{userId}/work-sessions/latest',
       endWorkSession: '/users/{userId}/work-sessions/{workSessionId}/end',
       updateActiveTask:

@@ -14,9 +14,12 @@ import { useCreateTask } from './hooks/task/useCreateTask';
 import { useUpdateTask } from './hooks/task/useUpdateTask';
 import { useDeleteTask } from './hooks/task/useDeleteTask';
 
+import { useGetWorkSessionsByUserId } from './hooks/workSession/useGetWorkSessionsByUserId';
+
 export {
   useCreateWorkSession,
   useGetLatestWorkSession,
+  useGetWorkSessionsByUserId,
   useEndWorkSession,
   useUpdateActiveTask,
   useCreateTab,
