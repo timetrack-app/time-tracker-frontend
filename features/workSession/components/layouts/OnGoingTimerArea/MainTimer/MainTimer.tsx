@@ -24,6 +24,7 @@ const MainTimer = ({ className, onClickStartSession }: Props) => {
 
   return (
     <>
+      {/* TODO: Remove isWorkSessionActive condition  */}
       {isWorkSessionActive ? (
         <Timer title={title} totalTime={totalTime} className={className} />
       ) : (

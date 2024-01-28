@@ -12,7 +12,7 @@ export const baseStyle = css<{ colorThemeName: ColorThemeName }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.2em;
+  gap: 0.5em;
 `;
 
 const ContainerDiv = styled.div<{ colorThemeName: ColorThemeName }>`

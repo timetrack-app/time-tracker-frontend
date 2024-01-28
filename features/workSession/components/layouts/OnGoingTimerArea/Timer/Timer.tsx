@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import Layout from './Layout';
+import ControlButton from './ControlButton';
 
 import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectColorTheme } from '../../../../../../stores/slices/colorThemeSlice';
@@ -10,11 +11,20 @@ import { secondsToHHMMSS } from '../../../../../../utils/timer';
 const TaskNameWrapperDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.text};
   border-radius: 16px;
-  width: 80%;
-  padding: 0.3em 0.5em;
+  /* width: 80%; */
+  padding: 0.2em 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 2.2em;
+`;
+
+const MainAreaDiv = styled.div`
+  /* margin-bottom: 2em; */
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 1em;
 `;
 
 const TaskNameP = styled.p`
@@ -31,6 +41,13 @@ const TotalTimeP = styled.p`
   font-weight: bold;
   max-width: 100%;
   text-align: center;
+`;
+
+const ButtonAreaDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.5em;
 `;
 
 type Props = {
@@ -50,10 +67,16 @@ const Timer = ({ title, totalTime, className }: Props) => {
 
   return (
     <Layout colorThemeName={currentColorThemeName} className={className}>
-      <TaskNameWrapperDiv>
-        <TaskNameP>{title}</TaskNameP>
-      </TaskNameWrapperDiv>
-      <TotalTimeP>{secondsToHHMMSS(totalTime)}</TotalTimeP>
+      <MainAreaDiv>
+        <TaskNameWrapperDiv>
+          <TaskNameP>{title}</TaskNameP>
+        </TaskNameWrapperDiv>
+        <TotalTimeP>{secondsToHHMMSS(totalTime)}</TotalTimeP>
+      </MainAreaDiv>
+
+      <ButtonAreaDiv>
+        <ControlButton isActive={false} isPaused={false} />
+      </ButtonAreaDiv>
     </Layout>
   );
 };
