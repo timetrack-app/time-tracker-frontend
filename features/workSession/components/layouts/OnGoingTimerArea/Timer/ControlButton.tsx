@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FaPlay, FaPause } from 'react-icons/fa6';
 import { coralRed, vegetation } from '../../../../../../const/styles/colors';
 
-const InitialMessageDiv = styled.div`
+const InitialDiv = styled.div`
   color: ${({ theme }) => theme.colors.border};
   font-weight: 500;
 `;
@@ -48,11 +48,9 @@ const ControlButton = ({ isActive, isPaused }: Props) => {
       {
         isActive
           ? <TimerButton>
-              {isPaused ? <PauseIcon /> : <ResumeIcon />}
+              {isPaused ? <ResumeIcon /> : <PauseIcon />}
             </TimerButton>
-          : <InitialMessageDiv>
-              <p>No task has been started</p>
-            </InitialMessageDiv>
+          : <InitialDiv />
       }
     </>
   );
