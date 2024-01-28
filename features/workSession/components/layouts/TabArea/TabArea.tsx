@@ -32,6 +32,7 @@ const ContainerDiv = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   padding: 24px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.componentBackground};
