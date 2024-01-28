@@ -7,6 +7,7 @@ export const baseStyle = css<{ colorThemeName: ColorThemeName }>`
   width: 100%;
   height: 100%;
   border-radius: 50%;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.componentBackground};
   display: flex;
   flex-direction: column;
