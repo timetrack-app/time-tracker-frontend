@@ -8,7 +8,7 @@ import { UpdateActiveTaskParams } from '../../../types';
  * @param {UpdateActiveTaskParams} { userId, workSessionId }
  * @return {*}  {Promise<void>}
  */
-export const updateActiveTask = async ({
+export const switchActiveTask = async ({
   authToken,
   userId,
   workSessionId,

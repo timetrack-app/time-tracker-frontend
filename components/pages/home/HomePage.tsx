@@ -2,25 +2,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import {
-  useRTKUpdateActiveTask,
-  useInitialTaskInfo,
-  useTotalTimeCalc,
-} from '../../../features/workSession';
-
 // components
 import {
   TabArea,
   OnGoingTimerArea,
-  SelectInitialTaskModal,
   DeleteTabConfirmModal,
-  EndWorkSessionConfirmModal,
 } from '../../../features/workSession/components';
 
 import {
-  useCreateWorkSession,
-  useGetLatestWorkSession,
-  useEndWorkSession,
   useCreateTab,
   useUpdateTab,
   useDeleteTab,
@@ -30,7 +19,8 @@ import {
   useCreateTask,
   useUpdateTask,
   useDeleteTask,
-  useUpdateActiveTask,
+  useSwitchActiveTask,
+  useGetWorkSessionsByUserId,
 } from '../../../features/workSession/api';
 import { LoadingOverlay, MobileMenu, Navbar } from '../../elements/common';
 
@@ -39,15 +29,16 @@ import {
   selectCurrentSelectedTab,
   updateSelectedTab,
 } from '../../../stores/slices/selectedTabSlice';
+import {
+  updateActiveTask,
+  selectActiveTask,
+} from '../../../stores/slices/activeTaskSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
 import { initialTabs } from '../../../const/initialTabsState';
 
 import { Tab, TaskList } from '../../../types/entity';
-import {
-  CreateTabParams,
-  SelectInitialTaskFormValues,
-} from '../../../features/workSession/types';
+import { CreateTabParams } from '../../../features/workSession/types';
 
 import { showToast } from '../../../libs/react-toastify/toast';
 import { useRTKUpdateWorkSessionState } from '../../../features/workSession/hooks/useRTK/useRTKUpdateWorkSessionState';
@@ -56,13 +47,9 @@ import { useAnyTrue } from '../../../hooks/useAnyTrue';
 import { getUserLoginCookie } from '../../../utils/cookie/auth';
 import { getWebRoute } from '../../../routes/web';
 
-import {
-  selectWorkSessionState,
-  updateIsWorkSessionActive,
-} from '../../../stores/slices/workSessionSlice';
+import { selectWorkSessionState } from '../../../stores/slices/workSessionSlice';
 
 import { useModal } from '../../elements/common/Modal/Modal';
-import { selectActiveTask } from '../../../stores/slices/activeTaskSlice';
 
 const MainAreaContainer = styled.div`
   display: flex;
@@ -100,9 +87,7 @@ const HomePage = () => {
   const [tabs, setTabs] = useState<Tab[]>(initialTabs);
 
   // Global state related
-  const { handleUpdateActiveTaskState } = useRTKUpdateActiveTask();
-  const { handleUpdateIsWorkSessionActive, handleUpdateWorkSessionId } =
-    useRTKUpdateWorkSessionState();
+  const { handleUpdateWorkSessionId } = useRTKUpdateWorkSessionState();
   const selectedTab = useAppSelector(selectCurrentSelectedTab);
   const { workSessionId, isWorkSessionActive } = useAppSelector(
     selectWorkSessionState,
@@ -112,23 +97,7 @@ const HomePage = () => {
 
   const dispatch = useAppDispatch();
 
-  // Utility hooks
-  const { calcTotalTimeSec, calcTotalTimeSecOfATab } = useTotalTimeCalc();
-  const { generateTaskInfoArr, newTabsWithInitialTaskActivated } =
-    useInitialTaskInfo();
-
   // Modal hooks
-  const {
-    isOpen: isOpenEndWorkSessionConfirmModal,
-    onOpen: onOpenEndWorkSessionConfirmModal,
-    onClose: onCloseEndWorkSessionConfirmModal,
-  } = useModal();
-
-  const {
-    isOpen: isOpenSelectInitialTaskModal,
-    onOpen: onOpenSelectInitialTaskModal,
-    onClose: onCloseSelectInitialTaskModal,
-  } = useModal();
   const {
     isOpen: isOpenDeleteTabConfirmModal,
     onOpen: onOpenDeleteTabConfirmModal,
@@ -136,37 +105,28 @@ const HomePage = () => {
   } = useModal();
 
   // API call related
-  const { mutate: createWorkSession, isLoading: isLoadingCreateWorkSession } =
-    useCreateWorkSession({
-      onSuccess: (data) => {
-        const { id, tabs, activeTab, activeList, activeTask } =
-          data.workSession;
-        handleUpdateWorkSessionId(id);
-        handleUpdateIsWorkSessionActive(true);
-        handleUpdateActiveTaskState(activeTab, activeList, activeTask);
-        dispatch(updateSelectedTab(activeTab));
-        setTabs(tabs);
-      },
-      onError: () => {
-        showToast('error', 'An error has occurred on starting a session.');
-      },
-    });
 
   const {
-    refetch: getLatestWorkSession,
-    isLoading: isLoadingGetLatestWorkSession,
-  } = useGetLatestWorkSession(
+    refetch: getWorkSessionsByUserId,
+    isLoading: isLoadingGetWorkSessionsByUserId,
+  } = useGetWorkSessionsByUserId(
     { authToken, userId: user?.id },
     {
       enabled: user !== undefined,
-      // enabled: false,
       onSuccess: (data) => {
-        const { id, tabs, activeTab, activeList, activeTask } =
-          data.workSession;
-
+        const workSession = data.workSessions[0];
+        const { id, tabs, activeTab, activeList, activeTask } = workSession;
         handleUpdateWorkSessionId(id);
-        handleUpdateIsWorkSessionActive(true);
-        handleUpdateActiveTaskState(activeTab, activeList, activeTask);
+        dispatch(
+          updateActiveTask({
+            name: activeTask ? activeTask.name : '',
+            totalTime: activeTask ? activeTask.totalTime : 0,
+            isTimerRunning: !!activeTask,
+            tabId: activeTab ? id : null,
+            listId: activeList ? id : null,
+            id: activeTask ? activeTask.id : null,
+          }),
+        );
         setTabs(tabs);
       },
       onError: (err) => {
@@ -175,9 +135,9 @@ const HomePage = () => {
     },
   );
 
-  const { mutate: updateActiveTask } = useUpdateActiveTask({
+  const { mutate: switchActiveTask } = useSwitchActiveTask({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -185,11 +145,11 @@ const HomePage = () => {
     },
   });
 
-  const { mutate: endWorkSession } = useEndWorkSession();
+  // const { mutate: endWorkSession } = useEndWorkSession();
 
   const { mutate: createTab } = useCreateTab({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -199,7 +159,7 @@ const HomePage = () => {
 
   const { mutate: updateTab } = useUpdateTab({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -209,7 +169,7 @@ const HomePage = () => {
 
   const { mutate: deleteTab } = useDeleteTab({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -219,7 +179,7 @@ const HomePage = () => {
 
   const { mutate: createList } = useCreateList({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -229,7 +189,7 @@ const HomePage = () => {
 
   const { mutate: updateList } = useUpdateList({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -239,7 +199,7 @@ const HomePage = () => {
 
   const { mutate: deleteList } = useDeleteList({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -249,7 +209,7 @@ const HomePage = () => {
 
   const { mutate: createTask } = useCreateTask({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -259,7 +219,7 @@ const HomePage = () => {
 
   const { mutate: updateTask } = useUpdateTask({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
@@ -269,50 +229,13 @@ const HomePage = () => {
 
   const { mutate: deleteTask } = useDeleteTask({
     onSuccess: () => {
-      getLatestWorkSession();
+      getWorkSessionsByUserId();
     },
     onError: (err) => {
       console.error(err);
       showToast('error', 'An error has occurred on deleting task');
     },
   });
-
-  // for initial task selection
-  const selectableTaskInfos = generateTaskInfoArr(tabs);
-
-  // data post & close the modal.
-  const handleStartWorkSession = async (
-    values: SelectInitialTaskFormValues,
-  ) => {
-    // Get the initial task info with the index
-    const initialTaskInfo = selectableTaskInfos[values.taskInfoIndex];
-    const { tabIndex, listIndex, taskIndex } = initialTaskInfo;
-
-    // create new tab array with the initial task to be active
-    const newTabs = newTabsWithInitialTaskActivated(
-      tabs,
-      tabIndex,
-      listIndex,
-      taskIndex,
-    );
-    // API call
-    await createWorkSession({ authToken, tabs: newTabs, userId: user?.id });
-    // Close the modal
-    onCloseSelectInitialTaskModal();
-  };
-
-  const handleEndWorkSession = async () => {
-    await endWorkSession(
-      { authToken, userId: user?.id, workSessionId },
-      {
-        onError: () => {},
-        onSuccess: () => {
-          dispatch(updateIsWorkSessionActive(false));
-          onCloseEndWorkSessionConfirmModal();
-        },
-      },
-    );
-  };
 
   // on creating a new tab
   const handleCreateNewTab = async () => {
@@ -694,7 +617,7 @@ const HomePage = () => {
       ...currentActiveTaskInfo,
     });
     // Update the active task
-    await updateActiveTask({
+    await switchActiveTask({
       authToken,
       userId: user?.id,
       workSessionId,
@@ -704,27 +627,13 @@ const HomePage = () => {
     });
   };
 
-  const isLoading = useAnyTrue([
-    isLoadingCreateWorkSession,
-    isLoadingGetLatestWorkSession,
-  ]);
+  const isLoading = useAnyTrue([isLoadingGetWorkSessionsByUserId]);
 
   return (
     <>
       <LoadingOverlay loading={isLoading} />
       <Navbar />
       <MobileMenu />
-      <SelectInitialTaskModal
-        isOpen={isOpenSelectInitialTaskModal}
-        selectableTaskInfos={selectableTaskInfos}
-        onClose={onCloseSelectInitialTaskModal}
-        startWorkSession={handleStartWorkSession}
-      />
-      <EndWorkSessionConfirmModal
-        isOpen={isOpenEndWorkSessionConfirmModal}
-        onClose={onCloseEndWorkSessionConfirmModal}
-        handleYesButtonOnClick={handleEndWorkSession}
-      />
       <DeleteTabConfirmModal
         isOpen={isOpenDeleteTabConfirmModal}
         onCloseModal={onCloseDeleteTabConfirmModal}
@@ -732,13 +641,10 @@ const HomePage = () => {
       />
       <MainAreaContainer>
         <OnGoingTimerArea
-          totalTimeSec={calcTotalTimeSec(tabs)}
-          totalTimeSecInSelectedTab={calcTotalTimeSecOfATab(
-            tabs,
-            selectedTab.id,
-          )}
-          onClickStartSession={onOpenSelectInitialTaskModal}
-          onOpenEndWorkSessionConfirmModal={onOpenEndWorkSessionConfirmModal}
+          totalTimeSec={0}
+          totalTimeSecInSelectedTab={0}
+          onClickStartSession={() => {}}
+          onOpenEndWorkSessionConfirmModal={() => {}}
         />
         <TabArea
           tabs={tabs}

@@ -9,7 +9,8 @@ type WorkSessionState = {
 
 const initialState: WorkSessionState = {
   workSessionId: null,
-  isWorkSessionActive: false,
+  // set this state true for now, we will remove this state later
+  isWorkSessionActive: true,
 };
 
 const workSessionSlice = createSlice({

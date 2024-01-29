@@ -17,7 +17,6 @@ import { selectIsInit } from '../stores/slices/colorThemeSlice';
 
 // Components
 import GlobalStyle from '../components/globalstyles';
-import BackgroundTask from '../components/elements/BackgroundTask/BackgroundTask';
 
 import { useColorTheme } from '../hooks/useColorTheme';
 import LoadingOverlay from '../components/elements/common/LoadingOverlay/LoadingOverlay';
@@ -52,9 +51,11 @@ const FadeInDiv = styled.div`
   /* min-height: 100vh; */
   animation: ${fadeIn} 800ms ease-in-out forwards;
 
-  ${({ isVisible }: { isVisible: boolean }) => !isVisible && css`
-    opacity: 0;
-  `}
+  ${({ isVisible }: { isVisible: boolean }) =>
+    !isVisible &&
+    css`
+      opacity: 0;
+    `}
 `;
 
 // Layout configuration doc
@@ -65,7 +66,7 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 };
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
+  Component: NextPageWithLayout;
   // router: Router // Error if this property doesn't exist
 };
 
@@ -75,7 +76,10 @@ type AppPropsWithLayout = AppProps & {
  * @param {AppPropsWithLayout} { Component, pageProps }
  * @return {*} JSX.Element
  */
-const WithThemeProviderComponent = ({ Component, pageProps }: AppPropsWithLayout) => {
+const WithThemeProviderComponent = ({
+  Component,
+  pageProps,
+}: AppPropsWithLayout) => {
   const { initColorTheme, getCurrentColorThemeStyle } = useColorTheme();
   const isInitColorTheme = useAppSelector(selectIsInit);
 
@@ -104,7 +108,6 @@ const App = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <BackgroundTask />
         {getLayout(
           <WithThemeProviderComponent
             Component={Component}
