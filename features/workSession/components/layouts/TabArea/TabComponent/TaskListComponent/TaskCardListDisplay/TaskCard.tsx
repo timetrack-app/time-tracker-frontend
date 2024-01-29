@@ -35,7 +35,7 @@ const ContainerDiv = styled.div<{
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.componentBackground};
   box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 5px 6px 0 ${theme.colors.border}` : 'none'};
+    colorThemeName === 'light' ? `0 1.5px 2px 0 ${theme.colors.border}` : 'none'};
   &:hover {
     background-color: ${({ theme }) => theme.colors.background};
   }
