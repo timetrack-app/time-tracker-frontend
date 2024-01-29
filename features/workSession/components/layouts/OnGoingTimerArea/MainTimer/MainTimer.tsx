@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Timer from '../Timer/Timer';
-import StartWorkSessionButton from './StartWorkSessionButton';
+
 import { useAppSelector } from '../../../../../../stores/hooks';
 import { selectActiveTask } from '../../../../../../stores/slices/activeTaskSlice';
 import { selectWorkSessionState } from '../../../../../../stores/slices/workSessionSlice';
@@ -24,14 +24,7 @@ const MainTimer = ({ className, onClickStartSession }: Props) => {
 
   return (
     <>
-      {isWorkSessionActive ? (
-        <Timer title={title} totalTime={totalTime} className={className} />
-      ) : (
-        <StartWorkSessionButton
-          onClick={onClickStartSession}
-          className={className}
-        />
-      )}
+      <Timer title={title} totalTime={totalTime} className={className} />
     </>
   );
 };
