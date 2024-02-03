@@ -85,7 +85,7 @@ const WithThemeProviderComponent = ({
 
   useEffect(() => {
     initColorTheme();
-  }, []);
+  }, [initColorTheme]);
 
   return (
     <FadeInDiv isVisible={isInitColorTheme}>

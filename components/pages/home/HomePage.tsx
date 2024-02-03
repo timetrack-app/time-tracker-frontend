@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -138,8 +138,8 @@ const HomePage = () => {
         }
         setTabs(fetchedTabs);
       },
-      onError: (err) => {
-        console.error(err);
+      onError: () => {
+        showToast('error', 'An error has occurred on fetching work session.');
       },
     },
   );
@@ -148,8 +148,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on updating active task.');
     },
   });
@@ -160,8 +159,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on creating a tab.');
     },
   });
@@ -170,8 +168,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on updating tab');
     },
   });
@@ -180,8 +177,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on deleting tab');
     },
   });
@@ -190,8 +186,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on creating a list.');
     },
   });
@@ -200,8 +195,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on updating list');
     },
   });
@@ -210,8 +204,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on deleting list');
     },
   });
@@ -220,8 +213,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on creating a task.');
     },
   });
@@ -230,8 +222,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on updating task');
     },
   });
@@ -240,8 +231,7 @@ const HomePage = () => {
     onSuccess: () => {
       getWorkSessionsByUserId();
     },
-    onError: (err) => {
-      console.error(err);
+    onError: () => {
       showToast('error', 'An error has occurred on deleting task');
     },
   });

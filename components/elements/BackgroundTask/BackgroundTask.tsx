@@ -1,4 +1,4 @@
-import { useUpdateActiveTaskTimer } from '../../../features/workSession';
+import { useUpdateActiveTaskTimer } from '../../../features/workSession/hooks';
 
 /**
  *
