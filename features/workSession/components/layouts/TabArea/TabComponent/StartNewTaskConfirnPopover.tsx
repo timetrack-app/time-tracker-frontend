@@ -16,7 +16,6 @@ import { selectCurrentSelectedTab } from '../../../../../../stores/slices/select
 // types
 import { Task } from '../../../../../../types/entity';
 import { selectActiveTask } from '../../../../../../stores/slices/activeTaskSlice';
-import { current } from '@reduxjs/toolkit';
 
 const StartNewTaskPopoverContainer = styled.div<{}>`
   background-color: ${({ theme }) => theme.colors.background};
@@ -75,7 +74,8 @@ const StartNewTaskConfirmPopover = ({
   task,
   handleStartNewTask,
 }: StartNewTaskPopoverProps) => {
-  const { id: newTaskTabId } = useAppSelector(selectCurrentSelectedTab);
+  const currentSelectedTab = useAppSelector(selectCurrentSelectedTab);
+  const newTaskTabId = currentSelectedTab?.id ?? 0;
   const {
     id: currentTaskId,
     listId: currentListId,
@@ -112,7 +112,10 @@ const StartNewTaskConfirmPopover = ({
       onClose={onClose}
     >
       <StartNewTaskPopoverContainer>
-        <MessageP>Are you sure you want to start "{task?.name}"?</MessageP>
+        <MessageP>
+          Are you sure you want to start "{task?.name}
+          "?
+        </MessageP>
         <ButtonsContainerDiv>
           <StyledButtonPrimary autoFocus onClick={onClickStartNewTask}>
             Start

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
@@ -35,8 +35,6 @@ import {
 } from '../../../stores/slices/activeTaskSlice';
 
 import { breakPoint } from '../../../const/styles/breakPoint';
-import { initialTabs } from '../../../const/initialTabsState';
-
 import { Tab, TaskList } from '../../../types/entity';
 import { CreateTabParams } from '../../../features/workSession/types';
 
@@ -84,7 +82,7 @@ const HomePage = () => {
 
   const authToken = getUserLoginCookie();
 
-  const [tabs, setTabs] = useState<Tab[]>(initialTabs);
+  const [tabs, setTabs] = useState<Tab[]>([]);
 
   // Global state related
   const { handleUpdateWorkSessionId } = useRTKUpdateWorkSessionState();
@@ -105,7 +103,6 @@ const HomePage = () => {
   } = useModal();
 
   // API call related
-
   const {
     refetch: getWorkSessionsByUserId,
     isLoading: isLoadingGetWorkSessionsByUserId,
@@ -115,7 +112,13 @@ const HomePage = () => {
       enabled: user !== undefined,
       onSuccess: (data) => {
         const workSession = data.workSessions[0];
-        const { id, tabs, activeTab, activeList, activeTask } = workSession;
+        const {
+          id,
+          tabs: fetchedTabs,
+          activeTab,
+          activeList,
+          activeTask,
+        } = workSession;
         handleUpdateWorkSessionId(id);
         dispatch(
           updateActiveTask({
@@ -127,7 +130,13 @@ const HomePage = () => {
             id: activeTask ? activeTask.id : null,
           }),
         );
-        setTabs(tabs);
+
+        // if the tabs state is initial state, set tab state to the first tab
+        // TODO : maybe better to store selected tab in local storage
+        if (selectedTab.id === 0) {
+          dispatch(updateSelectedTab(fetchedTabs[0]));
+        }
+        setTabs(fetchedTabs);
       },
       onError: (err) => {
         console.error(err);
@@ -646,19 +655,21 @@ const HomePage = () => {
           onClickStartSession={() => {}}
           onOpenEndWorkSessionConfirmModal={() => {}}
         />
-        <TabArea
-          tabs={tabs}
-          handleCreateNewTab={handleCreateNewTab}
-          handleRenameTab={handleRenameTab}
-          handleDeleteTab={onOpenDeleteTabConfirmModal}
-          handleCreateNewList={handleCreateNewList}
-          handleRenameList={handleRenameList}
-          handleDeleteList={handleDeleteList}
-          handleCreateNewTask={handleCreateNewTask}
-          handleRenameTask={handleRenameTask}
-          handleDeleteTask={handleDeleteTask}
-          handleStartNewTask={handleStartNewTask}
-        />
+        {tabs.length && (
+          <TabArea
+            tabs={tabs}
+            handleCreateNewTab={handleCreateNewTab}
+            handleRenameTab={handleRenameTab}
+            handleDeleteTab={onOpenDeleteTabConfirmModal}
+            handleCreateNewList={handleCreateNewList}
+            handleRenameList={handleRenameList}
+            handleDeleteList={handleDeleteList}
+            handleCreateNewTask={handleCreateNewTask}
+            handleRenameTask={handleRenameTask}
+            handleDeleteTask={handleDeleteTask}
+            handleStartNewTask={handleStartNewTask}
+          />
+        )}
       </MainAreaContainer>
     </>
   );

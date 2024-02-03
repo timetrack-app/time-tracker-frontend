@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from 'react';
+import React, { MutableRefObject, useMemo } from 'react';
 import styled from 'styled-components';
 
 // types
@@ -11,6 +11,8 @@ import { PlusButton } from '../../../ui';
 
 // const
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectCurrentSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
 
 const ContainerDiv = styled.div`
   display: flex;
@@ -41,21 +43,27 @@ const SelectorsContainerDiv = styled.div`
 
 type TabSelectorsProps = {
   tabs: Tab[];
-  selectedTabId: number;
   onClickPlusButton: () => void;
   onOpenMenuPopover: (ref: MutableRefObject<HTMLElement>) => void;
 };
 
 const TabSelectors = ({
   tabs,
-  selectedTabId,
   onClickPlusButton,
   onOpenMenuPopover,
 }: TabSelectorsProps) => {
+  const selectedTab = useAppSelector(selectCurrentSelectedTab);
+  const selectedTabId = selectedTab?.id ?? '';
+
+  const sortedTabs = useMemo(() => {
+    // copy tabs to avoid mutating original tabs
+    const copiedTabs = [...tabs];
+    return copiedTabs.sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [tabs]);
   return (
     <ContainerDiv>
       <SelectorsContainerDiv>
-        {tabs.map((tab) => {
+        {sortedTabs.map((tab) => {
           const isSelected = tab.id === selectedTabId;
           if (isSelected)
             return (

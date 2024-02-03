@@ -13,7 +13,7 @@ import TaskCardListDisplay from './TaskCardListDisplay/TaskCardListDisplay';
 import { breakPoint } from '../../../../../../../const/styles/breakPoint';
 
 const ContainerDiv = styled.div`
-  min-width: 100%;
+  width: 320px;
   display: flex;
   flex-direction: column;
   gap: 12px;

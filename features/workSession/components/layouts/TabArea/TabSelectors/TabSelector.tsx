@@ -8,7 +8,7 @@ import { Tab } from '../../../../../../types/entity';
 import { useAppDispatch } from '../../../../../../stores/hooks';
 import { updateSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
 
-const ContainerDiv = styled.button`
+const ContainerButton = styled.button`
   width: 112px;
   height: 44px;
   display: flex;
@@ -25,6 +25,9 @@ const ContainerDiv = styled.button`
 const TabNameP = styled.p`
   font-size: 16px;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export type TabSelectorProps = {
@@ -35,12 +38,12 @@ export type TabSelectorProps = {
 const TabSelector = ({ tab, className }: TabSelectorProps) => {
   const dispatch = useAppDispatch();
   return (
-    <ContainerDiv
+    <ContainerButton
       onClick={() => dispatch(updateSelectedTab(tab))}
       className={className}
     >
       <TabNameP>{tab.name}</TabNameP>
-    </ContainerDiv>
+    </ContainerButton>
   );
 };
 
