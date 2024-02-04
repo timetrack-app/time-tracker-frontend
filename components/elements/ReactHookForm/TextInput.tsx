@@ -15,7 +15,7 @@ const Input = styled.input<{ isError: boolean }>`
   border: 1px solid
     ${({ theme, isError }) =>
       isError ? theme.colors.danger : theme.colors.border};
-  border-radius: 48px;
+  border-radius: 8px;
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.outline};
   }
