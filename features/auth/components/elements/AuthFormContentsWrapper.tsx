@@ -10,8 +10,8 @@ const FormMainDiv = styled.div`
   justify-content: center;
   gap: 3em;
 
-  @media ${breakPoint.tablet} {
-    max-width: 35em;
+  @media ${breakPoint.mobileL} {
+    max-width: 24em;
     margin: 0 auto;
   }
 `;
@@ -27,12 +27,28 @@ const FormFieldsDiv = styled.div`
 
 const SubmitButtonWrapperDiv = styled.div`
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 3em;
+`;
+
+const FooterDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2em 0;
+
+  @media ${breakPoint.tablet} {
+    flex-direction: row;
+  }
 `;
 
 type AuthFormLayoutProps = {
   button: JSX.Element
   children?: React.ReactNode
+  footerContent?: React.ReactNode
 };
 
 /**
@@ -42,16 +58,21 @@ type AuthFormLayoutProps = {
  * @param {AuthFormLayoutProps} { button, children }
  * @returns {JSX.Element}
  */
-const AuthFormContentsWrapper = ({ button, children }: AuthFormLayoutProps) => (
-  <FormMainDiv>
-    <FormFieldsDiv>
-      {children}
-    </FormFieldsDiv>
+const AuthFormContentsWrapper = ({ button, children, footerContent }: AuthFormLayoutProps) => (
+  <>
+    <FormMainDiv>
+      <FormFieldsDiv>
+        {children}
+      </FormFieldsDiv>
 
-    <SubmitButtonWrapperDiv>
-      {button}
-    </SubmitButtonWrapperDiv>
-  </FormMainDiv>
+      <SubmitButtonWrapperDiv>
+        {button}
+      </SubmitButtonWrapperDiv>
+    </FormMainDiv>
+    <FooterDiv>
+      {footerContent}
+    </FooterDiv>
+  </>
 );
 
 export default AuthFormContentsWrapper;

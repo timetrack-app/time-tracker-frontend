@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router';
 import { SubmitHandler } from 'react-hook-form';
 import { TextInput } from '../../elements/ReactHookForm';
-import ButtonPrimary from '../../elements/common/Button/ButtonPrimary';
 import LoadingOverlay from '../../elements/common/LoadingOverlay/LoadingOverlay';
 import {
   AuthForm,
   AuthFormContentsWrapper,
   useUserRegistration,
   useIsAuthenticated,
+  SubmitButton,
+  FooterContent,
 } from '../../../features/auth';
 import SignUpFailedToastContents from './SignUpFailedToastContents';
 import SignUpCompletePage from './SignUpCompletePage';
@@ -79,9 +80,14 @@ const SignUpPage = () => {
               {({ register, formState, getValues }) => (
                 <AuthFormContentsWrapper
                   button={
-                    <ButtonPrimary type="submit">
-                      <p>Sign Up</p>
-                    </ButtonPrimary>
+                    <SubmitButton label="Sign up" />
+                  }
+                  footerContent={
+                    <FooterContent
+                      href={getWebRoute('login')}
+                      message="Already have an account?&nbsp;"
+                      linkLabel="Login"
+                    />
                   }
                 >
                   <TextInput

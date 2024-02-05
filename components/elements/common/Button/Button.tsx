@@ -18,7 +18,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   appearance: none;
   color: ${(props) => props.color};
   font-size: 1.3em;
-  border-radius: 48px;
+  border-radius: 8px;
   border: 1px solid ${(props) => props.borderColor};
   background-color: ${(props) => props.backgroundColor};
   cursor: pointer;
