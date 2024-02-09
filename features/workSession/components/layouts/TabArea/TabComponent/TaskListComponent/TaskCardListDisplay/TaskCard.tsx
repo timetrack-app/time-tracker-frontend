@@ -35,7 +35,9 @@ const ContainerDiv = styled.div<{
   border: 1px solid ${({ theme }) => theme.colors.border};
   background-color: ${({ theme }) => theme.colors.componentBackground};
   box-shadow: ${({ colorThemeName, theme }) =>
-    colorThemeName === 'light' ? `0 1.5px 2px 0 ${theme.colors.border}` : 'none'};
+    colorThemeName === 'light'
+      ? `0 1.5px 2px 0 ${theme.colors.border}`
+      : 'none'};
   &:hover {
     background-color: ${({ theme }) => theme.colors.background};
   }
@@ -56,8 +58,11 @@ const BottomHalfDiv = styled.div`
 `;
 
 const NameP = styled.p`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const TimeP = styled.p`
@@ -103,16 +108,15 @@ const TaskCard = ({
             ? secondsToHHMMSS(totalTime)
             : secondsToHHMMSS(task.totalTime)}
         </TimeP>
-        {isTimerRunning &&
-          (isThisTaskRunning ? (
-            <FaRunning size={20} />
-          ) : (
-            <IconButton
-              onClick={() => handleOpenStartNewTaskConfirmPopover(task, ref)}
-            >
-              <IoPlay size={20} />
-            </IconButton>
-          ))}
+        {isThisTaskRunning ? (
+          <FaRunning size={20} />
+        ) : (
+          <IconButton
+            onClick={() => handleOpenStartNewTaskConfirmPopover(task, ref)}
+          >
+            <IoPlay size={20} />
+          </IconButton>
+        )}
       </BottomHalfDiv>
     </ContainerDiv>
   );

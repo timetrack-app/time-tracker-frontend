@@ -25,6 +25,9 @@ const ContainerDiv = styled.div`
 const NameP = styled.p`
   font-size: 1em;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 type TaskListNameProps = {

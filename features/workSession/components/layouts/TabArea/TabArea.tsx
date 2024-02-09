@@ -157,8 +157,9 @@ const TabArea = ({
   // so we need to find the tab data from useState `tabs` array
   // There's a slight update timing gap on useState and global state,
   // so we need to set tabs[0] as default value
-  const selectedTabState =
-    tabs.find((tab) => tab.id === selectedTab.id) ?? tabs[0];
+  const selectedTabState = selectedTab
+    ? tabs.find((tab) => tab.id === selectedTab.id)
+    : tabs[0];
 
   return (
     <ContainerDiv>
@@ -173,26 +174,26 @@ const TabArea = ({
         isOpen={isOpenRenameTabModal}
         onClose={onCloseRenameTabModal}
         onSubmit={handleRenameTab}
-        currentTabName={selectedTab.name}
       />
       <TabSelectorWrapper colorThemeName={currentColorTheme}>
         <TabSelectors
           tabs={tabs}
-          selectedTabId={selectedTab.id}
           onClickPlusButton={handleCreateNewTab}
           onOpenMenuPopover={onOpenEditTabMenuPopover}
         />
       </TabSelectorWrapper>
-      <TabComponent
-        tab={selectedTabState}
-        handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
-        handleRenameList={handleRenameList}
-        handleDeleteList={handleDeleteList}
-        handleCreateNewTask={handleCreateNewTask}
-        handleRenameTask={handleRenameTask}
-        handleDeleteTask={handleDeleteTask}
-        handleStartNewTask={handleStartNewTask}
-      />
+      {selectedTabState && (
+        <TabComponent
+          tab={selectedTabState}
+          handleCreateTaskList={() => handleCreateNewList(selectedTab.id)}
+          handleRenameList={handleRenameList}
+          handleDeleteList={handleDeleteList}
+          handleCreateNewTask={handleCreateNewTask}
+          handleRenameTask={handleRenameTask}
+          handleDeleteTask={handleDeleteTask}
+          handleStartNewTask={handleStartNewTask}
+        />
+      )}
     </ContainerDiv>
   );
 };

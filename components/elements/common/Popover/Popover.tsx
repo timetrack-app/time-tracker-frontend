@@ -1,9 +1,4 @@
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { MutableRefObject, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 /**
@@ -46,7 +41,7 @@ const PopOverOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.overlay};
+  background-color: transparent;
   z-index: 1000;
 `;
 
@@ -63,6 +58,8 @@ const ContainerDiv = styled.div<ContainerDivProps>`
   left: ${({ triggerPosition, left }) =>
     // TODO : Find better way to calculate left triggerPosition
     triggerPosition.left + left}px;
+  border-radius: 8px;
+  transform: translate(-50%, 0);
 `;
 
 export type PopoverProps = {

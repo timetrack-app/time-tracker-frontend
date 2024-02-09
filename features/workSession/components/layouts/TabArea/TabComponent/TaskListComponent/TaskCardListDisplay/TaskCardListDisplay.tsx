@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useCallback, useMemo } from 'react';
+import React, { MutableRefObject, useMemo } from 'react';
 import styled from 'styled-components';
 
 import TaskCard from './TaskCard';
@@ -37,7 +37,9 @@ const TaskCardListDisplay = ({
   handleOpenEditTaskMenuPopover,
 }: TaskCardListDisplayProps) => {
   const sortedTasks = useMemo(() => {
-    return tasks.sort((a, b) => a.displayOrder - b.displayOrder);
+    // copy tasks to avoid mutating original tasks
+    const copiedTasks = [...tasks];
+    return copiedTasks.sort((a, b) => a.displayOrder - b.displayOrder);
   }, [tasks]);
 
   return (

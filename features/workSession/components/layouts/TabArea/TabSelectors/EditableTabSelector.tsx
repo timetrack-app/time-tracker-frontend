@@ -15,7 +15,7 @@ export type TabSelectorProps = {
 };
 
 // Selector Container
-const SelectorContainerDiv = styled.div<{
+const SelectorContainerButton = styled.div<{
   colorThemeName: ColorThemeName;
 }>`
   width: 112px;
@@ -51,6 +51,9 @@ const SelectorContainerDiv = styled.div<{
 const TabNameP = styled.p`
   font-size: 16px;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const EditableTabSelector = ({
@@ -62,7 +65,7 @@ const EditableTabSelector = ({
   const currentColorThemeName = useAppSelector(selectColorTheme);
 
   return (
-    <SelectorContainerDiv
+    <SelectorContainerButton
       colorThemeName={currentColorThemeName}
       className={className}
       ref={ref}
@@ -71,7 +74,7 @@ const EditableTabSelector = ({
       <IconButton onClick={() => onOpenMenuPopover(ref)}>
         <BsThreeDots />
       </IconButton>
-    </SelectorContainerDiv>
+    </SelectorContainerButton>
   );
 };
 

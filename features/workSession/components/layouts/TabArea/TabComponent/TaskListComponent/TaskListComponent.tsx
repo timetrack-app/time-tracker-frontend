@@ -19,7 +19,6 @@ const ContainerDiv = styled.div`
   gap: 12px;
   align-items: center;
   @media ${breakPoint.tablet} {
-    /* following 4px rule */
     min-width: 208px;
   }
 `;

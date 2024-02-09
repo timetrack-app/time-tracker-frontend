@@ -1,4 +1,4 @@
-import { useUpdateActiveTaskTimer } from '../../../features/workSession';
+import { useUpdateActiveTaskTimer } from '../../../features/workSession/hooks';
 
 /**
  *
@@ -7,7 +7,6 @@ import { useUpdateActiveTaskTimer } from '../../../features/workSession';
  */
 const BackgroundTask = (): null => {
   // update active task timer
-  // useUpdateActiveTaskTimer();
   useUpdateActiveTaskTimer();
 
   return null;

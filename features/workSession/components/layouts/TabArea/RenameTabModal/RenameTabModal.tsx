@@ -16,9 +16,10 @@ import {
   ModalProps,
 } from '../../../../../../components/elements/common';
 import { breakPoint } from '../../../../../../const/styles/breakPoint';
+import { useAppSelector } from '../../../../../../stores/hooks';
+import { selectCurrentSelectedTab } from '../../../../../../stores/slices/selectedTabSlice';
 
 type RenameTabModalProps = {
-  currentTabName: string;
   onSubmit: (newName: string) => void;
 } & ModalProps;
 
@@ -47,12 +48,9 @@ const StyledButtonSecondary = styled(ButtonSecondary)`
   font-size: 1em;
 `;
 
-const RenameTabModal = ({
-  currentTabName,
-  isOpen,
-  onClose,
-  onSubmit,
-}: RenameTabModalProps) => {
+const RenameTabModal = ({ isOpen, onClose, onSubmit }: RenameTabModalProps) => {
+  const selectedTab = useAppSelector(selectCurrentSelectedTab);
+  const currentTabName = selectedTab?.name ?? '';
   const defaultValues: RenameTabFormValues = {
     tabName: currentTabName,
   };

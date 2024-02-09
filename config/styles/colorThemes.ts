@@ -29,8 +29,8 @@ export const lightTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
-    overlay: overlay,
-    outline: outline,
+    overlay,
+    outline,
   },
 };
 
@@ -45,8 +45,8 @@ export const darkTheme: ColorThemeStyle = {
     infoBg: softPetals,
     danger: coralRed,
     dangerBg: translucentUnicorn,
-    overlay: overlay,
-    outline: outline,
+    overlay,
+    outline,
   },
 };
 

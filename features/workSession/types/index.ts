@@ -18,6 +18,11 @@ export type GetLatestWorkSessionParams = {
   userId: number;
 };
 
+export type GetWorkSessionsByUserIdParams = {
+  authToken: string;
+  userId: number;
+};
+
 export type UpdateActiveTaskParams = {
   authToken: string;
   userId: number;
@@ -101,6 +106,10 @@ export type DeleteTaskParams = {
 export type CreateWorkSessionResponse = {
   isUnfinished: boolean;
   workSession: WorkSession;
+};
+
+export type GetWorkSessionsByUserIdResponse = {
+  workSessions: WorkSession[];
 };
 
 export type GetLatestWorkSessionResponse = {

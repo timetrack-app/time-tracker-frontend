@@ -1,15 +1,15 @@
 import { UseMutationOptions, useMutation } from 'react-query';
-import { updateActiveTask } from '../../services/workSession/updateActiveTask';
+import { switchActiveTask } from '../../services/workSession/switchActiveTask';
 import { UpdateActiveTaskParams } from '../../../types';
 
 /**
- * Custom hook for end a work session
+ * Custom hook for switching active task
  *
  * @param {UseMutationOptions<void, UpdateActiveTaskParams, undefined>} [options]
  */
-export const useUpdateActiveTask = (
+export const useSwitchActiveTask = (
   options?: UseMutationOptions<void, UpdateActiveTaskParams, undefined>,
 ) =>
-  useMutation((values: UpdateActiveTaskParams) => updateActiveTask(values), {
+  useMutation((values: UpdateActiveTaskParams) => switchActiveTask(values), {
     ...options,
   });

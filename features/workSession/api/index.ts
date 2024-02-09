@@ -1,7 +1,7 @@
+import { useSwitchActiveTask } from './hooks/workSession/useSwitchActiveTask';
 import { useGetLatestWorkSession } from './hooks/workSession/useGetLatestWorkSession';
 import { useCreateWorkSession } from './hooks/workSession/useCreateWorkSession';
 import { useEndWorkSession } from './hooks/workSession/useEndWorkSession';
-import { useUpdateActiveTask } from './hooks/workSession/useUpdateActiveTask';
 
 import { useCreateTab } from './hooks/tab/useCreateTab';
 import { useUpdateTab } from './hooks/tab/useUpdateTab';
@@ -14,11 +14,14 @@ import { useCreateTask } from './hooks/task/useCreateTask';
 import { useUpdateTask } from './hooks/task/useUpdateTask';
 import { useDeleteTask } from './hooks/task/useDeleteTask';
 
+import { useGetWorkSessionsByUserId } from './hooks/workSession/useGetWorkSessionsByUserId';
+
 export {
   useCreateWorkSession,
   useGetLatestWorkSession,
+  useGetWorkSessionsByUserId,
   useEndWorkSession,
-  useUpdateActiveTask,
+  useSwitchActiveTask,
   useCreateTab,
   useUpdateTab,
   useDeleteTab,

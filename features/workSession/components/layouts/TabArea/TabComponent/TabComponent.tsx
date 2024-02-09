@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 // types
 import { Tab, Task, TaskList } from '../../../../../../types/entity';
@@ -235,6 +235,12 @@ const TabComponent = ({
     }
   }, [isOpenRenameTaskModal, onCloseEditTaskMenuPopover]);
 
+  const sortedTaskLists = useMemo(() => {
+    // copying lists since `sort` mutates the original array, and original array is readonly
+    const copiedLists = [...lists];
+    return copiedLists.sort((a, b) => a.displayOrder - b.displayOrder);
+  }, [lists]);
+
   return (
     <ContainerDiv>
       <StartNewTaskConfirmPopover
@@ -281,7 +287,7 @@ const TabComponent = ({
         handleYesButtonOnClick={onDeleteTask}
       />
       <TaskListContainerDiv>
-        {lists.map((taskList) => (
+        {sortedTaskLists.map((taskList) => (
           <TaskListComponent
             key={taskList.id}
             taskList={taskList}
