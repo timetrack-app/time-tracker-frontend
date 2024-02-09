@@ -108,16 +108,15 @@ const TaskCard = ({
             ? secondsToHHMMSS(totalTime)
             : secondsToHHMMSS(task.totalTime)}
         </TimeP>
-        {isTimerRunning &&
-          (isThisTaskRunning ? (
-            <FaRunning size={20} />
-          ) : (
-            <IconButton
-              onClick={() => handleOpenStartNewTaskConfirmPopover(task, ref)}
-            >
-              <IoPlay size={20} />
-            </IconButton>
-          ))}
+        {isThisTaskRunning ? (
+          <FaRunning size={20} />
+        ) : (
+          <IconButton
+            onClick={() => handleOpenStartNewTaskConfirmPopover(task, ref)}
+          >
+            <IoPlay size={20} />
+          </IconButton>
+        )}
       </BottomHalfDiv>
     </ContainerDiv>
   );

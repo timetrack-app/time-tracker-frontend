@@ -608,13 +608,16 @@ const HomePage = () => {
     },
     currentTaskTotalTime: number,
   ) => {
-    // Save the current active task total time in DB
-    await updateTask({
-      authToken,
-      workSessionId,
-      attr: { totalTime: currentTaskTotalTime },
-      ...currentActiveTaskInfo,
-    });
+    if (currentActiveTaskInfo.taskId === newTaskInfo.taskId) return;
+    if (currentActiveTaskInfo.taskId) {
+      // Save the current active task total time in DB
+      await updateTask({
+        authToken,
+        workSessionId,
+        attr: { totalTime: currentTaskTotalTime },
+        ...currentActiveTaskInfo,
+      });
+    }
     // Update the active task
     await switchActiveTask({
       authToken,
